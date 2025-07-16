@@ -36,7 +36,7 @@ export default function Home() {
   const { socket } = useSocket();
   const navigate = useNavigate();
   const { isPremium, setPremium } = usePremium();
-  const { coins } = useCoin();
+  const { coins, claimDailyBonus, canClaimDailyBonus } = useCoin();
   const { t } = useLanguage();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -52,6 +52,18 @@ export default function Home() {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  // Auto-claim daily bonus on app open
+  useEffect(() => {
+    if (canClaimDailyBonus) {
+      // Show daily bonus notification
+      setTimeout(() => {
+        if (confirm('🎁 Daily bonus available! Claim 5 coins now?')) {
+          claimDailyBonus();
+        }
+      }, 2000);
+    }
+  }, [canClaimDailyBonus, claimDailyBonus]);
 
   useEffect(() => {
     const interval = setInterval(() => {

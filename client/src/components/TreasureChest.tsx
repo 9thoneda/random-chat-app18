@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Coins, Gift, Play, Users, Crown, X, Star, Zap, Sparkles, TrendingUp } from "lucide-react";
+import { Coins, Gift, Play, Users, Crown, X, Star, Zap, Sparkles, TrendingUp, Calendar, Video, MessageCircle, Target } from "lucide-react";
 import { useCoin } from "../context/CoinProvider";
 import { usePremium } from "../context/PremiumProvider";
 
@@ -12,7 +11,17 @@ interface TreasureChestProps {
 }
 
 export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
-  const { coins, watchAd, referFriend } = useCoin();
+  const { 
+    coins, 
+    watchAd, 
+    claimDailyBonus, 
+    completeChat,
+    adsWatchedToday, 
+    maxAdsPerDay, 
+    canClaimDailyBonus,
+    currentStreak,
+    hasCompletedOnboarding
+  } = useCoin();
   const { isPremium } = usePremium();
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -38,6 +47,63 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
     alert(`🎉 You purchased ${pack.coins} coins for ${pack.price}!`);
     onClose();
   };
+
+  const earningMethods = [
+    {
+      id: 'daily',
+      title: 'Daily Login Bonus',
+      coins: 5,
+      icon: Calendar,
+      color: 'from-blue-500 to-blue-600',
+      bgColor: 'bg-blue-50',
+      description: 'Open the app daily',
+      action: claimDailyBonus,
+      available: canClaimDailyBonus,
+      buttonText: canClaimDailyBonus ? 'Claim 5 Coins' : 'Claimed Today',
+      streak: currentStreak
+    },
+    {
+      id: 'ads',
+      title: 'Watch Rewarded Ads',
+      coins: 10,
+      icon: Play,
+      color: 'from-green-500 to-emerald-600',
+      bgColor: 'bg-green-50',
+      description: `Up to ${maxAdsPerDay} times per day`,
+      action: watchAd,
+      available: adsWatchedToday < maxAdsPerDay,
+      buttonText: adsWatchedToday < maxAdsPerDay 
+        ? `Watch Ad (${maxAdsPerDay - adsWatchedToday} left)` 
+        : 'Daily Limit Reached',
+      progress: `${adsWatchedToday}/${maxAdsPerDay} today`
+    },
+    {
+      id: 'onboarding',
+      title: 'Complete Onboarding',
+      coins: 10,
+      icon: Target,
+      color: 'from-purple-500 to-purple-600',
+      bgColor: 'bg-purple-50',
+      description: 'One-time bonus',
+      action: () => alert('Onboarding already completed!'),
+      available: false,
+      buttonText: hasCompletedOnboarding ? 'Completed' : 'Complete Setup',
+      oneTime: true
+    },
+    {
+      id: 'chat',
+      title: 'Finish Video/Voice Chat',
+      coins: 3,
+      icon: Video,
+      color: 'from-pink-500 to-rose-600',
+      bgColor: 'bg-pink-50',
+      description: 'Per completed chat',
+      action: completeChat,
+      available: true,
+      buttonText: 'Complete a Chat',
+      automatic: true
+    }
+  ];
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start justify-center z-50 p-4 overflow-y-auto">
@@ -95,36 +161,179 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
               <span className="font-extrabold text-xl text-rose-700">{coins} Coins</span>
             </div>
           </div>
+
+          {/* Streak Display */}
+          {currentStreak > 0 && (
+            <div className="bg-gradient-to-r from-orange-100 to-yellow-100 rounded-full px-6 py-2 inline-block mt-2 border border-orange-300">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-orange-600" />
+                <span className="font-bold text-orange-700">{currentStreak} Day Streak! 🔥</span>
+              </div>
+            </div>
+          )}
         </CardHeader>
 
         <CardContent className="space-y-6 relative z-10 overflow-y-auto max-h-[calc(95vh-200px)] pb-6">
-          {/* Free Coin Options */}
-          <div className="space-y-3">
+          {/* Earn Free Coins Section */}
+          <div className="space-y-4">
             <h3 className="font-bold text-rose-800 text-center flex items-center justify-center gap-3 text-lg">
               <div className="bg-green-100 p-2 rounded-full">
                 <Gift className="h-6 w-6 text-green-600" />
               </div>
-              🎁 Earn Free Coins
+              🎁 Ways to Earn Coins
             </h3>
             
-            <div className="grid grid-cols-1 gap-3">
-              <Button
-                onClick={watchAd}
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300 relative overflow-hidden"
-              >
-                {/* Animated background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent animate-pulse"></div>
-                <div className="relative z-10 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Play className="h-6 w-6" />
-                    <div className="flex flex-col items-start">
-                      <span className="text-base">Watch Ad</span>
-                      <span className="text-xs text-green-100 font-medium">Get 4 coins instantly</span>
+            <div className="grid grid-cols-1 gap-4">
+              {earningMethods.map((method) => (
+                <div key={method.id} className={`${method.bgColor} rounded-2xl p-4 border-2 border-opacity-30 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`bg-gradient-to-r ${method.color} p-2 rounded-full shadow-md`}>
+                        <method.icon className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-gray-800">{method.title}</h4>
+                        <p className="text-sm text-gray-600">{method.description}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-lg text-green-600">+{method.coins}</div>
+                      <div className="text-xs text-gray-500">coins</div>
                     </div>
                   </div>
-                  <div className="bg-green-400 px-2 py-1 rounded-full"></div>
+
+                  {/* Progress or Status */}
+                  {method.progress && (
+                    <div className="mb-3">
+                      <div className="text-xs text-gray-600 mb-1">{method.progress}</div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className={`bg-gradient-to-r ${method.color} h-2 rounded-full transition-all duration-300`}
+                          style={{ width: `${(adsWatchedToday / maxAdsPerDay) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {method.streak && method.streak > 0 && (
+                    <div className="mb-3 text-center">
+                      <span className="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-xs font-bold">
+                        🔥 {method.streak} Day Streak
+                      </span>
+                      {method.streak >= 3 && method.streak % 3 === 0 && (
+                        <div className="text-xs text-green-600 font-bold mt-1">
+                          Next streak bonus at day {method.streak + 3}!
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Action Button */}
+                  {!method.automatic && !method.oneTime && (
+                    <Button
+                      onClick={method.action}
+                      disabled={!method.available}
+                      className={`w-full font-bold py-2 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 ${
+                        method.available 
+                          ? `bg-gradient-to-r ${method.color} hover:shadow-lg text-white` 
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      }`}
+                    >
+                      {method.buttonText}
+                    </Button>
+                  )}
+
+                  {method.automatic && (
+                    <div className="text-center text-sm text-gray-600 font-medium bg-gray-100 py-2 rounded-lg">
+                      ⚡ Earned automatically when you complete chats
+                    </div>
+                  )}
+
+                  {method.oneTime && hasCompletedOnboarding && (
+                    <div className="text-center text-sm text-green-600 font-medium bg-green-100 py-2 rounded-lg">
+                      ✅ Already completed - You earned 10 coins!
+                    </div>
+                  )}
                 </div>
-              </Button>
+              ))}
+            </div>
+
+            {/* Special Streak Bonus Info */}
+            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-4 border-2 border-orange-200 shadow-lg">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-2 rounded-full">
+                  <TrendingUp className="h-5 w-5 text-white" />
+                </div>
+                <h4 className="font-bold text-orange-800">3-Day Streak Bonus</h4>
+              </div>
+              <p className="text-sm text-orange-700 mb-3">
+                Use the app for 3 consecutive days to earn a <strong>20 coin bonus</strong>!
+              </p>
+              <div className="bg-orange-100 rounded-lg p-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-orange-800">Current Streak:</span>
+                  <span className="font-bold text-orange-900">{currentStreak} days</span>
+                </div>
+                <div className="w-full bg-orange-200 rounded-full h-2 mt-2">
+                  <div 
+                    className="bg-gradient-to-r from-orange-500 to-yellow-500 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${Math.min((currentStreak / 3) * 100, 100)}%` }}
+                  />
+                </div>
+                <div className="text-xs text-orange-600 mt-1 text-center">
+                  {currentStreak < 3 
+                    ? `${3 - currentStreak} more days for bonus!` 
+                    : 'Bonus earned! Keep the streak going!'
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Purchase Coins Section */}
+          <div className="space-y-4">
+            <h3 className="font-bold text-purple-800 text-center flex items-center justify-center gap-3 text-lg">
+              <div className="bg-purple-100 p-2 rounded-full">
+                <Crown className="h-6 w-6 text-purple-600" />
+              </div>
+              💎 Buy Coin Packs
+            </h3>
+            
+            <div className="grid grid-cols-2 gap-3">
+              {coinPacks.map((pack, index) => (
+                <div
+                  key={index}
+                  className={`relative p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
+                    pack.popular 
+                      ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-pink-50 shadow-lg' 
+                      : 'border-gray-300 bg-white hover:border-purple-300'
+                  }`}
+                  onClick={() => handlePurchasePack(pack)}
+                >
+                  {pack.popular && (
+                    <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full font-bold">
+                      POPULAR! 🔥
+                    </div>
+                  )}
+                  
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-700 mb-1">
+                      {pack.coins}
+                    </div>
+                    <div className="text-xs text-gray-600 mb-2">coins</div>
+                    
+                    {pack.bonus && (
+                      <div className="text-xs text-green-600 font-bold mb-2 bg-green-100 rounded-full px-2 py-1">
+                        {pack.bonus}
+                      </div>
+                    )}
+                    
+                    <div className="font-bold text-lg text-gray-800">
+                      {pack.price}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </CardContent>

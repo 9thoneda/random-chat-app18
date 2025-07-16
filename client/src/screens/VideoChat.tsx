@@ -155,6 +155,15 @@ export default function VideoChat() {
     }
   }, [isFriendCall, handleSkip]);
 
+  // Auto-award coins when chat completes
+  const { completeChat } = useCoin();
+  
+  const handleChatComplete = useCallback(() => {
+    if (remoteChatToken) {
+      completeChat();
+    }
+  }, [remoteChatToken, completeChat]);
+
   const handleUpgrade = useCallback(() => {
     setShowPaywall(true);
   }, []);
@@ -540,8 +549,13 @@ export default function VideoChat() {
 
   const handleSkip = useCallback(async () => {
     if (!isFriendCall && remoteChatToken) {
+      handleChatComplete(); // Award coins for completing chat
       setShowStayConnected(true);
       return;
+    }
+    
+    if (remoteChatToken) {
+      handleChatComplete(); // Award coins for completing chat
     }
 
     peerservice.peer.getTransceivers().forEach((transceiver) => {
