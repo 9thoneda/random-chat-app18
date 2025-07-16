@@ -26,8 +26,8 @@ interface LanguageProviderProps {
 const translations: Record<Language, Record<string, string>> = {
   en: {
     // App Name
-    'app.name': 'AjnabiCam',
-    'app.tagline': 'Connect with strangers instantly',
+    'app.name': 'AjnabiCam: Love Connects',
+    'app.tagline': 'Where Every Connection Sparks a Story ✨',
     
     // Onboarding
     'onboarding.welcome': 'Welcome to AjnabiCam',
@@ -53,10 +53,10 @@ const translations: Record<Language, Record<string, string>> = {
     'language.chinese': '中文 (Chinese)',
     
     // Home Screen
-    'home.start': 'Start Chatting',
+    'home.start': 'Find Your Match 💕',
     'home.features.hd': 'HD Video',
-    'home.features.secure': 'Secure',
-    'home.features.instant': 'Instant',
+    'home.features.secure': 'Safe & Private',
+    'home.features.instant': 'Instant Spark',
     
     // Navigation
     'nav.home': 'Home',

@@ -14,16 +14,16 @@ import { useCoin } from "../context/CoinProvider";
 import { useLanguage } from "../context/LanguageProvider";
 
 const bannerImages = [
-  'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop',
-  'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop',
-  'https://images.pexels.com/photos/3184293/pexels-photo-3184293.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop',
-  'https://images.pexels.com/photos/3184294/pexels-photo-3184294.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop'
+  'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop',
+  'https://images.pexels.com/photos/1043473/pexels-photo-1043473.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop',
+  'https://images.pexels.com/photos/1043472/pexels-photo-1043472.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop',
+  'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop'
 ];
 
 const testimonials = [
-  { name: "Priya", text: "Made amazing friends here! 💕", rating: 5 },
-  { name: "Arjun", text: "Best video chat app ever!", rating: 5 },
-  { name: "Sneha", text: "Safe and fun conversations 🌟", rating: 5 },
+  { name: "Priya", text: "Found my perfect match here! So grateful 💕", rating: 5 },
+  { name: "Arjun", text: "Every chat is a new adventure, truly amazing!", rating: 5 },
+  { name: "Sneha", text: "Safe, fun, and full of romantic possibilities 🌟", rating: 5 },
 ];
 
 const stats = [
@@ -119,17 +119,21 @@ export default function Home() {
       <main className="flex flex-col min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 relative pb-20 overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-10 left-10 w-20 h-20 bg-pink-200 rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute top-32 right-8 w-16 h-16 bg-purple-200 rounded-full opacity-30 animate-bounce"></div>
-          <div className="absolute bottom-40 left-6 w-12 h-12 bg-rose-200 rounded-full opacity-25 animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute bottom-60 right-12 w-8 h-8 bg-pink-300 rounded-full opacity-20 animate-bounce" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-pink-300 to-rose-400 rounded-full opacity-20 animate-pulse"></div>
+          <div className="absolute top-32 right-8 w-16 h-16 bg-gradient-to-br from-purple-300 to-pink-400 rounded-full opacity-30 animate-bounce"></div>
+          <div className="absolute bottom-40 left-6 w-12 h-12 bg-gradient-to-br from-rose-300 to-crimson-400 rounded-full opacity-25 animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-60 right-12 w-8 h-8 bg-gradient-to-br from-pink-400 to-purple-400 rounded-full opacity-20 animate-bounce" style={{animationDelay: '2s'}}></div>
+          {/* Add romantic heart shapes */}
+          <div className="absolute top-20 right-20 text-pink-300 text-2xl opacity-30 animate-pulse" style={{animationDelay: '0.5s'}}>💕</div>
+          <div className="absolute bottom-80 left-16 text-rose-300 text-xl opacity-25 animate-bounce" style={{animationDelay: '1.5s'}}>💖</div>
+          <div className="absolute top-60 left-8 text-purple-300 text-lg opacity-20 animate-pulse" style={{animationDelay: '2.5s'}}>✨</div>
         </div>
 
         {/* Enhanced Header */}
-        <header className="w-full bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 shadow-lg px-6 py-6 border-b border-pink-100 relative overflow-hidden">
+        <header className="w-full bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 shadow-lg px-6 py-6 border-b border-pink-100 relative overflow-hidden">
           {/* Header Background Pattern */}
-          <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-gold-100/20 to-white/10 backdrop-blur-sm"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gold-200/10 to-transparent"></div>
           
           <div className="relative z-10 flex items-center justify-between">
             {/* Live Status & Premium Badge */}
@@ -171,15 +175,15 @@ export default function Home() {
         <div className="flex-1 flex flex-col px-6 py-6 relative z-10">
           {/* App Name & Tagline */}
           <div className="mb-6 text-center">
-            <h1 className="text-5xl font-extrabold bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent mb-2 tracking-tight">
+            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-crimson-600 via-rose-600 to-pink-600 bg-clip-text text-transparent mb-2 tracking-tight">
               {t('app.name')}
             </h1>
-            <p className="text-gray-600 text-lg font-medium">
+            <p className="text-rose-700 text-lg font-medium">
               {t('app.tagline')}
             </p>
             <div className="flex items-center justify-center gap-2 mt-2">
               <Star className="h-4 w-4 text-yellow-500 fill-current" />
-              <span className="text-sm text-gray-500 font-medium">4.8/5 Rating • Trusted by millions</span>
+              <span className="text-sm text-rose-500 font-medium">4.8/5 Rating • Where Love Stories Begin</span>
             </div>
           </div>
 
@@ -199,8 +203,8 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
                     <div className="absolute bottom-4 left-4 text-white">
-                      <h3 className="font-bold text-lg">Connect Instantly</h3>
-                      <p className="text-sm opacity-90">Meet amazing people worldwide</p>
+                      <h3 className="font-bold text-lg">Find Your Soulmate</h3>
+                      <p className="text-sm opacity-90">Where hearts connect across India</p>
                     </div>
                   </div>
                 ))}
@@ -234,43 +238,43 @@ export default function Home() {
 
           {/* Enhanced Features Grid */}
           <div className="w-full grid grid-cols-3 gap-3 mb-6">
-            <div className="bg-gradient-to-br from-rose-100 to-pink-100 rounded-2xl p-4 text-center shadow-lg border border-rose-200 hover:scale-105 hover:shadow-xl transition-all duration-300 hover:from-rose-200 hover:to-pink-200">
+            <div className="bg-gradient-to-br from-rose-100 to-pink-100 rounded-2xl p-4 text-center shadow-lg border border-rose-200 hover:scale-105 hover:shadow-xl transition-all duration-300 hover:from-rose-150 hover:to-pink-150">
               <Video className="h-8 w-8 mx-auto mb-2 text-rose-600" />
               <div className="font-bold text-sm text-rose-700">{t('home.features.hd')}</div>
-              <div className="text-xs text-rose-500">Crystal clear</div>
+              <div className="text-xs text-rose-500">See every smile</div>
             </div>
-            <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl p-4 text-center shadow-lg border border-green-200 hover:scale-105 hover:shadow-xl transition-all duration-300 hover:from-green-200 hover:to-emerald-200">
+            <div className="bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl p-4 text-center shadow-lg border border-emerald-200 hover:scale-105 hover:shadow-xl transition-all duration-300 hover:from-emerald-150 hover:to-green-150">
               <Shield className="h-8 w-8 mx-auto mb-2 text-green-600" />
               <div className="font-bold text-sm text-green-700">{t('home.features.secure')}</div>
-              <div className="text-xs text-green-500">Encrypted</div>
+              <div className="text-xs text-green-500">Your moments, secure</div>
             </div>
-            <div className="bg-gradient-to-br from-purple-100 to-indigo-100 rounded-2xl p-4 text-center shadow-lg border border-purple-200 hover:scale-105 hover:shadow-xl transition-all duration-300 hover:from-purple-200 hover:to-indigo-200">
+            <div className="bg-gradient-to-br from-purple-100 to-indigo-100 rounded-2xl p-4 text-center shadow-lg border border-purple-200 hover:scale-105 hover:shadow-xl transition-all duration-300 hover:from-purple-150 hover:to-indigo-150">
               <Zap className="h-8 w-8 mx-auto mb-2 text-purple-600" />
               <div className="font-bold text-sm text-purple-700">{t('home.features.instant')}</div>
-              <div className="text-xs text-purple-500">Connect now</div>
+              <div className="text-xs text-purple-500">Find your spark</div>
             </div>
           </div>
 
           {/* Testimonials Carousel */}
           <div className="w-full mb-6">
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-white/50 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 to-purple-500"></div>
+            <div className="bg-gradient-to-br from-white/95 to-rose-50/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-rose-200/50 relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-500"></div>
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-crimson-400 to-rose-500 rounded-full flex items-center justify-center shadow-md">
                   <span className="text-white font-bold text-sm">
                     {testimonials[currentTestimonial].name[0]}
                   </span>
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-800">{testimonials[currentTestimonial].name}</div>
+                  <div className="font-semibold text-rose-800">{testimonials[currentTestimonial].name}</div>
                   <div className="flex gap-1">
                     {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                      <Star key={i} className="h-3 w-3 text-yellow-500 fill-current" />
+                      <Star key={i} className="h-3 w-3 text-gold-500 fill-current" />
                     ))}
                   </div>
                 </div>
               </div>
-              <p className="text-gray-700 text-sm italic">"{testimonials[currentTestimonial].text}"</p>
+              <p className="text-rose-700 text-sm italic font-medium">"{testimonials[currentTestimonial].text}"</p>
             </div>
           </div>
 
@@ -291,23 +295,23 @@ export default function Home() {
               className={`w-full py-6 text-xl font-bold rounded-3xl text-white shadow-2xl transform transition-all duration-300 relative overflow-hidden ${
                 isConnecting 
                   ? 'bg-gradient-to-r from-green-500 to-emerald-600 scale-95' 
-                  : 'bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 hover:scale-105 hover:shadow-3xl'
+                  : 'bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 hover:scale-105 hover:shadow-3xl'
               }`}
               onClick={handleStartCall}
               disabled={isConnecting}
             >
               {/* Button Background Animation */}
-              <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-gold-200/30 via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
               
               <div className="relative z-10 flex items-center justify-center gap-3">
                 {isConnecting ? (
                   <>
                     <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Connecting...</span>
+                    <span>Finding your match...</span>
                   </>
                 ) : (
                   <>
-                    <Play className="h-6 w-6" />
+                    <Heart className="h-6 w-6" />
                     <span>{t('home.start')}</span>
                     <Sparkles className="h-5 w-5" />
                   </>
@@ -337,11 +341,11 @@ export default function Home() {
 
           {/* Footer Text */}
           <div className="text-xs text-center text-gray-500 px-4 leading-relaxed">
-            By using {t('app.name')}, you agree to our Terms of Service and Privacy Policy.
+            By using AjnabiCam, you agree to our Terms of Service and Privacy Policy.
             <br />
-            <span className="text-green-600 font-medium">✓ Safe & Secure</span> • 
-            <span className="text-blue-600 font-medium"> ✓ 24/7 Support</span> • 
-            <span className="text-purple-600 font-medium"> ✓ Global Community</span>
+            <span className="text-rose-600 font-medium">✓ Safe & Secure</span> • 
+            <span className="text-pink-600 font-medium"> ✓ 24/7 Support</span> • 
+            <span className="text-crimson-600 font-medium"> ✓ Find True Love</span>
           </div>
         </div>
 
