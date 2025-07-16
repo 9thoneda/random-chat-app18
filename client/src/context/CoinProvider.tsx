@@ -1,19 +1,24 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore";
+import { firebaseApp, db } from "../firebaseConfig";
+import { getCoins, addCoins as firestoreAddCoins, spendCoins } from "../lib/firestoreUtils";
 
 interface CoinContextType {
   coins: number;
-  addCoins: (amount: number) => void;
-  deductCoins: (amount: number) => boolean;
-  watchAd: () => void;
-  referFriend: () => void;
-  claimDailyBonus: () => boolean;
-  completeChat: () => void;
-  checkStreakBonus: () => void;
+  addCoins: (amount: number) => Promise<boolean>;
+  deductCoins: (amount: number) => Promise<boolean>;
+  watchAd: () => Promise<void>;
+  referFriend: () => Promise<void>;
+  claimDailyBonus: () => Promise<boolean>;
+  completeChat: () => Promise<void>;
+  checkStreakBonus: () => Promise<void>;
   adsWatchedToday: number;
   maxAdsPerDay: number;
   canClaimDailyBonus: boolean;
   currentStreak: number;
   hasCompletedOnboarding: boolean;
+  isLoading: boolean;
 }
 
 const CoinContext = createContext<CoinContextType | null>(null);
@@ -36,36 +41,56 @@ export const CoinProvider = ({ children }: CoinProviderProps) => {
   const [canClaimDailyBonus, setCanClaimDailyBonus] = useState(true);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
   
   const maxAdsPerDay = 3;
+  const auth = getAuth(firebaseApp);
 
-  // Initialize coins and daily data on mount
+  // Listen for auth state changes
   useEffect(() => {
-    const savedCoins = localStorage.getItem("ajnabicam_coins");
-    const hasOnboarded = localStorage.getItem("ajnabicam_onboarded");
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user.uid);
+      } else {
+        setCurrentUser(null);
+        setCoins(0);
+        setIsLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+  // Set up real-time listener for user's coin balance
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const userDocRef = doc(db, "users", currentUser);
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      if (doc.exists()) {
+        const userData = doc.data();
+        setCoins(userData.coins || 0);
+        setHasCompletedOnboarding(userData.onboardingComplete || false);
+      }
+      setIsLoading(false);
+    }, (error) => {
+      console.error("Error listening to user document:", error);
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [currentUser]);
+
+  // Initialize local storage data (ads, daily bonus, streak)
+  useEffect(() => {
     const lastDailyBonus = localStorage.getItem("ajnabicam_last_daily_bonus");
     const adsToday = localStorage.getItem("ajnabicam_ads_today");
     const adsDate = localStorage.getItem("ajnabicam_ads_date");
     const streakData = localStorage.getItem("ajnabicam_streak_data");
-    const onboardingComplete = localStorage.getItem("ajnabicam_onboarding_complete");
     
     const today = new Date().toDateString();
     
-    // Initialize coins
-    if (savedCoins) {
-      setCoins(parseInt(savedCoins));
-    } else if (!hasOnboarded) {
-      // Give 30 free coins for new users
-      setCoins(30);
-      localStorage.setItem("ajnabicam_coins", "30");
-      localStorage.setItem("ajnabicam_onboarded", "true");
-    }
-
-    // Check onboarding completion
-    if (onboardingComplete === "true") {
-      setHasCompletedOnboarding(true);
-    }
-
     // Check daily bonus eligibility
     if (lastDailyBonus !== today) {
       setCanClaimDailyBonus(true);
@@ -110,23 +135,40 @@ export const CoinProvider = ({ children }: CoinProviderProps) => {
     }
   }, []);
 
-  const addCoins = (amount: number) => {
-    const newAmount = coins + amount;
-    setCoins(newAmount);
-    localStorage.setItem("ajnabicam_coins", newAmount.toString());
-  };
-
-  const deductCoins = (amount: number): boolean => {
-    if (coins >= amount) {
-      const newAmount = coins - amount;
-      setCoins(newAmount);
-      localStorage.setItem("ajnabicam_coins", newAmount.toString());
-      return true;
+  const addCoins = async (amount: number): Promise<boolean> => {
+    if (!currentUser) {
+      console.error("No authenticated user");
+      return false;
     }
-    return false;
+
+    try {
+      await firestoreAddCoins(currentUser, amount);
+      return true;
+    } catch (error) {
+      console.error("Error adding coins:", error);
+      return false;
+    }
   };
 
-  const watchAd = () => {
+  const deductCoins = async (amount: number): Promise<boolean> => {
+    if (!currentUser) {
+      console.error("No authenticated user");
+      return false;
+    }
+
+    try {
+      const result = await spendCoins(currentUser, amount);
+      if (!result.success) {
+        console.warn("Failed to deduct coins:", result.message);
+      }
+      return result.success;
+    } catch (error) {
+      console.error("Error deducting coins:", error);
+      return false;
+    }
+  };
+
+  const watchAd = async (): Promise<void> => {
     if (adsWatchedToday >= maxAdsPerDay) {
       alert("❌ You've reached the daily limit of 3 ads. Come back tomorrow!");
       return;
@@ -137,77 +179,96 @@ export const CoinProvider = ({ children }: CoinProviderProps) => {
     setAdsWatchedToday(newAdsCount);
     localStorage.setItem("ajnabicam_ads_today", newAdsCount.toString());
     
-    addCoins(10);
+    const success = await addCoins(10);
     
-    const remaining = maxAdsPerDay - newAdsCount;
-    if (remaining > 0) {
-      alert(`🎉 You earned 10 coins! ${remaining} ads remaining today.`);
+    if (success) {
+      const remaining = maxAdsPerDay - newAdsCount;
+      if (remaining > 0) {
+        alert(`🎉 You earned 10 coins! ${remaining} ads remaining today.`);
+      } else {
+        alert("🎉 You earned 10 coins! That's all ads for today. Come back tomorrow for more!");
+      }
     } else {
-      alert("🎉 You earned 10 coins! That's all ads for today. Come back tomorrow for more!");
+      alert("❌ Failed to add coins. Please try again.");
     }
   };
 
-  const claimDailyBonus = (): boolean => {
+  const claimDailyBonus = async (): Promise<boolean> => {
     if (!canClaimDailyBonus) {
       return false;
     }
 
     const today = new Date().toDateString();
-    addCoins(5);
-    setCanClaimDailyBonus(false);
-    localStorage.setItem("ajnabicam_last_daily_bonus", today);
+    const success = await addCoins(5);
     
-    // Update streak
-    const streakData = localStorage.getItem("ajnabicam_streak_data");
-    let newStreak = 1;
-    
-    if (streakData) {
-      try {
-        const { streak, lastDate } = JSON.parse(streakData);
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        
-        if (lastDate === yesterday.toDateString()) {
-          newStreak = streak + 1;
+    if (success) {
+      setCanClaimDailyBonus(false);
+      localStorage.setItem("ajnabicam_last_daily_bonus", today);
+      
+      // Update streak
+      const streakData = localStorage.getItem("ajnabicam_streak_data");
+      let newStreak = 1;
+      
+      if (streakData) {
+        try {
+          const { streak, lastDate } = JSON.parse(streakData);
+          const yesterday = new Date();
+          yesterday.setDate(yesterday.getDate() - 1);
+          
+          if (lastDate === yesterday.toDateString()) {
+            newStreak = streak + 1;
+          }
+        } catch (error) {
+          console.error("Error parsing streak data:", error);
         }
-      } catch (error) {
-        console.error("Error parsing streak data:", error);
+      }
+      
+      setCurrentStreak(newStreak);
+      localStorage.setItem("ajnabicam_streak_data", JSON.stringify({
+        streak: newStreak,
+        lastDate: today
+      }));
+
+      // Check for streak bonus
+      if (newStreak === 3) {
+        const bonusSuccess = await addCoins(20);
+        if (bonusSuccess) {
+          alert("🎉 Daily bonus claimed! +5 coins\n🔥 3-day streak bonus! +20 coins\nTotal: +25 coins!");
+        } else {
+          alert(`🎉 Daily bonus claimed! +5 coins\n🔥 Current streak: ${newStreak} days`);
+        }
+      } else {
+        alert(`🎉 Daily bonus claimed! +5 coins\n🔥 Current streak: ${newStreak} days`);
+      }
+    } else {
+      alert("❌ Failed to claim daily bonus. Please try again.");
+    }
+
+    return success;
+  };
+
+  const completeChat = async (): Promise<void> => {
+    const success = await addCoins(3);
+    if (success) {
+      alert("🎉 Chat completed! You earned 3 coins!");
+    }
+  };
+
+  const checkStreakBonus = async (): Promise<void> => {
+    if (currentStreak >= 3 && currentStreak % 3 === 0) {
+      const success = await addCoins(20);
+      if (success) {
+        alert(`🔥 ${currentStreak}-day streak bonus! You earned 20 coins!`);
       }
     }
-    
-    setCurrentStreak(newStreak);
-    localStorage.setItem("ajnabicam_streak_data", JSON.stringify({
-      streak: newStreak,
-      lastDate: today
-    }));
-
-    // Check for streak bonus
-    if (newStreak === 3) {
-      addCoins(20);
-      alert("🎉 Daily bonus claimed! +5 coins\n🔥 3-day streak bonus! +20 coins\nTotal: +25 coins!");
-    } else {
-      alert(`🎉 Daily bonus claimed! +5 coins\n🔥 Current streak: ${newStreak} days`);
-    }
-
-    return true;
   };
 
-  const completeChat = () => {
-    addCoins(3);
-    alert("🎉 Chat completed! You earned 3 coins!");
-  };
-
-  const checkStreakBonus = () => {
-    if (currentStreak >= 3 && currentStreak % 3 === 0) {
-      addCoins(20);
-      alert(`🔥 ${currentStreak}-day streak bonus! You earned 20 coins!`);
-    }
-  };
-
-  const referFriend = () => {
+  const referFriend = async (): Promise<void> => {
     // Simulate successful referral
-    addCoins(25);
-    alert("🎉 You earned 25 coins for referring a friend!");
+    const success = await addCoins(25);
+    if (success) {
+      alert("🎉 You earned 25 coins for referring a friend!");
+    }
   };
 
   return (
@@ -226,6 +287,7 @@ export const CoinProvider = ({ children }: CoinProviderProps) => {
         canClaimDailyBonus,
         currentStreak,
         hasCompletedOnboarding,
+        isLoading,
       }}
     >
       {children}

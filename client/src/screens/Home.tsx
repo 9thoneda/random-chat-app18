@@ -36,7 +36,7 @@ export default function Home() {
   const { socket } = useSocket();
   const navigate = useNavigate();
   const { isPremium, setPremium } = usePremium();
-  const { coins, claimDailyBonus, canClaimDailyBonus } = useCoin();
+  const { coins, claimDailyBonus, canClaimDailyBonus, isLoading: coinsLoading } = useCoin();
   const { t } = useLanguage();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -178,10 +178,11 @@ export default function Home() {
               {/* Coins Button */}
               <Button
                 onClick={() => setShowTreasureChest(true)}
+                disabled={coinsLoading}
                 className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-semibold px-4 py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200"
               >
                 <Coins className="h-4 w-4 mr-2" />
-                {coins}
+                {coinsLoading ? "..." : coins}
               </Button>
             </div>
           </div>

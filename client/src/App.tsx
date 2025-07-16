@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { getAuth, signInAnonymously, User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { firebaseApp, db } from "./firebaseConfig";
+import { initializeCoins } from "./lib/firestoreUtils";
+import { initializeCoins } from "./lib/firestoreUtils";
 
 import VideoChat from "./screens/VideoChat";
 import SplashScreen from "./components/SplashScreen";
@@ -60,7 +62,9 @@ function App() {
               username: null,
               language: 'en', // Default language
               referredBy: null,
-              createdAt: new Date()
+              createdAt: new Date(),
+              coins: 100 // Initialize with 100 coins
+              coins: 100 // Initialize with 100 coins
             };
 
             await setDoc(userDocRef, initialUserData);
@@ -72,6 +76,20 @@ function App() {
             // Existing user - check onboarding status
             const userData = userDocSnap.data() as UserData;
             console.log("Existing user data:", userData);
+            
+            // Initialize coins if not present (for existing users)
+            try {
+              await initializeCoins(user.uid);
+            } catch (error) {
+              console.error("Error initializing coins for existing user:", error);
+            }
+            
+            // Initialize coins if not present (for existing users)
+            try {
+              await initializeCoins(user.uid);
+            } catch (error) {
+              console.error("Error initializing coins for existing user:", error);
+            }
 
             if (!userData.onboardingComplete) {
               // User exists but onboarding not complete

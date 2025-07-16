@@ -43,8 +43,17 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
   ];
 
   const handlePurchasePack = (pack: typeof coinPacks[0]) => {
-    // Simulate in-app purchase
-    alert(`🎉 You purchased ${pack.coins} coins for ${pack.price}!`);
+    // Simulate in-app purchase - in production, integrate with payment gateway
+    const purchaseCoins = async () => {
+      const success = await addCoins(pack.coins);
+      if (success) {
+        alert(`🎉 You purchased ${pack.coins} coins for ${pack.price}!`);
+      } else {
+        alert("❌ Purchase failed. Please try again.");
+      }
+    };
+    
+    purchaseCoins();
     onClose();
   };
 
