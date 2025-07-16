@@ -137,9 +137,11 @@ const PersonalChat = ({
   };
 
   return (
-    <div className="max-w-md mx-auto h-screen bg-white shadow-xl overflow-hidden flex flex-col relative pb-20">
+    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 shadow-xl overflow-hidden flex flex-col relative pb-20">
       {/* Enhanced Header */}
-      <div className="p-4 bg-gradient-to-r from-rose-500 to-pink-600 flex items-center shadow-lg">
+      <div className="p-4 bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 flex items-center shadow-lg relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-gold-100/20 to-white/10 backdrop-blur-sm"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gold-200/10 to-transparent"></div>
         <button 
           onClick={onBack} 
           className="mr-3 text-white hover:scale-110 transition-transform"
@@ -148,9 +150,9 @@ const PersonalChat = ({
           <ArrowLeft size={24} />
         </button>
         <img 
-          src={chat.avatar} 
+          src={chat.avatar}
           alt={`${chat.name} avatar`} 
-          className="w-12 h-12 rounded-full object-cover mr-3 border-2 border-white shadow-md" 
+          className="w-12 h-12 rounded-full object-cover mr-3 border-4 border-white shadow-lg" 
         />
         <div className="flex-1">
           <div className="flex items-center gap-2">
@@ -196,14 +198,14 @@ const PersonalChat = ({
       {/* Enhanced Input */}
       <div className="p-4 bg-white flex items-center border-t border-rose-100 shadow-lg">
         <input
-          className="flex-1 px-4 py-3 rounded-full border border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-400 bg-rose-50"
+          className="flex-1 px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white/80 backdrop-blur-sm"
           placeholder="Type a message..."
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
         />
         <Button
-          className="ml-3 px-6 py-3 bg-gradient-to-r from-rose-500 to-pink-600 text-white rounded-full font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+          className="ml-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
           onClick={handleSend}
           disabled={!input.trim()}
         >
@@ -265,10 +267,14 @@ const ChatPageContent = ({
   };
 
   return (
-    <div className="max-w-md mx-auto h-screen bg-white shadow-xl overflow-hidden flex flex-col relative pb-20">
+    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 shadow-xl overflow-hidden flex flex-col relative pb-20">
       {/* Enhanced Header */}
-      <div className="p-4 bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-lg">
+      <div className="px-6 py-6 bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 text-white shadow-lg relative overflow-hidden">
+        {/* Header Background Pattern */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-gold-100/20 to-white/10 backdrop-blur-sm"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gold-200/10 to-transparent"></div>
         <div className="flex items-center justify-between mb-4">
+          <div className="relative z-10 flex items-center justify-between w-full">
           <div className="flex items-center">
             <button 
               onClick={() => navigate('/')} 
@@ -276,16 +282,17 @@ const ChatPageContent = ({
               aria-label="Go to home"
             >
               <ArrowLeft size={24} />
-            </button>
-            <h1 className="text-xl font-bold">Chats</h1>
+            </button> 
+            <h1 className="flex-grow text-center text-2xl font-extrabold tracking-wide">Chats</h1>
           </div>
           {totalUnreadCount > 0 && (
             <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
               <span className="text-sm font-semibold">{totalUnreadCount} new</span>
             </div>
           )}
+          </div>
         </div>
-
+        
         {/* Search Bar */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-rose-200 h-4 w-4" />
@@ -293,8 +300,8 @@ const ChatPageContent = ({
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search chats and messages..."
-            className="w-full pl-10 pr-10 py-3 rounded-full border-0 bg-white/20 backdrop-blur-sm text-white placeholder-rose-200 focus:outline-none focus:ring-2 focus:ring-white/30"
+            placeholder="Search chats and messages..." 
+            className="w-full pl-10 pr-10 py-3 rounded-full border-0 bg-white/30 backdrop-blur-sm text-white placeholder-rose-200 focus:outline-none focus:ring-2 focus:ring-white/30"
           />
           {search && (
             <button
@@ -369,7 +376,7 @@ const ChatPageContent = ({
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-rose-500 rounded-full animate-ping"></div>
               )}
             </div>
-            <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-2xl p-6 border border-rose-200 shadow-sm max-w-sm">
+            <div className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl p-6 border border-rose-200 shadow-2xl max-w-sm">
               <h3 className="text-xl font-bold text-gray-700 mb-3">
                 {search ? 'No chats found' : 'No chats yet'}
               </h3>
@@ -380,7 +387,7 @@ const ChatPageContent = ({
                 }
               </p>
               {!search && (
-                <Button
+                <Button 
                   onClick={() => navigate('/video-chat')}
                   className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-semibold px-6 py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200"
                 >
@@ -418,14 +425,14 @@ const ChatItem = ({
   formatLastSeen: (date: Date) => string;
 }) => {
   return (
-    <div
-      className={`flex items-center p-4 cursor-pointer relative border-b border-rose-100 transition-all duration-200 hover:bg-rose-50 hover:shadow-md hover:scale-[1.02] ${
+    <div 
+      className={`flex items-center p-4 cursor-pointer relative border-b border-rose-100 transition-all duration-200 rounded-xl hover:bg-rose-50/50 hover:shadow-lg transform hover:scale-[1.02] ${
         chat.isFriend ? 'bg-green-50/50' : ''
       } ${
-        chat.unreadCount > 0 ? 'bg-rose-50 border-l-4 border-rose-500 shadow-sm' : ''
+        chat.unreadCount > 0 ? 'bg-rose-50 border-l-4 border-rose-500 shadow-lg' : ''
       }`}
       onClick={() => {
-        if (longPressedChatId !== chat.id) onChatClick(chat);
+        if (longPressedChatId !== chat.id) onChatClick(chat); 
       }}
       onContextMenu={(e) => {
         e.preventDefault();
@@ -436,8 +443,8 @@ const ChatItem = ({
         <img
           src={chat.avatar}
           alt={`${chat.name} avatar`}
-          className={`w-14 h-14 rounded-full object-cover shadow-sm transition-all duration-200 ${
-            chat.unreadCount > 0 ? 'border-3 border-rose-400' : 'border-2 border-rose-200'
+          className={`w-14 h-14 rounded-full object-cover shadow-md transition-all duration-200 border-4 border-white ${
+            chat.unreadCount > 0 ? 'border-rose-400' : 'border-white'
           }`}
         />
         {chat.unreadCount > 0 && (
