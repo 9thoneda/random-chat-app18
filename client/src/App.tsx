@@ -1,6 +1,8 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { getAuth, signInAnonymously } from "firebase/auth";
+import { firebaseApp } from "./firebaseConfig";
 
 import VideoChat from "./screens/VideoChat";
 import SplashScreen from "./components/SplashScreen";
@@ -22,9 +24,19 @@ import { useNavigate } from "react-router-dom";
 function App() {
   const [showSplash, setShowSplash] = useState(true);
   const navigate = useNavigate();
+  const auth = getAuth(firebaseApp);
 
   useEffect(() => {
     if (!showSplash) {
+      // Sign in anonymously with Firebase
+      signInAnonymously(auth)
+        .then(() => {
+          console.log("Signed in anonymously");
+        })
+        .catch((error) => {
+          console.error("Anonymous sign-in failed", error);
+        });
+
       // Check if user has completed onboarding
       const userData = localStorage.getItem("ajnabicam_user_data");
       const firstOpen = localStorage.getItem("ajnabicam_first_open");
@@ -45,7 +57,7 @@ function App() {
         // If onboarding is complete, stay on current route or go to home
       }
     }
-  }, [showSplash, navigate]);
+  }, [showSplash, navigate, auth]);
 
   const handleSplashComplete = () => {
     setShowSplash(false);
