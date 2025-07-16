@@ -19,7 +19,9 @@ import { useLanguage } from '../context/LanguageProvider';
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { friends, removeFriend, canAddMoreFriends, maxFreeLimit } = useFriends();
   const { isPremium, setPremium, premiumExpiry } = usePremium();
+  const { coins: firestoreCoins, isLoading: coinsLoading } = useCoin();
   const { t } = useLanguage();
 
   const [username, setUsername] = useState<string>('User');
@@ -244,6 +246,14 @@ const ProfilePage: React.FC = () => {
 
       {/* Quick Stats Cards */}
       <div className="grid grid-cols-3 gap-3">
+        <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
+          <CardContent className="p-4 text-center">
+            <div className="text-2xl font-bold text-yellow-700">
+              {coinsLoading ? "..." : firestoreCoins}
+            </div>
+            <div className="text-xs text-yellow-600 font-medium">Coins</div>
+          </CardContent>
+        </Card>
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-blue-700">{userStats.totalChats}</div>
@@ -254,12 +264,6 @@ const ProfilePage: React.FC = () => {
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-green-700">{userStats.friendsMade}</div>
             <div className="text-xs text-green-600 font-medium">Friends Made</div>
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-orange-700">{userStats.streak}</div>
-            <div className="text-xs text-orange-600 font-medium">Day Streak</div>
           </CardContent>
         </Card>
       </div>

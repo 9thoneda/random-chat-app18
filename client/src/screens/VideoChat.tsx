@@ -39,7 +39,7 @@ interface NegotiationDone {
 export default function VideoChat() {
   const { socket } = useSocket();
   const { isPremium, setPremium } = usePremium();
-  const { coins } = useCoin();
+  const { coins, isLoading: coinsLoading } = useCoin();
   const { addFriend, canAddMoreFriends, friends } = useFriends();
   const location = useLocation();
   const [remoteChatToken, setRemoteChatToken] = useState<string | null>(null);
@@ -880,10 +880,11 @@ export default function VideoChat() {
           
           <Button
             onClick={() => setShowTreasureChest(true)}
+            disabled={coinsLoading}
             className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-semibold px-3 py-2 rounded-full shadow-md"
           >
             <Coins className="h-4 w-4 mr-1" />
-            {coins}
+            {coinsLoading ? "..." : coins}
           </Button>
         </div>
       </div>
