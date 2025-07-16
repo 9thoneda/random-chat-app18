@@ -80,6 +80,9 @@ export default function Home() {
         voiceOnly: false
       });
       
+      // Emit find match event
+      socket?.emit("find:match");
+      
       // Simulate connection delay for better UX
       setTimeout(() => {
         navigate("/video-chat");

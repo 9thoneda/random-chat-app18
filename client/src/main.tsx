@@ -11,6 +11,10 @@ import { PremiumProvider } from "./context/PremiumProvider.tsx";
 import { CoinProvider } from "./context/CoinProvider.tsx";
 import { FriendsProvider } from "./context/FriendsProvider.tsx";
 import { HelmetProvider } from "react-helmet-async";
+import { preloadSounds } from "./lib/audio.ts";
+
+// Preload sounds on app start
+preloadSounds();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

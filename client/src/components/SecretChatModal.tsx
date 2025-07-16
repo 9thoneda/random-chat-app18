@@ -27,6 +27,7 @@ export default function SecretChatModal({
       return;
     }
     onToggle(!isEnabled);
+    onClose();
   };
 
   return (

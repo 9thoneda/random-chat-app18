@@ -76,6 +76,12 @@ export const FriendsProvider = ({ children }: FriendsProviderProps) => {
       return true; // Already friends
     }
 
+    // Validate friend data
+    if (!newFriend.id || !newFriend.name) {
+      console.error('Invalid friend data:', newFriend);
+      return false;
+    }
+
     const friendWithDate: Friend = {
       ...newFriend,
       addedAt: new Date()

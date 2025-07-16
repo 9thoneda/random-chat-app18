@@ -22,6 +22,7 @@ app.get('/', (req, res) => {
 // Store connected users
 const connectedUsers = new Map();
 const waitingUsers: string[] = [];
+const activeConnections = new Map(); // Track active peer connections
 
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
@@ -46,6 +47,8 @@ io.on('connection', (socket) => {
       const partnerId = waitingUsers.shift();
       if (partnerId && partnerId !== socket.id) {
         // Match found
+        activeConnections.set(socket.id, partnerId);
+        activeConnections.set(partnerId, socket.id);
         socket.emit('user:connect', partnerId);
         io.to(partnerId).emit('user:connect', socket.id);
       }
@@ -56,30 +59,74 @@ io.on('connection', (socket) => {
 
   // Handle WebRTC signaling
   socket.on('offer', ({ offer, to }) => {
-    io.to(to).emit('offer', { offer, from: socket.id });
+    if (connectedUsers.has(to)) {
+      io.to(to).emit('offer', { offer, from: socket.id });
+    }
   });
 
   socket.on('answer', ({ answer, to }) => {
-    io.to(to).emit('answer', { answer, from: socket.id });
+    if (connectedUsers.has(to)) {
+      io.to(to).emit('answer', { answer, from: socket.id });
+    }
   });
 
   socket.on('ice-candidate', ({ candidate, to }) => {
-    io.to(to).emit('ice-candidate', { candidate, from: socket.id });
+    if (connectedUsers.has(to)) {
+      io.to(to).emit('ice-candidate', { candidate, from: socket.id });
+    }
+  });
+
+  // Handle peer negotiation
+  socket.on('peer:nego:needed', ({ offer, targetChatToken }) => {
+    if (connectedUsers.has(targetChatToken)) {
+      io.to(targetChatToken).emit('peer:nego:needed', { offer, from: socket.id });
+    }
+  });
+
+  socket.on('peer:nego:done', ({ answer, to }) => {
+    if (connectedUsers.has(to)) {
+      io.to(to).emit('peer:nego:final', { answer, from: socket.id });
+    }
   });
 
   // Handle messages
   socket.on('send:message', ({ message, targetChatToken, isSecret, messageId }) => {
-    io.to(targetChatToken).emit('message:recieved', {
-      message,
-      from: socket.id,
-      isSecret,
-      messageId
-    });
+    if (connectedUsers.has(targetChatToken)) {
+      io.to(targetChatToken).emit('message:recieved', {
+        message,
+        from: socket.id,
+        isSecret: isSecret || false,
+        messageId
+      });
+    }
+  });
+
+  // Handle premium status sharing
+  socket.on('send:premium:status', ({ isPremium, targetChatToken }) => {
+    if (connectedUsers.has(targetChatToken)) {
+      io.to(targetChatToken).emit('partner:premium:status', { isPremium });
+    }
+  });
+
+  // Handle stay connected requests
+  socket.on('stay:connected:response', ({ wantToStay, targetChatToken }) => {
+    if (connectedUsers.has(targetChatToken)) {
+      io.to(targetChatToken).emit('stay:connected:response', { 
+        wantToStay, 
+        from: socket.id 
+      });
+    }
   });
 
   // Handle skip
   socket.on('skip', () => {
-    socket.broadcast.emit('skipped');
+    const partnerId = activeConnections.get(socket.id);
+    if (partnerId) {
+      io.to(partnerId).emit('skipped');
+      activeConnections.delete(socket.id);
+      activeConnections.delete(partnerId);
+    }
+    
     // Remove from waiting list if present
     const index = waitingUsers.indexOf(socket.id);
     if (index > -1) {
@@ -89,14 +136,22 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
+    
+    // Clean up active connections
+    const partnerId = activeConnections.get(socket.id);
+    if (partnerId) {
+      io.to(partnerId).emit('partnerDisconnected');
+      activeConnections.delete(partnerId);
+    }
+    activeConnections.delete(socket.id);
+    
     connectedUsers.delete(socket.id);
+    
     // Remove from waiting list if present
     const index = waitingUsers.indexOf(socket.id);
     if (index > -1) {
       waitingUsers.splice(index, 1);
     }
-    // Notify partner if in call
-    socket.broadcast.emit('partnerDisconnected');
   });
 });
 

@@ -67,10 +67,21 @@ export const SocketProvider = ({children} : {children: ReactNode}) => {
             setSocket(newSocket);
 
             return () => {
+                console.log('Cleaning up socket connection');
                 newSocket.close();
             };
         }
     }, [socket]);
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (socket) {
+                console.log('Component unmounting, closing socket');
+                socket.close();
+            }
+        };
+    }, []);
 
     return (
         <SocketContext.Provider value={{socket, setSocket}}>

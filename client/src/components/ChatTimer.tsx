@@ -28,6 +28,7 @@ export default function ChatTimer({ isPremium, isConnected, partnerPremium, onTi
       }
     } else {
       setIsActive(false);
+      setTimeLeft(hasPremiumAccess ? 30 * 60 : 15 * 60); // Reset timer when disconnected
     }
   }, [isConnected, hasPremiumAccess]);
 

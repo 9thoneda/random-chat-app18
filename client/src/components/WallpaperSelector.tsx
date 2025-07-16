@@ -38,7 +38,6 @@ export default function WallpaperSelector({
       return;
     }
     onSelect(wallpaperId);
-    onClose();
   };
 
   return (
@@ -80,7 +79,12 @@ export default function WallpaperSelector({
                       ? 'border-purple-500 shadow-lg' 
                       : 'border-gray-200 hover:border-purple-300'
                   } ${isLocked ? 'opacity-60' : ''}`}
-                  onClick={() => handleSelect(wallpaper.id)}
+                  onClick={() => {
+                    handleSelect(wallpaper.id);
+                    if (isPremium || wallpaper.id === 'default') {
+                      onClose();
+                    }
+                  }}
                 >
                   <div className={`h-20 rounded-t-lg bg-gradient-to-br ${wallpaper.gradient} relative overflow-hidden`}>
                     {isLocked && (

@@ -58,6 +58,7 @@ class PeerService {
                 await this.peer.setLocalDescription(new RTCSessionDescription(offer));
                 return this.peer.localDescription;
             }
+            return null;
         } catch (error) {
             console.error('Error creating offer:', error);
             throw error;
@@ -72,6 +73,7 @@ class PeerService {
                 await this.peer.setLocalDescription(new RTCSessionDescription(answer));
                 return this.peer.localDescription;
             }
+            return null;
         } catch (error) {
             console.error('Error creating answer:', error);
             throw error;

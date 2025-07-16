@@ -111,12 +111,12 @@ export default function Messages({remoteChatToken, messagesArray, setMessagesArr
         }
     };
 
-    const handleMessageReceived = useCallback(({message, isSecret, messageId}: ReceivedMessageProps) => {
+    const handleMessageReceived = useCallback(({message, isSecret = false, messageId}: ReceivedMessageProps) => {
         const newMessage = {
             sender: 'Stranger',
             message,
             id: messageId || Date.now().toString(),
-            isSecret: isSecret || false,
+            isSecret,
             timestamp: Date.now()
         };
 

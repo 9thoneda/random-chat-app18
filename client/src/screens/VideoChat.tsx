@@ -153,7 +153,7 @@ export default function VideoChat() {
       alert("🎬 Thanks for using AjnabiCam! Here's your post-call ad.");
       handleSkip();
     }
-  }, [isFriendCall]);
+  }, [isFriendCall, handleSkip]);
 
   const handleUpgrade = useCallback(() => {
     setShowPaywall(true);
@@ -786,7 +786,7 @@ export default function VideoChat() {
     } finally {
       navigate("/");
     }
-  }, [myStream, navigate, screenStream, socket]);
+  }, [myStream, navigate, screenStream, remoteStream]);
 
   const handleReport = (reason: string) => {
     const count = Number(localStorage.getItem(`ajnabicam_reports_${remoteChatToken}`) || 0) + 1;
