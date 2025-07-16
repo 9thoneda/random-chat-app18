@@ -18,3 +18,12 @@
     at <anonymous> (https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3.w-credentialless-staticblitz.com/blitz.96435430.js:31:29397)
 [error] 
 [error] Error: An unexpected error has occurred.
+[debug] [2025-07-16T17:21:10.480Z] ----------------------------------------------------------------------
+[debug] [2025-07-16T17:21:10.482Z] Command:       /usr/local/bin/node /home/project/node_modules/.bin/firebase init
+[debug] [2025-07-16T17:21:10.482Z] CLI Version:   14.10.1
+[debug] [2025-07-16T17:21:10.482Z] Platform:      linux
+[debug] [2025-07-16T17:21:10.482Z] Node Version:  v20.19.1
+[debug] [2025-07-16T17:21:10.482Z] Time:          Wed Jul 16 2025 22:51:10 GMT+0530 (India Standard Time)
+[debug] [2025-07-16T17:21:10.482Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-07-16T17:21:10.498Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
