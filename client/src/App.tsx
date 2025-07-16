@@ -63,7 +63,6 @@ function App() {
               referredBy: null,
               createdAt: new Date(),
               coins: 100 // Initialize with 100 coins
-              coins: 100 // Initialize with 100 coins
             };
 
             await setDoc(userDocRef, initialUserData);
