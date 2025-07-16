@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { firebaseApp, db } from '../firebaseConfig';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card } from '../components/ui/card';
@@ -10,35 +13,71 @@ export default function OnboardingScreen() {
   const [username, setUsername] = useState('');
   const [gender, setGender] = useState('');
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { language, setLanguage, t } = useLanguage();
   const navigate = useNavigate();
+  const auth = getAuth(firebaseApp);
 
-  const handleContinue = () => {
-    if (username.trim() && gender) {
-      // Save user data with setup complete flag
-      const userData = {
-        username: username.trim(),
-        gender,
-        language,
-        setupComplete: true,
-        onboardingComplete: true
-      };
-      localStorage.setItem('ajnabicam_user_data', JSON.stringify(userData));
-      navigate('/');
+  const handleContinue = async () => {
+    if (username.trim() && gender && !isLoading) {
+      setIsLoading(true);
+      
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          throw new Error('No authenticated user found');
+        }
+
+        // Save user data to Firestore
+        const userDocRef = doc(db, "users", user.uid);
+        await setDoc(userDocRef, {
+          username: username.trim(),
+          gender,
+          language,
+          onboardingComplete: true,
+          updatedAt: new Date()
+        }, { merge: true });
+
+        console.log('User onboarding data saved to Firestore');
+        navigate('/');
+      } catch (error) {
+        console.error('Error saving onboarding data:', error);
+        alert('Error saving your information. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
-  const handleSkip = () => {
-    // Save minimal data to indicate onboarding was seen
-    const userData = {
-      username: 'User',
-      gender: 'other',
-      language,
-      setupComplete: true,
-      onboardingComplete: true
-    };
-    localStorage.setItem('ajnabicam_user_data', JSON.stringify(userData));
-    navigate('/');
+  const handleSkip = async () => {
+    if (isLoading) return;
+    
+    setIsLoading(true);
+    
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error('No authenticated user found');
+      }
+
+      // Save minimal data to Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      await setDoc(userDocRef, {
+        username: 'User',
+        gender: 'other',
+        language,
+        onboardingComplete: true,
+        updatedAt: new Date()
+      }, { merge: true });
+
+      console.log('User skipped onboarding, minimal data saved to Firestore');
+      navigate('/');
+    } catch (error) {
+      console.error('Error saving skip data:', error);
+      alert('Error completing setup. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const genderOptions = [
@@ -72,6 +111,7 @@ export default function OnboardingScreen() {
               <button
                 onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white flex items-center justify-between hover:border-purple-300 transition-colors"
+                disabled={isLoading}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-xl">{currentLanguage?.flag}</span>
@@ -92,6 +132,7 @@ export default function OnboardingScreen() {
                       className={`w-full px-4 py-3 text-left hover:bg-purple-50 flex items-center gap-3 transition-colors ${
                         language === lang.code ? 'bg-purple-100 text-purple-700' : 'text-gray-700'
                       }`}
+                      disabled={isLoading}
                     >
                       <span className="text-xl">{lang.flag}</span>
                       <span className="font-medium">{lang.name}</span>
@@ -115,6 +156,7 @@ export default function OnboardingScreen() {
               placeholder={t('onboarding.username.placeholder')}
               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               maxLength={20}
+              disabled={isLoading}
             />
           </div>
 
@@ -134,6 +176,7 @@ export default function OnboardingScreen() {
                       ? 'border-purple-500 bg-purple-50 text-purple-700' 
                       : 'border-gray-300 text-gray-700 hover:border-purple-300 hover:bg-purple-25'
                   }`}
+                  disabled={isLoading}
                 >
                   <span className="text-2xl">{option.emoji}</span>
                   <span className="font-medium">{option.label}</span>
@@ -146,18 +189,26 @@ export default function OnboardingScreen() {
           <div className="space-y-3 pt-4">
             <Button
               onClick={handleContinue}
-              disabled={!username.trim() || !gender}
+              disabled={!username.trim() || !gender || isLoading}
               className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200"
             >
-              {t('onboarding.continue')}
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Saving...
+                </div>
+              ) : (
+                t('onboarding.continue')
+              )}
             </Button>
             
             <Button
               onClick={handleSkip}
               variant="outline"
-              className="w-full py-3 rounded-xl border-2 border-purple-300 text-purple-700 hover:bg-purple-50 font-semibold"
+              disabled={isLoading}
+              className="w-full py-3 rounded-xl border-2 border-purple-300 text-purple-700 hover:bg-purple-50 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t('onboarding.skip')}
+              {isLoading ? 'Processing...' : t('onboarding.skip')}
             </Button>
           </div>
         </div>

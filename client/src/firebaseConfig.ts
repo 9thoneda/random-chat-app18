@@ -1,6 +1,7 @@
 // src/firebaseConfig.ts
 import { initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB3wZTanCdGxG6jpo39CkqUcM9LhK17BME",
@@ -13,6 +14,9 @@ const firebaseConfig = {
 };
 
 export const firebaseApp = initializeApp(firebaseConfig);
+
+// Initialize Firestore
+export const db = getFirestore(firebaseApp);
 
 // Analytics only works in HTTPS / production
 export const analytics = await isSupported().catch(() => false) 

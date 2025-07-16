@@ -1,8 +1,9 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getAuth, signInAnonymously } from "firebase/auth";
-import { firebaseApp } from "./firebaseConfig";
+import { getAuth, signInAnonymously, User } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { firebaseApp, db } from "./firebaseConfig";
 
 import VideoChat from "./screens/VideoChat";
 import SplashScreen from "./components/SplashScreen";
@@ -21,41 +22,73 @@ import AIChatbotPage from "./screens/AIChatbotPage";
 
 import { useNavigate } from "react-router-dom";
 
+interface UserData {
+  uid: string;
+  onboardingComplete: boolean;
+  gender: string | null;
+  username: string | null;
+  language: string;
+  referredBy: string | null;
+  createdAt: any;
+}
+
 function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const auth = getAuth(firebaseApp);
 
   useEffect(() => {
     if (!showSplash) {
-      // Sign in anonymously with Firebase
-      signInAnonymously(auth)
-        .then(() => {
-          console.log("Signed in anonymously");
-        })
-        .catch((error) => {
-          console.error("Anonymous sign-in failed", error);
-        });
+      const initializeUser = async () => {
+        try {
+          // Sign in anonymously with Firebase
+          const userCredential = await signInAnonymously(auth);
+          const user = userCredential.user;
+          console.log("Signed in anonymously with UID:", user.uid);
 
-      // Check if user has completed onboarding
-      const userData = localStorage.getItem("ajnabicam_user_data");
-      const firstOpen = localStorage.getItem("ajnabicam_first_open");
+          // Check if user document exists in Firestore
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnap = await getDoc(userDocRef);
 
-      if (!firstOpen) {
-        // First time opening the app
-        localStorage.setItem("ajnabicam_first_open", "true");
-        navigate("/onboarding", { replace: true });
-      } else if (!userData) {
-        // User has opened before but no data saved
-        navigate("/onboarding", { replace: true });
-      } else {
-        const parsedData = JSON.parse(userData);
-        if (!parsedData.onboardingComplete) {
-          // User data exists but onboarding not complete
+          if (!userDocSnap.exists()) {
+            // New user - create document with initial data
+            const initialUserData: Partial<UserData> = {
+              uid: user.uid,
+              onboardingComplete: false,
+              gender: null,
+              username: null,
+              language: 'en', // Default language
+              referredBy: null,
+              createdAt: new Date()
+            };
+
+            await setDoc(userDocRef, initialUserData);
+            console.log("Created new user document");
+            
+            // Redirect to onboarding for new users
+            navigate("/onboarding", { replace: true });
+          } else {
+            // Existing user - check onboarding status
+            const userData = userDocSnap.data() as UserData;
+            console.log("Existing user data:", userData);
+
+            if (!userData.onboardingComplete) {
+              // User exists but onboarding not complete
+              navigate("/onboarding", { replace: true });
+            }
+            // If onboarding is complete, stay on current route or go to home
+          }
+        } catch (error) {
+          console.error("Error during user initialization:", error);
+          // Fallback to onboarding on error
           navigate("/onboarding", { replace: true });
+        } finally {
+          setIsLoading(false);
         }
-        // If onboarding is complete, stay on current route or go to home
-      }
+      };
+
+      initializeUser();
     }
   }, [showSplash, navigate, auth]);
 
@@ -65,6 +98,17 @@ function App() {
 
   if (showSplash) {
     return <SplashScreen onComplete={handleSplashComplete} />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500 mx-auto mb-4"></div>
+          <p className="text-rose-600 font-medium">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { getAuth } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
+import { firebaseApp, db } from "../firebaseConfig";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -24,25 +27,54 @@ export default function ReferralCodeScreen() {
   const [inputCode, setInputCode] = useState("");
   const [applied, setApplied] = useState(false);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const auth = getAuth(firebaseApp);
 
-  const handleApply = () => {
-    if (!inputCode.trim()) return;
+  const handleApply = async () => {
+    if (!inputCode.trim() || isLoading) return;
+    
     // Prevent applying own code
     if (inputCode === referralCode) {
       setError("You cannot use your own referral code.");
       return;
     }
-    // Mark as applied (simulate backend validation)
-    localStorage.setItem("ajnabicam_referral_applied", inputCode);
-    // Grant 24h premium
-    const now = Date.now();
-    const expiry = now + 24 * 60 * 60 * 1000;
-    localStorage.setItem("ajnabicam_premium_trial", "true");
-    localStorage.setItem("ajnabicam_premium_trial_expiry", expiry.toString());
-    setApplied(true);
+    
+    setIsLoading(true);
     setError("");
-    setTimeout(() => navigate("/gender-select"), 1500);
+    
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error('No authenticated user found');
+      }
+
+      // Update referredBy in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, {
+        referredBy: inputCode,
+        updatedAt: new Date()
+      });
+
+      console.log('Referral code saved to Firestore:', inputCode);
+
+      // Mark as applied locally (simulate backend validation)
+      localStorage.setItem("ajnabicam_referral_applied", inputCode);
+      
+      // Grant 24h premium (client-side for now - should be server-side in production)
+      const now = Date.now();
+      const expiry = now + 24 * 60 * 60 * 1000;
+      localStorage.setItem("ajnabicam_premium_trial", "true");
+      localStorage.setItem("ajnabicam_premium_trial_expiry", expiry.toString());
+      
+      setApplied(true);
+      setTimeout(() => navigate("/gender-select"), 1500);
+    } catch (error) {
+      console.error("Error applying referral code:", error);
+      setError("Error applying referral code. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleShare = (platform: string) => {
@@ -64,27 +96,43 @@ export default function ReferralCodeScreen() {
           <div className="text-sm text-rose-500 mb-1">Your Referral Code</div>
           <div className="font-mono text-lg bg-rose-100 rounded-lg px-3 py-2 mb-2 select-all inline-block">{referralCode}</div>
           <div className="flex gap-2 justify-center mb-2">
-            <Button size="sm" onClick={() => handleShare("whatsapp")}>WhatsApp</Button>
-            <Button size="sm" onClick={() => handleShare("instagram")}>Instagram</Button>
-            <Button size="sm" onClick={() => handleShare("sms")}>Message</Button>
+            <Button size="sm" onClick={() => handleShare("whatsapp")} disabled={isLoading}>WhatsApp</Button>
+            <Button size="sm" onClick={() => handleShare("instagram")} disabled={isLoading}>Instagram</Button>
+            <Button size="sm" onClick={() => handleShare("sms")} disabled={isLoading}>Message</Button>
           </div>
         </div>
         <div className="w-full mb-4">
           <label className="block text-xs text-rose-400 mb-1">Add Referral Code (optional)</label>
           <input
             type="text"
-            className="w-full border border-rose-200 rounded-lg px-3 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-rose-300"
+            className="w-full border border-rose-200 rounded-lg px-3 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-rose-300 disabled:opacity-50"
             placeholder="Paste or enter code"
             value={inputCode}
             onChange={e => setInputCode(e.target.value.toUpperCase())}
-            disabled={applied}
+            disabled={applied || isLoading}
           />
-          <Button className="w-full py-2 rounded-lg bg-rose-500 text-white font-bold text-base" onClick={handleApply} disabled={applied || !inputCode.trim()}>
-            {applied ? "Applied!" : "Apply Code"}
+          <Button 
+            className="w-full py-2 rounded-lg bg-rose-500 text-white font-bold text-base disabled:opacity-50" 
+            onClick={handleApply} 
+            disabled={applied || !inputCode.trim() || isLoading}
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Applying...
+              </div>
+            ) : applied ? "Applied!" : "Apply Code"}
           </Button>
           {error && <div className="text-xs text-red-500 mt-1">{error}</div>}
         </div>
-        <Button className="w-full py-2 rounded-lg border border-rose-300 text-rose-600 bg-white font-semibold text-base" variant="outline" onClick={() => navigate("/gender-select")}>Continue</Button>
+        <Button 
+          className="w-full py-2 rounded-lg border border-rose-300 text-rose-600 bg-white font-semibold text-base disabled:opacity-50" 
+          variant="outline" 
+          onClick={() => navigate("/gender-select")}
+          disabled={isLoading}
+        >
+          Continue
+        </Button>
       </div>
     </main>
   );
