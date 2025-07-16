@@ -50,3 +50,12 @@
     at _0x1024d8.onStreamRead [as onread] (https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3.w-credentialless-staticblitz.com/builtins.97a3df4f.js:216:2625)
 [error] 
 [error] Error: An unexpected error has occurred.
+[debug] [2025-07-16T17:21:32.994Z] ----------------------------------------------------------------------
+[debug] [2025-07-16T17:21:32.996Z] Command:       /usr/local/bin/node /home/project/node_modules/.bin/firebase login
+[debug] [2025-07-16T17:21:32.996Z] CLI Version:   14.10.1
+[debug] [2025-07-16T17:21:32.997Z] Platform:      linux
+[debug] [2025-07-16T17:21:32.997Z] Node Version:  v20.19.1
+[debug] [2025-07-16T17:21:32.997Z] Time:          Wed Jul 16 2025 22:51:32 GMT+0530 (India Standard Time)
+[debug] [2025-07-16T17:21:32.997Z] ----------------------------------------------------------------------
+[debug] 
+[info] i  The Firebase CLI’s MCP server feature can optionally make use of Gemini in Firebase. Learn more about Gemini in Firebase and how it uses your data: https://firebase.google.com/docs/gemini-in-firebase#how-gemini-in-firebase-uses-your-data 
