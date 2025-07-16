@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { firebaseApp, db } from '../firebaseConfig';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -28,7 +28,7 @@ export default function OnboardingScreen() {
           throw new Error('No authenticated user found');
         }
 
-        // Save user data to Firestore
+        // Save user data to Firestore and mark onboarding as complete
         const userDocRef = doc(db, "users", user.uid);
         await setDoc(userDocRef, {
           username: username.trim(),
@@ -60,7 +60,7 @@ export default function OnboardingScreen() {
         throw new Error('No authenticated user found');
       }
 
-      // Save minimal data to Firestore
+      // Save minimal data to Firestore and mark onboarding as complete
       const userDocRef = doc(db, "users", user.uid);
       await setDoc(userDocRef, {
         username: 'User',
