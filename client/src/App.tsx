@@ -42,6 +42,13 @@ function App() {
   const navigate = useNavigate();
   const auth = getAuth(firebaseApp);
 
+  console.log(
+    "App component rendered, showSplash:",
+    showSplash,
+    "isLoading:",
+    isLoading,
+  );
+
   useEffect(() => {
     if (!showSplash) {
       const initializeUser = async () => {
