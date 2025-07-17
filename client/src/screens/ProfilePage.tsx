@@ -330,7 +330,7 @@ const ProfilePage: React.FC = () => {
               />
             ) : (
               <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
-                <div className="text-rose-700 text-xs font-bold text-center">
+                <div className="text-passion-700 text-xs font-bold text-center romantic-text-glow">
                   {t("profile.addPhoto")}
                 </div>
               </div>
