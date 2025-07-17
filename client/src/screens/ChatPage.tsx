@@ -366,9 +366,9 @@ const PersonalChat = ({
               >
                 {msg.time}
 
-              </div>
+                            </div>
             </div>
-          ),
+          )
         )}
       </div>
 
