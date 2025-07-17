@@ -262,15 +262,12 @@ const SpinWheel: React.FC = () => {
 
   return (
     /* Responsive Mobile App Layout - 360dp x 640dp reference */
-    <div
+        <div
       className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 w-full max-w-sm mx-auto relative"
       style={{ maxWidth: "360px" }}
     >
       {/* Fixed Animated Background */}
-      <div
-        className="fixed inset-0 overflow-hidden max-w-sm mx-auto"
-        style={{ maxWidth: "360px" }}
-      >
+      <div className="fixed inset-0 overflow-hidden max-w-sm mx-auto" style={{ maxWidth: "360px" }}>
         <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
         <div
           className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-pink-500/20 to-red-500/20 rounded-full animate-pulse"
@@ -293,7 +290,7 @@ const SpinWheel: React.FC = () => {
 
       {/* Scrollable Content Structure */}
       <div className="relative z-10 min-h-screen">
-        {/* Fixed Header with Back Button */}
+                {/* Fixed Header with Back Button */}
         <div className="sticky top-0 z-20 bg-black/40 backdrop-blur-lg border-b border-white/10">
           <div className="flex items-center justify-between px-4 py-3 h-14 min-h-[56px]">
             <button
@@ -309,9 +306,7 @@ const SpinWheel: React.FC = () => {
 
             <div className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full px-3 sm:px-4 py-2 shadow-lg">
               <Coins className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-              <span className="font-bold text-white text-base sm:text-lg">
-                {coins}
-              </span>
+              <span className="font-bold text-white text-base sm:text-lg">{coins}</span>
             </div>
           </div>
         </div>
@@ -512,10 +507,11 @@ const SpinWheel: React.FC = () => {
             </div>
           </div>
 
-          {/* Bottom Safe Area */}
+                    {/* Bottom Safe Area */}
           <div className="h-safe-bottom bg-black/20"></div>
         </div>
       </div>
+    </div>
 
       {/* Enhanced Result Modal - Native Style */}
       {showResult && result && (
