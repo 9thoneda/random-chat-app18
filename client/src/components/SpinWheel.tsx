@@ -30,14 +30,8 @@ interface SpinResult {
 
 const SpinWheel: React.FC = () => {
   const navigate = useNavigate();
-  const coinContext = useCoin();
-  const {
-    coins = 0,
-    addCoins,
-    watchAd,
-    adsWatchedToday = 0,
-    maxAdsPerDay = 5,
-  } = coinContext || {};
+    const coinContext = useCoin();
+  const { coins = 0, addCoins, watchAd, adsWatchedToday = 0, maxAdsPerDay = 5 } = coinContext || {};
   const wheelRef = useRef<HTMLDivElement>(null);
 
   // Add loading state for better UX
@@ -275,18 +269,48 @@ const SpinWheel: React.FC = () => {
     localStorage.setItem("spinsToday", "0");
   };
 
+    // Show loading state briefly
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {/* Scrollable Mobile App Layout - 360dp x 640dp reference */}
-      <div
-        className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 w-full max-w-sm mx-auto relative"
-        style={{ maxWidth: "360px" }}
-      >
-        {/* Fixed Animated Background */}
-        <div
-          className="fixed inset-0 overflow-hidden max-w-sm mx-auto"
-          style={{ maxWidth: "360px" }}
-        >
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 w-full">
+      {/* Fixed Header with visible back button */}
+      <div className="sticky top-0 z-50 bg-black/50 backdrop-blur-lg border-b border-white/20">
+        <div className="flex items-center justify-between px-4 py-4 max-w-sm mx-auto">
+          <button
+            onClick={() => {
+              console.log("Back button clicked - navigating to home");
+              navigate("/");
+            }}
+            className="flex items-center justify-center w-12 h-12 text-white hover:text-yellow-300 transition-all duration-300 bg-white/30 hover:bg-white/40 backdrop-blur-sm rounded-full touch-manipulation active:scale-95 border-2 border-white/30 shadow-lg"
+          >
+            <ArrowLeft className="h-6 w-6 text-white drop-shadow-lg" strokeWidth={3} />
+          </button>
+
+          <h1 className="text-white font-bold text-xl">Spin & Win</h1>
+
+          <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full px-4 py-2 shadow-lg">
+            <Coins className="h-5 w-5 text-white" />
+            <span className="font-bold text-white">{coins}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content Container */}
+      <div className="max-w-sm mx-auto relative">
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
+          <div
+            className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-pink-500/20 to-red-500/20 rounded-full animate-pulse"
+            style={{ animationDelay: "1s" }}
+          ></div>
           <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
           <div
             className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-pink-500/20 to-red-500/20 rounded-full animate-pulse"
@@ -312,7 +336,7 @@ const SpinWheel: React.FC = () => {
           {/* Fixed Header with Back Button */}
           <div className="sticky top-0 z-20 bg-black/40 backdrop-blur-lg border-b border-white/10">
             <div className="flex items-center justify-between px-4 py-3 h-14 min-h-[56px]">
-              <button
+                            <button
                 onClick={() => {
                   console.log("Back button clicked");
                   // Simple navigation back to home/profile
@@ -320,10 +344,7 @@ const SpinWheel: React.FC = () => {
                 }}
                 className="flex items-center justify-center w-12 h-12 text-white hover:text-yellow-300 transition-all duration-300 bg-white/30 hover:bg-white/40 backdrop-blur-sm rounded-full touch-manipulation active:scale-95 border-2 border-white/20 shadow-lg"
               >
-                <ArrowLeft
-                  className="h-6 w-6 text-white drop-shadow-lg"
-                  strokeWidth={2.5}
-                />
+                <ArrowLeft className="h-6 w-6 text-white drop-shadow-lg" strokeWidth={2.5} />
               </button>
 
               <div className="text-white font-bold text-lg sm:text-xl tracking-wide truncate px-2">
