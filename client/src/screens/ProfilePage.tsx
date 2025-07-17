@@ -35,6 +35,7 @@ import {
   Download,
   Share2,
   Heart,
+  Database,
   Zap,
   Award,
   TrendingUp,
