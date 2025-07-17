@@ -359,7 +359,7 @@ const PersonalChat = ({
           onKeyPress={handleKeyPress}
         />
         <Button
-          className="ml-3 px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-2xl font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+          className="ml-3 px-6 py-3 bg-gradient-to-r from-passion-600 to-romance-600 hover:from-passion-700 hover:to-romance-700 text-white rounded-2xl font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
           onClick={handleSend}
           disabled={!input.trim()}
         >
