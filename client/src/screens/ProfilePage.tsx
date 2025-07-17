@@ -6,6 +6,7 @@ import PremiumPaywall from "../components/PremiumPaywall";
 import LanguageSelector from "../components/LanguageSelector";
 import SettingsModal from "../components/SettingsModal";
 import HelpSupportModal from "../components/HelpSupportModal";
+import TreasureChest from "../components/TreasureChest";
 import { useFriends } from "../context/FriendsProvider";
 import { useCoin } from "../context/CoinProvider";
 import {
