@@ -66,8 +66,9 @@ export default function SevenMinuteTimer({
     return "text-red-600"; // < 1 minute
   };
 
-  const handleUseCoin = async () => {
-    if (await deductCoins(10)) {
+  const handleUseCoin = async (): Promise<void> => {
+    const success = await deductCoins(10);
+    if (success) {
       setTimeLeft(7 * 60); // Reset timer
       setIsActive(true);
       setShowTimeUpModal(false);

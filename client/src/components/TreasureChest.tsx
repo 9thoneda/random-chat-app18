@@ -14,6 +14,7 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
   const { 
     coins, 
     addCoins,
+    addCoins,
     watchAd, 
     claimDailyBonus, 
     completeChat,

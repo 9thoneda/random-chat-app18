@@ -31,6 +31,7 @@ interface UserData {
   language: string;
   referredBy: string | null;
   coins?: number;
+  coins?: number;
   createdAt: any;
 }
 
