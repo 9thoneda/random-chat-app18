@@ -120,9 +120,10 @@ function App() {
     setShowSplash(false);
   };
 
-  if (showSplash) {
-    return <SplashScreen onComplete={handleSplashComplete} />;
-  }
+  // Temporarily bypass splash for debugging
+  // if (showSplash) {
+  //   return <SplashScreen onComplete={handleSplashComplete} />;
+  // }
 
   if (isLoading) {
     return (
