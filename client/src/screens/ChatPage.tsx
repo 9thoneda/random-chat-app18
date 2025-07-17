@@ -382,7 +382,7 @@ const PersonalChat = ({
           onPhotoSelected={handlePhotoSend}
           onCancel={() => setShowPhotoInput(false)}
           chatId={chat.id.toString()}
-          userId={localStorage.getItem("ajnabicam_user_id") || "anonymous"}
+          userId={getUserId()}
         />
       )}
 
