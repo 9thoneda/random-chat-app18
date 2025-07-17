@@ -68,7 +68,7 @@ const wallpaperThemes = [
   {
     id: 5,
     name: "Rainbow Dreams",
-    icon: Rainbow,
+    icon: Star,
     gradient: "from-red-300 via-yellow-300 to-green-300",
     emotion: "happy",
   },
@@ -84,7 +84,7 @@ const wallpaperThemes = [
   {
     id: 7,
     name: "Ocean Waves",
-    icon: Ocean,
+    icon: Waves,
     gradient: "from-blue-300 via-cyan-300 to-teal-300",
     emotion: "calm",
   },
@@ -107,14 +107,14 @@ const wallpaperThemes = [
   {
     id: 10,
     name: "Electric Storm",
-    icon: Lightning,
+    icon: Zap,
     gradient: "from-indigo-400 via-purple-400 to-pink-400",
     emotion: "energetic",
   },
   {
     id: 11,
     name: "Fire Energy",
-    icon: Fire,
+    icon: Flame,
     gradient: "from-red-400 via-orange-400 to-yellow-400",
     emotion: "energetic",
   },
@@ -130,14 +130,14 @@ const wallpaperThemes = [
   {
     id: 13,
     name: "Forest Path",
-    icon: Tree,
+    icon: TreePine,
     gradient: "from-green-400 via-emerald-400 to-teal-400",
     emotion: "nature",
   },
   {
     id: 14,
     name: "Butterfly Garden",
-    icon: Butterfly,
+    icon: Bug,
     gradient: "from-orange-300 via-yellow-300 to-green-300",
     emotion: "nature",
   },
