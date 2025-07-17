@@ -87,16 +87,16 @@ export default function StorageConnectionStatus({
   };
 
   const getStatusColor = () => {
-    if (isLoading) return "border-blue-200 bg-blue-50";
+    if (isLoading) return "border-bollywood-200 bg-bollywood-50";
     if (!connectionResult) return "border-gray-200 bg-gray-50";
 
     switch (connectionResult.status) {
       case "success":
-        return "border-green-200 bg-green-50";
+        return "border-passion-200 bg-passion-50";
       case "error":
-        return "border-red-200 bg-red-50";
+        return "border-coral-200 bg-coral-50";
       default:
-        return "border-yellow-200 bg-yellow-50";
+        return "border-marigold-200 bg-marigold-50";
     }
   };
 
