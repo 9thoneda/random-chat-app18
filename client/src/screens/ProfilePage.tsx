@@ -348,10 +348,10 @@ const ProfilePage: React.FC = () => {
           {/* Camera button with premium styling */}
           <button
             onClick={handleImageUploadClick}
-            className={`absolute -bottom-2 -right-2 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 ${
+            className={`absolute -bottom-2 -right-2 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 romantic-button ${
               isPremium
-                ? "bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500"
-                : "bg-gradient-to-r from-rose-500 to-pink-600"
+                ? "bg-gradient-to-r from-marigold-500 via-bollywood-500 to-coral-500"
+                : "bg-gradient-to-r from-passion-500 to-romance-600"
             }`}
           >
             <Camera className="h-5 w-5" />
