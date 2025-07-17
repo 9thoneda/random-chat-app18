@@ -37,6 +37,8 @@ import {
   EyeOff,
   Sparkles,
   Medal,
+  Coins,
+  ShoppingBag,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import {
