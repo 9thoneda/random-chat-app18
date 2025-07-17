@@ -298,7 +298,14 @@ const SpinWheel: React.FC = () => {
           <div className="sticky top-0 z-20 bg-black/40 backdrop-blur-lg border-b border-white/10">
             <div className="flex items-center justify-between px-4 py-3 h-14 min-h-[56px]">
               <button
-                onClick={() => navigate(-1)}
+                onClick={() => {
+                  // Try to go back, fallback to home if no history
+                  if (window.history.length > 1) {
+                    navigate(-1);
+                  } else {
+                    navigate("/");
+                  }
+                }}
                 className="flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors duration-300 bg-white/20 backdrop-blur-sm rounded-full touch-manipulation"
               >
                 <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
