@@ -11,6 +11,15 @@ interface SplashScreenProps {
 
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
+  const [connectionStatus, setConnectionStatus] = useState<{
+    isTestingConnection: boolean;
+    connectionResult: ConnectionTestResult | null;
+    showConnectionTest: boolean;
+  }>({
+    isTestingConnection: false,
+    connectionResult: null,
+    showConnectionTest: false,
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
