@@ -164,6 +164,21 @@ export default function Home() {
         </title>
       </Helmet>
       <main className="flex flex-col min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 relative pb-20 overflow-hidden">
+        {/* App Name & Tagline - Moved to very top */}
+        <div className="w-full px-6 py-4 text-center bg-white/80 backdrop-blur-sm border-b border-rose-100">
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-crimson-600 via-rose-600 to-pink-600 bg-clip-text text-transparent mb-2 tracking-tight">
+            {t("app.name")}
+          </h1>
+          <p className="text-rose-700 text-lg font-medium">
+            {t("app.tagline")}
+          </p>
+          <div className="flex items-center justify-center gap-2 mt-2">
+            <Star className="h-4 w-4 text-yellow-500 fill-current" />
+            <span className="text-sm text-rose-500 font-medium">
+              4.8/5 Rating • Where Love Stories Begin
+            </span>
+          </div>
+        </div>
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-pink-300 to-rose-400 rounded-full opacity-20 animate-pulse"></div>
@@ -204,14 +219,8 @@ export default function Home() {
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gold-200/10 to-transparent"></div>
 
           <div className="relative z-10 flex items-center justify-between">
-            {/* Live Status & Premium Badge */}
+            {/* Premium Badge */}
             <div className="flex flex-col items-start gap-2">
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-white text-xs font-bold">
-                  {onlineUsers.toLocaleString()} Online
-                </span>
-              </div>
               {isPremium && (
                 <div className="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-1 rounded-full">
                   <Crown className="h-4 w-4 text-white" />
@@ -285,22 +294,6 @@ export default function Home() {
         </div>
 
         <div className="flex-1 flex flex-col px-6 py-6 relative z-10">
-          {/* App Name & Tagline */}
-          <div className="mb-6 text-center">
-            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-crimson-600 via-rose-600 to-pink-600 bg-clip-text text-transparent mb-2 tracking-tight">
-              {t("app.name")}
-            </h1>
-            <p className="text-rose-700 text-lg font-medium">
-              {t("app.tagline")}
-            </p>
-            <div className="flex items-center justify-center gap-2 mt-2">
-              <Star className="h-4 w-4 text-yellow-500 fill-current" />
-              <span className="text-sm text-rose-500 font-medium">
-                4.8/5 Rating • Where Love Stories Begin
-              </span>
-            </div>
-          </div>
-
           {/* Enhanced Gender Filter - Moved to top */}
           <div className="w-full mb-6">
             <GenderFilter
