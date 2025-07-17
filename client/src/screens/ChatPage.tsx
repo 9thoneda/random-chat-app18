@@ -364,12 +364,11 @@ const PersonalChat = ({
               <div
                 className={`text-xs text-right mt-1 ${msg.fromMe ? "text-purple-100" : "text-gray-400"}`}
               >
-                {msg.time}
-
-                            </div>
+                                {msg.time}
+              </div>
             </div>
-          )
-        )}
+          </div>
+        ))}
       </div>
 
       {/* Enhanced Input */}
