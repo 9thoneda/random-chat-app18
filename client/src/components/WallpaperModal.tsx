@@ -23,13 +23,8 @@ import {
   Crown,
   Sparkles,
   Smile,
-  Heart as Love,
-  Smile as Joy,
-  Zap as Strength,
   BookOpen,
   Bird,
-  Zap as Energy,
-  Music as Harmony,
 } from "lucide-react";
 import { Button } from "./ui/button";
 
