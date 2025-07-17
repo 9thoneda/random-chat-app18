@@ -10,6 +10,11 @@ import HelpSupportModal from "../components/HelpSupportModal";
 import { useFriends } from "../context/FriendsProvider";
 import { useCoin } from "../context/CoinProvider";
 import {
+  uploadProfileImage,
+  getStorageErrorMessage,
+  validateImageFile,
+} from "../lib/storageUtils";
+import {
   Crown,
   Camera,
   Copy,
