@@ -163,7 +163,7 @@ export default function Home() {
           {t("app.name")} - Random Video Chat - Live chat with ajnabis
         </title>
       </Helmet>
-      <main className="flex flex-col min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 relative pb-20 overflow-hidden">
+      <main className="flex flex-col min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-passion-50 via-romance-25 to-bollywood-50 relative pb-20 overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-pink-300 to-rose-400 rounded-full opacity-20 animate-pulse"></div>
@@ -387,5 +387,4 @@ export default function Home() {
       />
     </>
   );
-
 }
