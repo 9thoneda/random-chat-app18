@@ -324,24 +324,6 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* Stats Section */}
-          <div className="w-full grid grid-cols-3 gap-3 mb-6">
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-lg border border-white/50 hover:scale-105 hover:shadow-xl transition-all duration-300"
-              >
-                <stat.icon className="h-6 w-6 mx-auto mb-2 text-rose-500" />
-                <div className="font-bold text-lg text-gray-800">
-                  {stat.number}
-                </div>
-                <div className="text-xs text-gray-600 font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
           {/* Testimonials Carousel */}
           <div className="w-full mb-6">
             <div className="bg-gradient-to-br from-white/95 to-rose-50/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-rose-200/50 relative overflow-hidden">
