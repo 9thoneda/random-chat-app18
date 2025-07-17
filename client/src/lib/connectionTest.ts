@@ -15,6 +15,7 @@ export interface ConnectionTestResult {
     canWrite: boolean;
     canDelete: boolean;
     error?: string;
+    url?: string;
   };
 }
 
