@@ -273,7 +273,7 @@ export default function Home() {
                 onClick={() => setCurrentBannerIndex(index)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
                   currentBannerIndex === index
-                    ? "bg-white w-4"
+                    ? "bg-white w-7"
                     : "bg-white/60 w-1.5"
                 }`}
               />
