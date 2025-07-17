@@ -1,102 +1,187 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    darkMode: ["class"],
-    content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  darkMode: ["class"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-  	extend: {
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
-  		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
-  			'rose': {
-  				'25': '#fef7f7',
-  				'75': '#fecaca',
-  				'150': '#fda4af',
-  			},
-  			'pink': {
-  				'25': '#fdf2f8',
-  				'75': '#f9a8d4',
-  				'150': '#f472b6',
-  			},
-  			'purple': {
-  				'25': '#faf5ff',
-  				'75': '#c084fc',
-  				'150': '#a855f7',
-  			},
-  			'gold': {
-  				'50': '#fffbeb',
-  				'100': '#fef3c7',
-  				'200': '#fde68a',
-  				'300': '#fcd34d',
-  				'400': '#fbbf24',
-  				'500': '#f59e0b',
-  				'600': '#d97706',
-  			},
-  			'crimson': {
-  				'50': '#fef2f2',
-  				'100': '#fee2e2',
-  				'200': '#fecaca',
-  				'300': '#fca5a5',
-  				'400': '#f87171',
-  				'500': '#ef4444',
-  				'600': '#dc2626',
-  			},
-  			'rose': {
-  				'25': '#fef7f7',
-  			},
-  			'purple': {
-  				'25': '#faf5ff',
-  			},
-  			'pink': {
-  				'25': '#fdf2f8',
-  			},
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
-  			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
-  			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
-  		}
-  	}
+    extend: {
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      colors: {
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        // Romantic Indian-inspired color palette
+        romance: {
+          50: "#fef7f7",
+          100: "#fdeaea",
+          200: "#fad4d4",
+          300: "#f5b1b1",
+          400: "#ee8989",
+          500: "#e25d5d",
+          600: "#d14343",
+          700: "#b53535",
+          800: "#962d2d",
+          900: "#7c2828",
+        },
+        bollywood: {
+          50: "#fff9eb",
+          100: "#ffeec6",
+          200: "#ffdb88",
+          300: "#ffc94a",
+          400: "#ffb220",
+          500: "#f99107",
+          600: "#dd6b02",
+          700: "#b74806",
+          800: "#94370c",
+          900: "#7a2e0d",
+        },
+        royal: {
+          50: "#faf5ff",
+          100: "#f3e8ff",
+          200: "#e9d5ff",
+          300: "#d8b4fe",
+          400: "#c084fc",
+          500: "#a855f7",
+          600: "#9333ea",
+          700: "#7c3aed",
+          800: "#6b21a8",
+          900: "#581c87",
+        },
+        passion: {
+          50: "#fdf2f8",
+          100: "#fce7f3",
+          200: "#fbcfe8",
+          300: "#f9a8d4",
+          400: "#f472b6",
+          500: "#ec4899",
+          600: "#db2777",
+          700: "#be185d",
+          800: "#9d174d",
+          900: "#831843",
+        },
+        marigold: {
+          50: "#fffbeb",
+          100: "#fef3c7",
+          200: "#fde68a",
+          300: "#fcd34d",
+          400: "#fbbf24",
+          500: "#f59e0b",
+          600: "#d97706",
+          700: "#b45309",
+          800: "#92400e",
+          900: "#78350f",
+        },
+        coral: {
+          50: "#fff5f5",
+          100: "#ffe3e3",
+          200: "#ffcdcd",
+          300: "#ffa8a8",
+          400: "#ff7676",
+          500: "#ff4444",
+          600: "#ed1515",
+          700: "#c80d0d",
+          800: "#a50f0f",
+          900: "#881414",
+        },
+        saffron: {
+          50: "#fefce8",
+          100: "#fef9c3",
+          200: "#fef08a",
+          300: "#fde047",
+          400: "#facc15",
+          500: "#eab308",
+          600: "#ca8a04",
+          700: "#a16207",
+          800: "#854d0e",
+          900: "#713f12",
+        },
+        rose: {
+          25: "#fef7f7",
+          50: "#fff1f2",
+          75: "#fecaca",
+          100: "#ffe4e6",
+          150: "#fda4af",
+          200: "#fecdd3",
+          300: "#fda4af",
+          400: "#fb7185",
+          500: "#f43f5e",
+          600: "#e11d48",
+          700: "#be123c",
+          800: "#9f1239",
+          900: "#881337",
+        },
+        pink: {
+          25: "#fdf2f8",
+          50: "#fdf2f8",
+          75: "#f9a8d4",
+          100: "#fce7f3",
+          150: "#f472b6",
+          200: "#fbcfe8",
+          300: "#f9a8d4",
+          400: "#f472b6",
+          500: "#ec4899",
+          600: "#db2777",
+          700: "#be185d",
+          800: "#9d174d",
+          900: "#831843",
+        },
+        purple: {
+          25: "#faf5ff",
+          50: "#faf5ff",
+          75: "#c084fc",
+          100: "#f3e8ff",
+          150: "#a855f7",
+          200: "#e9d5ff",
+          300: "#d8b4fe",
+          400: "#c084fc",
+          500: "#a855f7",
+          600: "#9333ea",
+          700: "#7c3aed",
+          800: "#6b21a8",
+          900: "#581c87",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
+        },
+      },
+    },
   },
-  plugins: [require("tailwindcss-animate"), require('tailwind-scrollbar-hide')],
-}
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
+};
