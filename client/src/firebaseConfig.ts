@@ -19,6 +19,9 @@ export const firebaseApp = initializeApp(firebaseConfig);
 // Initialize Firestore
 export const db = getFirestore(firebaseApp);
 
+// Initialize Firebase Storage
+export const storage = getStorage(firebaseApp);
+
 // Analytics only works in HTTPS / production
 export const analytics = (await isSupported().catch(() => false))
   ? getAnalytics(firebaseApp)
