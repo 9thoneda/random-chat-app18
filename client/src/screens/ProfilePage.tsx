@@ -368,8 +368,47 @@ const ProfilePage: React.FC = () => {
             style={{ display: "none" }}
             accept="image/*"
             onChange={handleImageChange}
+            disabled={isUploadingImage}
           />
+
+          {/* Upload Progress */}
+          {isUploadingImage && (
+            <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
+              <div className="text-center text-white">
+                <div className="w-8 h-8 border-3 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-2"></div>
+                <div className="text-xs font-semibold">
+                  Uploading {Math.round(uploadProgress)}%
+                </div>
+                {uploadProgress > 0 && (
+                  <div className="w-16 bg-white/20 rounded-full h-1 mt-1 mx-auto">
+                    <div
+                      className="bg-white h-1 rounded-full transition-all duration-300"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
+
+        {/* Upload Error */}
+        {uploadError && (
+          <div className="mt-4 w-full max-w-sm bg-red-50 border border-red-200 rounded-xl p-3">
+            <div className="flex items-start gap-2">
+              <AlertCircle
+                size={16}
+                className="text-red-600 flex-shrink-0 mt-0.5"
+              />
+              <div>
+                <h4 className="font-semibold text-red-800 text-sm">
+                  Upload Failed
+                </h4>
+                <p className="text-red-700 text-xs mt-1">{uploadError}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Username Section */}
         <div className="mt-6 w-full max-w-sm">
