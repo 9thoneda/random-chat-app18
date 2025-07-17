@@ -198,7 +198,7 @@ export default function Home() {
         </div>
 
         {/* Enhanced Header */}
-        <header className="w-full bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 shadow-lg px-6 py-6 border-b border-pink-100 relative overflow-hidden">
+        <header className="w-full bg-gradient-to-r from-passion-500 via-romance-500 to-royal-600 shadow-lg px-6 py-6 border-b border-passion-100 relative overflow-hidden">
           {/* Header Background Pattern */}
           <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-gold-100/20 to-white/10 backdrop-blur-sm"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gold-200/10 to-transparent"></div>
