@@ -45,7 +45,7 @@ const wallpaperThemes = [
   {
     id: 2,
     name: "Love Garden",
-    icon: Flower,
+    icon: Flower2,
     gradient: "from-rose-300 via-pink-300 to-red-300",
     emotion: "romantic",
   },
