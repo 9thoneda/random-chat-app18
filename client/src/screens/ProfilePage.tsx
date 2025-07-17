@@ -565,7 +565,7 @@ const ProfilePage: React.FC = () => {
       </Helmet>
       <main className="flex flex-col items-center min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-passion-50 via-romance-25 to-bollywood-50 px-2 py-4 relative pb-20">
         {/* Enhanced Header */}
-        <div className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 text-white font-bold text-xl rounded-t-2xl shadow-xl relative overflow-hidden">
+        <div className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-passion-500 via-romance-500 to-royal-600 text-white font-bold text-xl rounded-t-2xl shadow-xl relative overflow-hidden">
           <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
 
