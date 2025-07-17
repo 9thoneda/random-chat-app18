@@ -11,6 +11,7 @@ interface SplashScreenProps {
 
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
+  console.log("SplashScreen rendered");
   const [connectionStatus, setConnectionStatus] = useState<{
     isTestingConnection: boolean;
     connectionResult: ConnectionTestResult | null;
