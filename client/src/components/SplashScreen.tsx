@@ -89,19 +89,19 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 
         {/* Loading animation */}
         <div className="flex items-center gap-2 mt-6">
-          <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce"></div>
+          <div className="w-3 h-3 bg-passion-500 rounded-full animate-bounce shadow-lg"></div>
           <div
-            className="w-3 h-3 bg-orange-600 rounded-full animate-bounce"
+            className="w-3 h-3 bg-romance-500 rounded-full animate-bounce shadow-lg"
             style={{ animationDelay: "0.1s" }}
           ></div>
           <div
-            className="w-3 h-3 bg-orange-700 rounded-full animate-bounce"
+            className="w-3 h-3 bg-bollywood-500 rounded-full animate-bounce shadow-lg"
             style={{ animationDelay: "0.2s" }}
           ></div>
         </div>
 
-        <p className="text-orange-800 text-lg font-medium mt-4 animate-pulse">
-          Loading amazing connections...
+        <p className="text-romance-800 text-lg font-medium mt-4 animate-pulse">
+          💕 Finding your perfect match...
         </p>
 
         {/* Firebase Storage Connection Status */}
