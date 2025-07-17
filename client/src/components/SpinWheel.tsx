@@ -40,6 +40,14 @@ const SpinWheel: React.FC = () => {
   } = coinContext || {};
   const wheelRef = useRef<HTMLDivElement>(null);
 
+  // Add loading state for better UX
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Initialize component
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
+
   const [isSpinning, setIsSpinning] = useState(false);
   const [result, setResult] = useState<SpinResult | null>(null);
   const [showResult, setShowResult] = useState(false);
