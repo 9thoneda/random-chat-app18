@@ -300,24 +300,15 @@ const SpinWheel: React.FC = () => {
               <button
                 onClick={() => {
                   console.log("Back button clicked");
-                  try {
-                    // First try to go back in history
-                    if (window.history.length > 1) {
-                      console.log("Navigating back in history");
-                      navigate(-1);
-                    } else {
-                      console.log("No history, navigating to home");
-                      navigate("/");
-                    }
-                  } catch (error) {
-                    console.error("Navigation error:", error);
-                    // Fallback to home page
-                    navigate("/");
-                  }
+                  // Simple navigation back to home/profile
+                  navigate("/");
                 }}
-                className="flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors duration-300 bg-white/20 backdrop-blur-sm rounded-full touch-manipulation active:scale-95"
+                className="flex items-center justify-center w-12 h-12 text-white hover:text-yellow-300 transition-all duration-300 bg-white/30 hover:bg-white/40 backdrop-blur-sm rounded-full touch-manipulation active:scale-95 border-2 border-white/20 shadow-lg"
               >
-                <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+                <ArrowLeft
+                  className="h-6 w-6 text-white drop-shadow-lg"
+                  strokeWidth={2.5}
+                />
               </button>
 
               <div className="text-white font-bold text-lg sm:text-xl tracking-wide truncate px-2">
