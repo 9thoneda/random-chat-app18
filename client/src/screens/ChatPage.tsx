@@ -218,87 +218,16 @@ const PersonalChat = ({
     }
   };
 
+  const getWallpaperClass = () => {
+    if (!currentWallpaper) {
+      return "bg-gradient-to-br from-slate-50 via-white to-rose-50";
+    }
+    return `bg-gradient-to-br ${currentWallpaper.gradient}`;
+  };
+
   return (
     <div
-      className="max-w-md mx-auto h-screen shadow-xl overflow-hidden flex flex-col relative pb-20"
-      style={{
-        background: currentWallpaper
-          ? `linear-gradient(135deg, var(--tw-gradient-stops)), linear-gradient(to bottom right, ${currentWallpaper.gradient
-              .replace("from-", "")
-              .replace("via-", "")
-              .replace("to-", "")
-              .split(" ")
-              .map((color) => {
-                const colorMap: { [key: string]: string } = {
-                  "pink-400": "#f472b6",
-                  "red-400": "#f87171",
-                  "yellow-400": "#facc15",
-                  "rose-300": "#fda4af",
-                  "pink-300": "#f9a8d4",
-                  "red-300": "#fca5a5",
-                  "purple-300": "#d8b4fe",
-                  "yellow-300": "#fde047",
-                  "orange-300": "#fdba74",
-                  "green-300": "#86efac",
-                  "blue-300": "#93c5fd",
-                  "cyan-300": "#67e8f9",
-                  "teal-300": "#5eead4",
-                  "gray-300": "#d1d5db",
-                  "indigo-300": "#a5b4fc",
-                  "gray-200": "#e5e7eb",
-                  "blue-200": "#bfdbfe",
-                  "indigo-200": "#c7d2fe",
-                  "indigo-400": "#818cf8",
-                  "purple-400": "#c084fc",
-                  "pink-400": "#f472b6",
-                  "red-400": "#f87171",
-                  "orange-400": "#fb923c",
-                  "yellow-400": "#facc15",
-                  "green-400": "#4ade80",
-                  "emerald-400": "#34d399",
-                  "teal-400": "#2dd4bf",
-                  "cyan-400": "#22d3ee",
-                  "blue-400": "#60a5fa",
-                  "violet-400": "#a78bfa",
-                  "indigo-600": "#4f46e5",
-                  "purple-600": "#9333ea",
-                  black: "#000000",
-                  "blue-400": "#60a5fa",
-                  "cyan-400": "#22d3ee",
-                  white: "#ffffff",
-                  "brown-400": "#a16207",
-                  "amber-400": "#fbbf24",
-                  "orange-200": "#fed7aa",
-                  "yellow-200": "#fef08a",
-                  "red-200": "#fecaca",
-                  "orange-300": "#fdba74",
-                  "gray-400": "#9ca3af",
-                  "blue-400": "#60a5fa",
-                  "brown-400": "#a16207",
-                  "violet-400": "#a78bfa",
-                  "pink-400": "#f472b6",
-                  "indigo-400": "#818cf8",
-                  "purple-500": "#a855f7",
-                  "indigo-500": "#6366f1",
-                  "blue-500": "#3b82f6",
-                  "gray-300": "#d1d5db",
-                  "blue-300": "#93c5fd",
-                  "purple-300": "#d8b4fe",
-                  "yellow-300": "#fde047",
-                  "orange-300": "#fdba74",
-                  "purple-300": "#d8b4fe",
-                  "green-300": "#86efac",
-                  "blue-300": "#93c5fd",
-                  "indigo-300": "#a5b4fc",
-                  "cyan-300": "#67e8f9",
-                  "blue-300": "#93c5fd",
-                  "indigo-300": "#a5b4fc",
-                };
-                return colorMap[color] || "#f3f4f6";
-              })
-              .join(", ")})`
-          : "linear-gradient(to bottom right, #f8fafc, #ffffff, #fdf2f8)",
-      }}
+      className={`max-w-md mx-auto h-screen shadow-xl overflow-hidden flex flex-col relative pb-20 ${getWallpaperClass()}`}
     >
       {/* Enhanced Header */}
       <div className="p-4 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 flex items-center shadow-lg relative overflow-hidden">
