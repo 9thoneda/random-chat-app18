@@ -217,7 +217,7 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-start justify-center z-50 p-2 overflow-y-auto">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-start justify-center z-50 p-2 overflow-y-auto">
       <Card className="w-full max-w-lg mx-auto bg-gradient-to-br from-sindoor-25 via-gulmohar-25 to-jasmine-25 border-2 border-sindoor-200 shadow-3xl relative overflow-hidden my-2 min-h-fit max-h-[98vh]">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
