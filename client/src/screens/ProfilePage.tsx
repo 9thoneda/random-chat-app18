@@ -250,35 +250,62 @@ const ProfilePage: React.FC = () => {
 
   const renderProfileTab = () => (
     <div className="space-y-6">
-      {/* Profile Image Section */}
+      {/* Enhanced Profile Image Section */}
       <div className="flex flex-col items-center">
         <div className="relative group">
-          <div className="w-full h-64 rounded-lg bg-gradient-to-br from-rose-200 to-pink-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
-            <div className="absolute inset-0 rounded-lg border-2 border-rose-400 animate-ping opacity-20"></div>
+          {/* Larger circular profile image */}
+          <div className="w-40 h-40 rounded-full bg-gradient-to-br from-rose-200 via-pink-300 to-purple-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
+            {/* Animated border ring */}
+            <div className="absolute inset-0 rounded-full border-4 border-gradient-to-r from-rose-400 via-pink-400 to-purple-400 animate-pulse opacity-30"></div>
+
+            {/* Premium glow effect for premium users */}
+            {isPremium && (
+              <div className="absolute inset-0 rounded-full border-4 border-yellow-400 animate-pulse shadow-[0_0_20px_rgba(251,191,36,0.6)]"></div>
+            )}
+
             {profileImage ? (
               <img
                 src={profileImage}
                 alt="Profile"
-                className="object-cover w-full h-full relative z-10"
+                className="object-cover w-full h-full relative z-10 rounded-full"
               />
             ) : (
               <div className="text-center relative z-10">
-                <User className="h-12 w-12 text-rose-600 mx-auto mb-2" />
+                <User className="h-16 w-16 text-rose-600 mx-auto mb-2" />
                 <div className="text-rose-700 text-xs font-bold">
                   {t("profile.addPhoto")}
                 </div>
               </div>
             )}
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-              <Camera className="h-8 w-8 text-white" />
+
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full flex items-center justify-center">
+              <div className="text-center text-white">
+                <Camera className="h-8 w-8 mx-auto mb-1" />
+                <div className="text-xs font-semibold">Change Photo</div>
+              </div>
             </div>
           </div>
+
+          {/* Camera button with premium styling */}
           <button
             onClick={handleImageUploadClick}
-            className="absolute -bottom-2 right-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12"
+            className={`absolute -bottom-2 -right-2 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 ${
+              isPremium
+                ? "bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500"
+                : "bg-gradient-to-r from-rose-500 to-pink-600"
+            }`}
           >
-            <Camera className="h-4 w-4" />
+            <Camera className="h-5 w-5" />
           </button>
+
+          {/* Premium crown indicator */}
+          {isPremium && (
+            <div className="absolute -top-3 -right-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-2 shadow-lg animate-bounce">
+              <Crown className="h-5 w-5 text-white" />
+            </div>
+          )}
+
           <input
             type="file"
             ref={fileInputRef}
@@ -515,10 +542,11 @@ const ProfilePage: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 font-semibold transition-all duration-200 ${activeTab === tab.id
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 font-semibold transition-all duration-200 ${
+                  activeTab === tab.id
                     ? "bg-white text-rose-600 border-b-2 border-rose-500"
                     : "text-gray-600 hover:text-rose-500 hover:bg-gray-100"
-                  }`}
+                }`}
               >
                 <tab.icon className="h-4 w-4" />
                 <span className="text-sm">{tab.label}</span>
