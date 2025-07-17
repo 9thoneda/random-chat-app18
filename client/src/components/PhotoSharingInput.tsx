@@ -247,7 +247,7 @@ export default function PhotoSharingInput({
                   <Button
                     onClick={handleSendPhoto}
                     disabled={isUploading}
-                    className="flex-1 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700"
+                    className="flex-1 bg-gradient-to-r from-passion-600 to-romance-600 hover:from-passion-700 hover:to-romance-700"
                   >
                     {isUploading ? (
                       <div className="flex flex-col items-center gap-1 w-full">
