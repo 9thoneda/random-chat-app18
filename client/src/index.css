@@ -1,9 +1,9 @@
+/* Import romantic Indian theme styles */
+@import "./styles/romantic-theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import romantic Indian theme styles */
-@import "./styles/romantic-theme.css";
 
 /* Splash Screen Animations */
 @keyframes fade-in {
