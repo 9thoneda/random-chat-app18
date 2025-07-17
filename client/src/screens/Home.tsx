@@ -299,7 +299,7 @@ export default function Home() {
               className={`w-full py-6 text-xl font-bold rounded-3xl text-white shadow-2xl transform transition-all duration-300 relative overflow-hidden ${
                 isConnecting
                   ? "bg-gradient-to-r from-green-500 to-emerald-600 scale-95"
-                  : "bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 hover:scale-105 hover:shadow-3xl"
+                  : "bg-gradient-to-r from-passion-500 via-romance-500 to-royal-600 hover:scale-105 hover:shadow-3xl"
               }`}
               onClick={handleStartCall}
               disabled={isConnecting}
