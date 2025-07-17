@@ -89,7 +89,7 @@ type Message = {
   time: string;
   isViewed?: boolean;
 };
-
+type Chat = (typeof initialChats)[number];
 
 const ChatPageWrapper = () => {
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
@@ -347,10 +347,29 @@ const PersonalChat = ({
                   className={`text-xs text-right mt-1 ${msg.fromMe ? "text-purple-100" : "text-gray-400"}`}
                 >
                   {msg.time}
-                                </div>
+                </div>
+
+        {messages.map((msg, idx) => (
+          <div
+            key={idx}
+            className={`flex ${msg.fromMe ? "justify-end" : "justify-start"}`}
+          >
+            <div
+              className={`px-4 py-3 rounded-2xl max-w-xs shadow-sm transition-all duration-200 hover:shadow-md ${
+                msg.fromMe
+                  ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white"
+                  : "bg-white/90 backdrop-blur-sm text-gray-800 border border-gray-100"
+              }`}
+            >
+              <div className="leading-relaxed">{msg.text}</div>
+              <div
+                className={`text-xs text-right mt-1 ${msg.fromMe ? "text-purple-100" : "text-gray-400"}`}
+              >
+                {msg.time}
+
               </div>
             </div>
-          )
+          ),
         )}
       </div>
 

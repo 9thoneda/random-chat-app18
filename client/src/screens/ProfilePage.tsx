@@ -38,6 +38,7 @@ import {
   EyeOff,
   Sparkles,
   Medal,
+
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import {
@@ -269,11 +270,8 @@ const ProfilePage: React.FC = () => {
               <img
                 src={profileImage}
                 alt="Profile"
-                className="w-full h-full object-cover rounded-full"
-              />
-            ) : (
-              <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
-                <div className="text-rose-700 text-xs font-bold text-center">
+
+                <div className="text-rose-700 text-xs font-bold">
                   {t("profile.addPhoto")}
                 </div>
               </div>
