@@ -31,6 +31,7 @@ import {
   Bell,
   HelpCircle,
   LogOut,
+  AlertCircle,
   Trash2,
   Download,
   Share2,
