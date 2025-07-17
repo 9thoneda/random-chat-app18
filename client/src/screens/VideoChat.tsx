@@ -145,6 +145,56 @@ export default function VideoChat() {
     alert(`🎉 Welcome to Premium! Your ${plan} subscription is now active until ${expiry.toLocaleDateString()}`);
   }, [setPremium]);
 
+  // Auto-award coins when chat completes
+  const { completeChat } = useCoin();
+  
+  const handleChatComplete = useCallback(() => {
+    if (remoteChatToken) {
+      completeChat();
+    }
+  }, [remoteChatToken, completeChat]);
+
+  const handleSkip = useCallback(async () => {
+    if (!isFriendCall && remoteChatToken) {
+      handleChatComplete(); // Award coins for completing chat
+      setShowStayConnected(true);
+      return;
+    }
+    
+    if (remoteChatToken) {
+      handleChatComplete(); // Award coins for completing chat
+    }
+
+    peerservice.peer.getTransceivers().forEach((transceiver) => {
+      if (transceiver.stop) {
+        transceiver.stop();
+      }
+    });
+
+    peerservice.peer.getSenders().forEach((sender) => {
+      if (sender.track) {
+        sender.track.stop();
+        peerservice.peer.removeTrack(sender);
+      }
+    });
+
+    peerservice.peer.onicecandidate = null;
+    peerservice.peer.ontrack = null;
+    peerservice.peer.onnegotiationneeded = null;
+
+    if (peerservice.peer.signalingState !== "closed") {
+      peerservice.peer.close();
+    }
+    peerservice.initPeer();
+    setMessagesArray([]);
+    setFlag(false);
+
+    setRemoteStream(null);
+    setRemoteChatToken(null);
+
+    socket?.emit("skip");
+  }, [socket, isFriendCall, remoteChatToken, handleChatComplete]);
+
   const handleTimeUp = useCallback(() => {
     if (!isFriendCall) {
       setShowStayConnected(true);
@@ -154,15 +204,6 @@ export default function VideoChat() {
       handleSkip();
     }
   }, [isFriendCall, handleSkip]);
-
-  // Auto-award coins when chat completes
-  const { completeChat } = useCoin();
-  
-  const handleChatComplete = useCallback(() => {
-    if (remoteChatToken) {
-      completeChat();
-    }
-  }, [remoteChatToken, completeChat]);
 
   const handleUpgrade = useCallback(() => {
     setShowPaywall(true);
@@ -192,7 +233,7 @@ export default function VideoChat() {
       setShowStayConnected(false);
       handleSkip();
     }
-  }, [canAddMoreFriends, remoteChatToken, socket]);
+  }, [canAddMoreFriends, remoteChatToken, socket, handleSkip]);
 
   const handleFriendCall = (friendId: string) => {
     setFriendNotification({ show: false, friendName: '', friendId: '' });
@@ -546,47 +587,6 @@ export default function VideoChat() {
     },
     [sendStream]
   );
-
-  const handleSkip = useCallback(async () => {
-    if (!isFriendCall && remoteChatToken) {
-      handleChatComplete(); // Award coins for completing chat
-      setShowStayConnected(true);
-      return;
-    }
-    
-    if (remoteChatToken) {
-      handleChatComplete(); // Award coins for completing chat
-    }
-
-    peerservice.peer.getTransceivers().forEach((transceiver) => {
-      if (transceiver.stop) {
-        transceiver.stop();
-      }
-    });
-
-    peerservice.peer.getSenders().forEach((sender) => {
-      if (sender.track) {
-        sender.track.stop();
-        peerservice.peer.removeTrack(sender);
-      }
-    });
-
-    peerservice.peer.onicecandidate = null;
-    peerservice.peer.ontrack = null;
-    peerservice.peer.onnegotiationneeded = null;
-
-    if (peerservice.peer.signalingState !== "closed") {
-      peerservice.peer.close();
-    }
-    peerservice.initPeer();
-    setMessagesArray([]);
-    setFlag(false);
-
-    setRemoteStream(null);
-    setRemoteChatToken(null);
-
-    socket?.emit("skip");
-  }, [socket, isFriendCall, remoteChatToken, handleChatComplete]);
 
   useEffect(() => {
     if (flag !== true) {
