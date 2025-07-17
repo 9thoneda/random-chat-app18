@@ -455,18 +455,20 @@ const SpinWheel: React.FC = () => {
           </div>
 
           {/* Bottom Action Area - Native Style */}
-          <div className="px-6 pb-8">
+          <div className="px-4 sm:px-6 pb-6 sm:pb-8">
             {hasSpunToday ? (
-              <div className="space-y-4">
-                <div className="bg-white/20 backdrop-blur-lg text-white font-bold py-6 px-8 rounded-2xl shadow-lg border border-white/30 text-center">
-                  <div className="text-xl mb-2">🎯 Daily Limit Reached!</div>
-                  <div className="text-sm opacity-90">
+              <div className="space-y-3 sm:space-y-4">
+                <div className="bg-white/20 backdrop-blur-lg text-white font-bold py-4 sm:py-6 px-6 sm:px-8 rounded-2xl shadow-lg border border-white/30 text-center">
+                  <div className="text-lg sm:text-xl mb-2">
+                    🎯 Daily Limit Reached!
+                  </div>
+                  <div className="text-xs sm:text-sm opacity-90">
                     Come back tomorrow for more spins!
                   </div>
                 </div>
                 <button
                   onClick={resetDaily}
-                  className="w-full text-sm text-white/70 underline hover:text-white transition-colors"
+                  className="w-full text-xs sm:text-sm text-white/70 underline hover:text-white transition-colors"
                 >
                   🔧 Reset for testing
                 </button>
@@ -475,7 +477,7 @@ const SpinWheel: React.FC = () => {
               <Button
                 onClick={spinWheel}
                 disabled={isSpinning}
-                className={`w-full py-6 rounded-2xl font-extrabold text-xl shadow-2xl transition-all duration-300 transform border-4 ${
+                className={`w-full py-4 sm:py-6 rounded-2xl font-extrabold text-lg sm:text-xl shadow-2xl transition-all duration-300 transform border-3 sm:border-4 touch-manipulation ${
                   isSpinning
                     ? "bg-gray-400 cursor-not-allowed border-gray-500 scale-95"
                     : "bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 hover:shadow-3xl hover:scale-105 border-white active:scale-95"
