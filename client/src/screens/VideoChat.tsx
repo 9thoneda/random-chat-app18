@@ -15,7 +15,18 @@ import ReportUserModal from "../components/ReportUserModal";
 import BlockUserModal from "../components/BlockUserModal";
 import StayConnectedModal from "../components/StayConnectedModal";
 import FriendNotification from "../components/FriendNotification";
-import { ScreenShare, ArrowLeft, SkipForward, Crown, Video, VideoOff, Mic, MicOff, Coins, Phone } from "lucide-react";
+import {
+  ScreenShare,
+  ArrowLeft,
+  SkipForward,
+  Crown,
+  Video,
+  VideoOff,
+  Mic,
+  MicOff,
+  Coins,
+  Phone,
+} from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import { useTheme } from "../components/theme-provider";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -48,7 +59,13 @@ export default function VideoChat() {
   const [screenStream, setScreenStream] = useState<MediaStream | null>(null);
   const [flag, setFlag] = useState(false);
   const [messagesArray, setMessagesArray] = useState<
-    Array<{ sender: string; message: string; id?: string; isSecret?: boolean; timestamp?: number }>
+    Array<{
+      sender: string;
+      message: string;
+      id?: string;
+      isSecret?: boolean;
+      timestamp?: number;
+    }>
   >([]);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [isCameraOn, setIsCameraOn] = useState(true);
@@ -60,7 +77,9 @@ export default function VideoChat() {
 
   // Friends system state
   const [showStayConnected, setShowStayConnected] = useState(false);
-  const [partnerWantsToStay, setPartnerWantsToStay] = useState<boolean | null>(null);
+  const [partnerWantsToStay, setPartnerWantsToStay] = useState<boolean | null>(
+    null,
+  );
   const [myStayResponse, setMyStayResponse] = useState<boolean | null>(null);
   const [partnerName, setPartnerName] = useState("Stranger");
   const [isFriendCall, setIsFriendCall] = useState(false);
@@ -68,7 +87,7 @@ export default function VideoChat() {
     show: boolean;
     friendName: string;
     friendId: string;
-  }>({ show: false, friendName: '', friendId: '' });
+  }>({ show: false, friendName: "", friendId: "" });
 
   // Reporting state
   const [showReport, setShowReport] = useState(false);
@@ -87,14 +106,14 @@ export default function VideoChat() {
 
   // Check if this is a friend call
   useEffect(() => {
-    const state = location.state as { 
-      genderFilter?: string; 
+    const state = location.state as {
+      genderFilter?: string;
       voiceOnly?: boolean;
       friendCall?: boolean;
       friendId?: string;
       friendName?: string;
     };
-    
+
     if (state?.friendCall) {
       setIsFriendCall(true);
       setPartnerName(state.friendName || "Friend");
@@ -103,7 +122,7 @@ export default function VideoChat() {
         alert("🎬 Enjoy your call! Another ad will show after the call ends.");
       }, 1000);
     }
-    
+
     if (state?.voiceOnly && isPremium) {
       setIsVoiceOnly(true);
       setIsCameraOn(false);
@@ -113,13 +132,15 @@ export default function VideoChat() {
   // Show friend online notifications
   useEffect(() => {
     const checkOnlineFriends = () => {
-      const onlineFriends = friends.filter(friend => friend.isOnline);
-      if (onlineFriends.length > 0 && Math.random() < 0.3) { // 30% chance
-        const randomFriend = onlineFriends[Math.floor(Math.random() * onlineFriends.length)];
+      const onlineFriends = friends.filter((friend) => friend.isOnline);
+      if (onlineFriends.length > 0 && Math.random() < 0.3) {
+        // 30% chance
+        const randomFriend =
+          onlineFriends[Math.floor(Math.random() * onlineFriends.length)];
         setFriendNotification({
           show: true,
           friendName: randomFriend.name,
-          friendId: randomFriend.id
+          friendId: randomFriend.id,
         });
       }
     };
@@ -128,26 +149,31 @@ export default function VideoChat() {
     return () => clearInterval(interval);
   }, [friends]);
 
-  const handlePremiumPurchase = useCallback((plan: string) => {
-    console.log(`Processing payment for ${plan} plan`);
-    
-    const now = new Date();
-    const expiry = new Date(now);
-    if (plan === "weekly") {
-      expiry.setDate(now.getDate() + 7);
-    } else {
-      expiry.setMonth(now.getMonth() + 1);
-    }
-    
-    setPremium(true, expiry);
-    setShowPaywall(false);
-    
-    alert(`🎉 Welcome to Premium! Your ${plan} subscription is now active until ${expiry.toLocaleDateString()}`);
-  }, [setPremium]);
+  const handlePremiumPurchase = useCallback(
+    (plan: string) => {
+      console.log(`Processing payment for ${plan} plan`);
+
+      const now = new Date();
+      const expiry = new Date(now);
+      if (plan === "weekly") {
+        expiry.setDate(now.getDate() + 7);
+      } else {
+        expiry.setMonth(now.getMonth() + 1);
+      }
+
+      setPremium(true, expiry);
+      setShowPaywall(false);
+
+      alert(
+        `🎉 Welcome to Premium! Your ${plan} subscription is now active until ${expiry.toLocaleDateString()}`,
+      );
+    },
+    [setPremium],
+  );
 
   // Auto-award coins when chat completes
   const { completeChat } = useCoin();
-  
+
   const handleChatComplete = useCallback(() => {
     if (remoteChatToken) {
       completeChat();
@@ -160,7 +186,7 @@ export default function VideoChat() {
       setShowStayConnected(true);
       return;
     }
-    
+
     if (remoteChatToken) {
       handleChatComplete(); // Award coins for completing chat
     }
@@ -209,40 +235,43 @@ export default function VideoChat() {
     setShowPaywall(true);
   }, []);
 
-  const handleStayConnected = useCallback((wantToStay: boolean) => {
-    setMyStayResponse(wantToStay);
-    
-    if (wantToStay) {
-      // Check if user can add more friends
-      if (!canAddMoreFriends) {
+  const handleStayConnected = useCallback(
+    (wantToStay: boolean) => {
+      setMyStayResponse(wantToStay);
+
+      if (wantToStay) {
+        // Check if user can add more friends
+        if (!canAddMoreFriends) {
+          setShowStayConnected(false);
+          setShowPaywall(true);
+          return;
+        }
+
+        // Send stay connected request to partner
+        socket?.emit("stay:connected:response", {
+          targetChatToken: remoteChatToken,
+          wantToStay: true,
+        });
+      } else {
+        socket?.emit("stay:connected:response", {
+          targetChatToken: remoteChatToken,
+          wantToStay: false,
+        });
         setShowStayConnected(false);
-        setShowPaywall(true);
-        return;
+        handleSkip();
       }
-      
-      // Send stay connected request to partner
-      socket?.emit("stay:connected:response", { 
-        targetChatToken: remoteChatToken,
-        wantToStay: true 
-      });
-    } else {
-      socket?.emit("stay:connected:response", { 
-        targetChatToken: remoteChatToken,
-        wantToStay: false 
-      });
-      setShowStayConnected(false);
-      handleSkip();
-    }
-  }, [canAddMoreFriends, remoteChatToken, socket, handleSkip]);
+    },
+    [canAddMoreFriends, remoteChatToken, socket, handleSkip],
+  );
 
   const handleFriendCall = (friendId: string) => {
-    setFriendNotification({ show: false, friendName: '', friendId: '' });
-    navigate('/video-chat', { 
-      state: { 
-        friendCall: true, 
-        friendId, 
-        friendName: friends.find(f => f.id === friendId)?.name || 'Friend'
-      } 
+    setFriendNotification({ show: false, friendName: "", friendId: "" });
+    navigate("/video-chat", {
+      state: {
+        friendCall: true,
+        friendId,
+        friendName: friends.find((f) => f.id === friendId)?.name || "Friend",
+      },
     });
   };
 
@@ -256,8 +285,8 @@ export default function VideoChat() {
           autoGainControl: true,
           sampleRate: 48000,
           sampleSize: 16,
-          channelCount: 2
-        }
+          channelCount: 2,
+        },
       });
       setMyStream(stream);
       return stream;
@@ -267,7 +296,7 @@ export default function VideoChat() {
       try {
         const fallbackStream = await navigator.mediaDevices.getUserMedia({
           video: false,
-          audio: true
+          audio: true,
         });
         setMyStream(fallbackStream);
         return fallbackStream;
@@ -298,7 +327,7 @@ export default function VideoChat() {
         if (videoTrack) {
           videoTrack.stop();
           myStream?.removeTrack(videoTrack);
-          
+
           const sender = peerservice.peer
             .getSenders()
             .find((s) => s.track?.kind === "video");
@@ -310,17 +339,19 @@ export default function VideoChat() {
         setIsVoiceOnly(true);
       } else {
         // Switch back to video
-        const newStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const newStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
         const newVideoTrack = newStream.getVideoTracks()[0];
         myStream?.addTrack(newVideoTrack);
-        
+
         const sender = peerservice.peer
           .getSenders()
           .find((s) => s.track?.kind === "video");
         if (sender) {
           await sender.replaceTrack(newVideoTrack);
         }
-        
+
         setIsCameraOn(true);
         setIsVoiceOnly(false);
       }
@@ -347,7 +378,9 @@ export default function VideoChat() {
           await sender.replaceTrack(null);
         }
       } else {
-        const newStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const newStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
         const newVideoTrack = newStream.getVideoTracks()[0];
         myStream.addTrack(newVideoTrack);
         if (sender) {
@@ -378,7 +411,9 @@ export default function VideoChat() {
           await sender.replaceTrack(null);
         }
       } else {
-        const newStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const newStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         const newAudioTrack = newStream.getAudioTracks()[0];
         myStream.addTrack(newAudioTrack);
         if (sender) {
@@ -432,11 +467,14 @@ export default function VideoChat() {
 
         if (peerservice.peer.signalingState === "stable") {
           const offer = await peerservice.getOffer();
-          socket?.emit("peer:nego:needed", { offer, targetChatToken: remoteChatToken });
+          socket?.emit("peer:nego:needed", {
+            offer,
+            targetChatToken: remoteChatToken,
+          });
         }
       } else {
         const stream = await navigator.mediaDevices.getDisplayMedia({
-          video: true
+          video: true,
         });
         setScreenStream(stream);
         setIsScreenSharing(true);
@@ -454,7 +492,10 @@ export default function VideoChat() {
 
         if (peerservice.peer.signalingState === "stable") {
           const offer = await peerservice.getOffer();
-          socket?.emit("peer:nego:needed", { offer, targetChatToken: remoteChatToken });
+          socket?.emit("peer:nego:needed", {
+            offer,
+            targetChatToken: remoteChatToken,
+          });
         }
       }
     } catch (error) {
@@ -479,12 +520,12 @@ export default function VideoChat() {
     async (remoteId: string) => {
       setRemoteChatToken(remoteId);
       setPartnerPremium(false);
-      playSound('match');
+      playSound("match");
       setShowReport(true);
       const offer = await peerservice.getOffer();
       socket?.emit("offer", { offer, to: remoteId });
     },
-    [socket]
+    [socket],
   );
 
   const handleIncommingOffer = useCallback(
@@ -500,11 +541,11 @@ export default function VideoChat() {
       } else {
         console.warn(
           "Cannot handle incoming offer in signaling state:",
-          peerservice.peer.signalingState
+          peerservice.peer.signalingState,
         );
       }
     },
-    [getUserStream, socket, sendStream]
+    [getUserStream, socket, sendStream],
   );
 
   const handleIncommingAnswer = useCallback(
@@ -516,13 +557,13 @@ export default function VideoChat() {
         console.warn("Peer not in a proper state to set remote description.");
       }
     },
-    [sendStream]
+    [sendStream],
   );
 
   const modifySDP = (sdp: string) => {
     return sdp.replace(
       /a=fmtp:111 .*opus.*/,
-      "a=fmtp:111 maxplaybackrate=48000;stereo=1;sprop-stereo=1;maxaveragebitrate=510000;useinbandfec=1"
+      "a=fmtp:111 maxplaybackrate=48000;stereo=1;sprop-stereo=1;maxaveragebitrate=510000;useinbandfec=1",
     );
   };
 
@@ -535,14 +576,14 @@ export default function VideoChat() {
 
         const modifiedOffer = new RTCSessionDescription({
           type: currentOffer.type,
-          sdp: modifiedSDP
+          sdp: modifiedSDP,
         });
 
         setAudioBandwidth(peerservice.peer);
 
         socket?.emit("peer:nego:needed", {
           offer: modifiedOffer,
-          targetChatToken: remoteChatToken
+          targetChatToken: remoteChatToken,
         });
       }
     } else {
@@ -561,11 +602,11 @@ export default function VideoChat() {
       } else {
         console.warn(
           "Cannot handle negotiation in state:",
-          peerservice.peer.signalingState
+          peerservice.peer.signalingState,
         );
       }
     },
-    [socket]
+    [socket],
   );
 
   const handleNegotiationFinal = useCallback(
@@ -581,18 +622,18 @@ export default function VideoChat() {
       } else {
         console.warn(
           "Cannot set remote description: Peer connection is in state",
-          peerservice.peer.signalingState
+          peerservice.peer.signalingState,
         );
       }
     },
-    [sendStream]
+    [sendStream],
   );
 
   useEffect(() => {
     if (flag !== true) {
       peerservice.peer.addEventListener(
         "negotiationneeded",
-        handleNegotiationNeeded
+        handleNegotiationNeeded,
       );
       setFlag(false);
     }
@@ -600,7 +641,7 @@ export default function VideoChat() {
     return () => {
       peerservice.peer.removeEventListener(
         "negotiationneeded",
-        handleNegotiationNeeded
+        handleNegotiationNeeded,
       );
     };
   }, [flag, handleNegotiationNeeded]);
@@ -659,7 +700,7 @@ export default function VideoChat() {
       if (event.candidate) {
         socket?.emit("ice-candidate", {
           candidate: event.candidate,
-          to: remoteChatToken
+          to: remoteChatToken,
         });
       }
     };
@@ -687,39 +728,49 @@ export default function VideoChat() {
 
   // Handle stay connected responses
   useEffect(() => {
-    socket?.on("stay:connected:response", ({ wantToStay, from }: { wantToStay: boolean, from: string }) => {
-      setPartnerWantsToStay(wantToStay);
-      
-      if (myStayResponse === true && wantToStay === true) {
-        // Both want to stay connected - add as friends
-        const success = addFriend({
-          id: from,
-          name: partnerName,
-          avatar: `https://images.pexels.com/photos/${Math.floor(Math.random() * 1000000)}/pexels-photo.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop`,
-          isOnline: true
-        });
-        
-        if (success) {
-          alert(`🎉 You and ${partnerName} are now friends! You can find them in your Friends list.`);
-        } else {
-          alert(`❌ Couldn't add ${partnerName} as friend. You've reached the free limit of 3 friends. Upgrade to Premium for unlimited friends!`);
-          setShowPaywall(true);
-        }
-        
-        setShowStayConnected(false);
-        handleSkip();
-      } else if (myStayResponse !== null) {
-        // One or both don't want to stay connected
-        setShowStayConnected(false);
-        handleSkip();
-      }
-    });
+    socket?.on(
+      "stay:connected:response",
+      ({ wantToStay, from }: { wantToStay: boolean; from: string }) => {
+        setPartnerWantsToStay(wantToStay);
 
-    socket?.on("stay:connected:request", ({ wantToStay, from }: { wantToStay: boolean, from: string }) => {
-      if (wantToStay) {
-        setShowStayConnected(true);
-      }
-    });
+        if (myStayResponse === true && wantToStay === true) {
+          // Both want to stay connected - add as friends
+          const success = addFriend({
+            id: from,
+            name: partnerName,
+            avatar: `https://images.pexels.com/photos/${Math.floor(Math.random() * 1000000)}/pexels-photo.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop`,
+            isOnline: true,
+          });
+
+          if (success) {
+            alert(
+              `🎉 You and ${partnerName} are now friends! You can find them in your Friends list.`,
+            );
+          } else {
+            alert(
+              `❌ Couldn't add ${partnerName} as friend. You've reached the free limit of 3 friends. Upgrade to Premium for unlimited friends!`,
+            );
+            setShowPaywall(true);
+          }
+
+          setShowStayConnected(false);
+          handleSkip();
+        } else if (myStayResponse !== null) {
+          // One or both don't want to stay connected
+          setShowStayConnected(false);
+          handleSkip();
+        }
+      },
+    );
+
+    socket?.on(
+      "stay:connected:request",
+      ({ wantToStay, from }: { wantToStay: boolean; from: string }) => {
+        if (wantToStay) {
+          setShowStayConnected(true);
+        }
+      },
+    );
 
     return () => {
       socket?.off("stay:connected:response");
@@ -734,10 +785,13 @@ export default function VideoChat() {
     socket?.on("peer:nego:needed", handleNegotiationIncomming);
     socket?.on("peer:nego:final", handleNegotiationFinal);
     socket?.on("partnerDisconnected", userDisConnected);
-    
-    socket?.on("partner:premium:status", ({ isPremium }: { isPremium: boolean }) => {
-      setPartnerPremium(isPremium);
-    });
+
+    socket?.on(
+      "partner:premium:status",
+      ({ isPremium }: { isPremium: boolean }) => {
+        setPartnerPremium(isPremium);
+      },
+    );
 
     return () => {
       socket?.off("user:connect", handleUserJoined);
@@ -755,14 +809,14 @@ export default function VideoChat() {
     handleNegotiationIncomming,
     handleUserJoined,
     socket,
-    userDisConnected
+    userDisConnected,
   ]);
 
   useEffect(() => {
     if (remoteChatToken && socket) {
-      socket.emit("send:premium:status", { 
-        isPremium, 
-        targetChatToken: remoteChatToken 
+      socket.emit("send:premium:status", {
+        isPremium,
+        targetChatToken: remoteChatToken,
       });
     }
   }, [isPremium, remoteChatToken, socket]);
@@ -796,33 +850,43 @@ export default function VideoChat() {
         peerservice.initPeer();
       }
     } catch (error) {
-      console.error('Error during cleanup:', error);
+      console.error("Error during cleanup:", error);
     } finally {
       navigate("/");
     }
   }, [myStream, navigate, screenStream, remoteStream]);
 
   const handleReport = (reason: string) => {
-    const count = Number(localStorage.getItem(`ajnabicam_reports_${remoteChatToken}`) || 0) + 1;
+    const count =
+      Number(
+        localStorage.getItem(`ajnabicam_reports_${remoteChatToken}`) || 0,
+      ) + 1;
     localStorage.setItem(`ajnabicam_reports_${remoteChatToken}`, String(count));
     setReportSubmitted(true);
     setShowReport(false);
     setShowReportEnd(false);
-    
+
     if (count >= 20) {
-      localStorage.setItem("ajnabicam_suspend_until", String(Date.now() + 24*60*60*1000));
+      localStorage.setItem(
+        "ajnabicam_suspend_until",
+        String(Date.now() + 24 * 60 * 60 * 1000),
+      );
       setSuspended(true);
     }
-    
+
     if (count < 20) {
-      alert("You have been reported. Please follow decency guidelines or your account may be suspended.");
+      alert(
+        "You have been reported. Please follow decency guidelines or your account may be suspended.",
+      );
     }
     setTimeout(() => setReportSubmitted(false), 2000);
   };
 
   const handleBlock = () => {
     if (remoteChatToken) {
-      let blocked = JSON.parse(localStorage.getItem("ajnabicam_blocked") || "[]");
+      let blocked = JSON.parse(
+        localStorage.getItem("ajnabicam_blocked") || "[]",
+      );
       if (!blocked.includes(remoteChatToken)) {
         blocked.push(remoteChatToken);
         localStorage.setItem("ajnabicam_blocked", JSON.stringify(blocked));
@@ -834,9 +898,13 @@ export default function VideoChat() {
   };
 
   useEffect(() => {
-    const blocked = JSON.parse(localStorage.getItem("ajnabicam_blocked") || "[]");
+    const blocked = JSON.parse(
+      localStorage.getItem("ajnabicam_blocked") || "[]",
+    );
     if (blocked.includes(remoteChatToken)) {
-      alert("You have blocked this user. You will not be matched with them again.");
+      alert(
+        "You have blocked this user. You will not be matched with them again.",
+      );
       handleSkip();
     }
   }, [remoteChatToken, handleSkip]);
@@ -852,8 +920,13 @@ export default function VideoChat() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-white">
         <div className="bg-rose-100 border border-rose-300 rounded-2xl p-8 shadow-xl flex flex-col items-center">
-          <h2 className="text-2xl font-bold text-rose-600 mb-4">Account Suspended</h2>
-          <p className="text-rose-500 text-center mb-4">Your account has been suspended for 24 hours due to excessive amounts of reports.</p>
+          <h2 className="text-2xl font-bold text-rose-600 mb-4">
+            Account Suspended
+          </h2>
+          <p className="text-rose-500 text-center mb-4">
+            Your account has been suspended for 24 hours due to excessive
+            amounts of reports.
+          </p>
           <p className="text-xs text-rose-400">Please try again later.</p>
         </div>
       </div>
@@ -865,19 +938,27 @@ export default function VideoChat() {
       {/* Enhanced Top Bar */}
       <div className="w-full bg-white shadow-sm px-4 py-4 z-20 border-b border-pink-100">
         <div className="flex items-center justify-between">
-          <Button variant="ghost" className="rounded-full p-2 hover:bg-rose-50" onClick={handleCleanup}>
+          <Button
+            variant="ghost"
+            className="rounded-full p-2 hover:bg-rose-50"
+            onClick={handleCleanup}
+          >
             <ArrowLeft size={22} className="text-rose-500" />
           </Button>
-          
+
           <div className="flex-1 flex justify-center">
             <div className="text-center">
-              <span className="font-bold text-xl text-rose-600 tracking-wide block">AjnabiCam</span>
+              <span className="font-bold text-xl text-rose-600 tracking-wide block">
+                AjnabiCam
+              </span>
               {isFriendCall && (
-                <span className="text-xs text-green-600 font-medium">Friend Call</span>
+                <span className="text-xs text-green-600 font-medium">
+                  Friend Call
+                </span>
               )}
             </div>
           </div>
-          
+
           <Button
             onClick={() => setShowTreasureChest(true)}
             disabled={coinsLoading}
@@ -904,12 +985,14 @@ export default function VideoChat() {
 
       {/* Video Streams */}
       <div className="flex-1 flex flex-col items-center justify-start w-full px-2 pb-32 pt-2 relative">
-        <div className="w-full h-[50vh] rounded-3xl shadow-2xl bg-black/80 overflow-hidden relative border border-pink-100 flex items-center justify-center">
+        <div className="w-full h-[65vh] rounded-3xl shadow-2xl bg-black/80 overflow-hidden relative border border-pink-100 flex items-center justify-center">
           {remoteStream ? (
             isVoiceOnly ? (
               <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-blue-400 to-teal-400">
                 <div className="text-7xl mb-2">🎙️</div>
-                <p className="text-white text-lg font-semibold drop-shadow">{partnerName}'s Voice</p>
+                <p className="text-white text-lg font-semibold drop-shadow">
+                  {partnerName}'s Voice
+                </p>
                 {isFriendCall && (
                   <div className="mt-2 bg-green-500 px-3 py-1 rounded-full">
                     <span className="text-white text-sm font-bold">Friend</span>
@@ -930,11 +1013,13 @@ export default function VideoChat() {
             <div className="flex flex-col items-center justify-center w-full h-full bg-gray-300">
               <ClipLoader color={loaderColor} size={40} />
               <p className="text-gray-500 mt-2 text-xs">
-                {isFriendCall ? `Calling ${partnerName}...` : "Waiting for user to connect..."}
+                {isFriendCall
+                  ? `Calling ${partnerName}...`
+                  : "Waiting for user to connect..."}
               </p>
             </div>
           )}
-          
+
           {/* My stream as PiP */}
           {myStream && !isVoiceOnly && (
             <div className="absolute bottom-4 right-4 w-20 h-32 bg-black/80 rounded-xl shadow-lg border-2 border-white z-30 flex items-center justify-center">
@@ -952,16 +1037,20 @@ export default function VideoChat() {
           {/* Friend indicator overlay */}
           {isFriendCall && remoteStream && (
             <div className="absolute top-4 left-4 bg-green-500 px-3 py-1 rounded-full z-30">
-              <span className="text-white text-sm font-bold">👥 Friend Call</span>
+              <span className="text-white text-sm font-bold">
+                👥 Friend Call
+              </span>
             </div>
           )}
         </div>
-        
+
         {/* Voice only card */}
         {myStream && isVoiceOnly && (
           <div className="w-full h-24 rounded-3xl shadow-2xl bg-gradient-to-br from-purple-400 to-pink-400 overflow-hidden relative border border-rose-100 mt-4 flex flex-col items-center justify-center">
             <div className="text-4xl mb-1">🎙️</div>
-            <p className="text-white text-sm font-semibold drop-shadow">Your Voice</p>
+            <p className="text-white text-sm font-semibold drop-shadow">
+              Your Voice
+            </p>
             {isPremium && (
               <div className="flex items-center gap-1 bg-yellow-400 px-2 py-1 rounded-full text-xs font-bold text-white mt-1">
                 <Crown className="h-3 w-3" /> PREMIUM
@@ -969,82 +1058,75 @@ export default function VideoChat() {
             )}
           </div>
         )}
-
-        {/* Messages Section */}
-        <div className="w-full h-[30vh] mt-4 rounded-2xl shadow-lg border border-pink-100 overflow-hidden">
-          <Messages
-            remoteChatToken={remoteChatToken}
-            messagesArray={messagesArray}
-            setMessagesArray={setMessagesArray}
-          />
-        </div>
       </div>
 
       {/* Controls */}
       <div className="fixed bottom-0 left-0 w-full z-40 flex flex-col items-center pb-4 max-w-md mx-auto">
-        <div className="w-full flex flex-row justify-between items-center gap-2 bg-white rounded-2xl shadow-2xl px-3 py-2 border border-pink-100">
-          <Button 
-            className="flex-1 mx-1 p-3 bg-rose-500 text-white rounded-xl text-lg font-bold shadow-md" 
-            onClick={handleSkip} 
+        <div className="w-full flex flex-row justify-center items-center gap-2 bg-white rounded-2xl shadow-2xl px-3 py-2 border border-pink-100">
+          <Button
+            className="flex-1 mx-1 p-3 bg-rose-500 text-white rounded-xl text-lg font-bold shadow-md"
+            onClick={handleSkip}
             disabled={remoteChatToken === null}
           >
             <SkipForward size={22} />
             <span className="ml-2">{isFriendCall ? "End" : "Skip"}</span>
           </Button>
-          
-          <Button 
+
+          <Button
             className={`flex-1 mx-1 p-3 rounded-xl text-lg font-bold shadow-md flex items-center justify-center ${
-              isCameraOn ? 'bg-gray-200 text-rose-500' : 'bg-rose-500 text-white'
-            }`} 
+              isCameraOn
+                ? "bg-gray-200 text-rose-500"
+                : "bg-rose-500 text-white"
+            }`}
             onClick={toggleCamera}
           >
             {isCameraOn ? <Video size={22} /> : <VideoOff size={22} />}
           </Button>
-          
-          <Button 
+
+          <Button
             className={`flex-1 mx-1 p-3 rounded-xl text-lg font-bold shadow-md flex items-center justify-center ${
-              isMicOn ? 'bg-gray-200 text-rose-500' : 'bg-rose-500 text-white'
-            }`} 
+              isMicOn ? "bg-gray-200 text-rose-500" : "bg-rose-500 text-white"
+            }`}
             onClick={toggleMic}
           >
             {isMicOn ? <Mic size={22} /> : <MicOff size={22} />}
           </Button>
-          
-          <Button 
-            className="flex-1 mx-1 p-3 bg-fuchsia-500 text-white rounded-xl text-lg font-bold shadow-md" 
+
+          <Button
+            className="flex-1 mx-1 p-3 bg-fuchsia-500 text-white rounded-xl text-lg font-bold shadow-md"
             onClick={handleScreenShare}
           >
             <ScreenShare size={22} />
           </Button>
         </div>
-        
+
         {/* Premium Voice-Only Toggle */}
         {isPremium && remoteChatToken && (
           <div className="w-full flex justify-center mt-2">
-            <Button 
+            <Button
               className={`px-6 py-2 rounded-xl font-semibold shadow-md ${
-                isVoiceOnly 
-                  ? 'bg-purple-500 text-white' 
-                  : 'bg-white text-purple-500 border border-purple-300'
+                isVoiceOnly
+                  ? "bg-purple-500 text-white"
+                  : "bg-white text-purple-500 border border-purple-300"
               }`}
               onClick={toggleVoiceOnlyMode}
             >
               <Phone className="h-4 w-4 mr-2" />
-              {isVoiceOnly ? 'Switch to Video' : 'Voice Only'}
+              {isVoiceOnly ? "Switch to Video" : "Voice Only"}
             </Button>
           </div>
         )}
-        
+
         {!isFriendCall && (
-          <div className="w-full flex flex-row gap-2 mt-2">
-            <Button 
-              className="flex-1 bg-gray-100 text-gray-700 font-semibold rounded-xl" 
+          <div className="w-full flex flex-row justify-center gap-2 mt-2">
+            <Button
+              className="bg-gray-100 text-gray-700 font-semibold rounded-xl px-6 py-2"
               onClick={() => setShowBlock(true)}
             >
               Block
             </Button>
-            <Button 
-              className="flex-1 bg-rose-100 text-rose-700 font-semibold rounded-xl" 
+            <Button
+              className="bg-rose-100 text-rose-700 font-semibold rounded-xl px-6 py-2"
               onClick={() => setShowReport(true)}
             >
               Report
@@ -1058,7 +1140,9 @@ export default function VideoChat() {
         <FriendNotification
           friendName={friendNotification.friendName}
           onCall={() => handleFriendCall(friendNotification.friendId)}
-          onDismiss={() => setFriendNotification({ show: false, friendName: '', friendId: '' })}
+          onDismiss={() =>
+            setFriendNotification({ show: false, friendName: "", friendId: "" })
+          }
         />
       )}
 
@@ -1068,7 +1152,7 @@ export default function VideoChat() {
         onClose={() => setShowPaywall(false)}
         onPurchase={handlePremiumPurchase}
       />
-      
+
       <TreasureChest
         isOpen={showTreasureChest}
         onClose={() => setShowTreasureChest(false)}
@@ -1080,7 +1164,7 @@ export default function VideoChat() {
         onStayConnected={handleStayConnected}
         partnerName={partnerName}
       />
-      
+
       <ReportUserModal
         isOpen={showReport}
         onClose={() => setShowReport(false)}
@@ -1096,7 +1180,7 @@ export default function VideoChat() {
         onClose={() => setShowBlock(false)}
         onBlock={handleBlock}
       />
-      
+
       {/* Toast notifications */}
       {reportSubmitted && (
         <div className="fixed bottom-32 left-1/2 -translate-x-1/2 bg-green-100 text-green-700 px-4 py-2 rounded-full shadow-lg z-50">
