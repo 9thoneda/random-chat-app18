@@ -30,7 +30,14 @@ interface SpinResult {
 
 const SpinWheel: React.FC = () => {
   const navigate = useNavigate();
-  const { coins, addCoins, watchAd, adsWatchedToday, maxAdsPerDay } = useCoin();
+  const coinContext = useCoin();
+  const {
+    coins = 0,
+    addCoins,
+    watchAd,
+    adsWatchedToday = 0,
+    maxAdsPerDay = 5,
+  } = coinContext || {};
   const wheelRef = useRef<HTMLDivElement>(null);
 
   const [isSpinning, setIsSpinning] = useState(false);
