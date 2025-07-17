@@ -13,6 +13,8 @@ import {
   MessageCircle,
   Star,
   Heart,
+  Palette,
+  Camera,
 } from "lucide-react";
 import BottomNavBar from "../components/BottomNavBar";
 import { useFriends } from "../context/FriendsProvider";
@@ -144,12 +146,10 @@ const PersonalChat = ({
     { fromMe: false, text: chat.lastMessage, time: chat.time },
   ]);
   const [input, setInput] = useState("");
-
   const [showMenu, setShowMenu] = useState(false);
   const [showWallpaperModal, setShowWallpaperModal] = useState(false);
   const [showPhotoInput, setShowPhotoInput] = useState(false);
   const [currentWallpaper, setCurrentWallpaper] = useState(chat.wallpaper);
-
 
   useEffect(() => {
     setMessages([{ fromMe: false, text: chat.lastMessage, time: chat.time }]);
@@ -225,12 +225,9 @@ const PersonalChat = ({
   };
 
   return (
-
     <div
       className={`max-w-md mx-auto h-screen shadow-xl overflow-hidden flex flex-col relative pb-20 ${getWallpaperClass()}`}
     >
-    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-slate-50 via-white to-rose-50 shadow-xl overflow-hidden flex flex-col relative pb-20">
-
       {/* Enhanced Header */}
       <div className="p-4 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 flex items-center shadow-lg relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-white/10 to-white/5"></div>
@@ -269,7 +266,6 @@ const PersonalChat = ({
           </span>
         </div>
 
-        
         <div className="relative">
           <button
             onClick={() => setShowMenu(!showMenu)}
@@ -301,18 +297,10 @@ const PersonalChat = ({
             </div>
           )}
         </div>
-
-        
-        <button className="text-white hover:scale-110 transition-all duration-200 p-2 rounded-full hover:bg-white/20">
-          <MoreVertical size={20} />
-        </button>
-
       </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-
-        
         {messages.map((msg, idx) =>
           msg.photoUrl ? (
             <PhotoMessage
@@ -347,35 +335,15 @@ const PersonalChat = ({
                 >
                   {msg.time}
                 </div>
-
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`flex ${msg.fromMe ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`px-4 py-3 rounded-2xl max-w-xs shadow-sm transition-all duration-200 hover:shadow-md ${
-                msg.fromMe
-                  ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white"
-                  : "bg-white/90 backdrop-blur-sm text-gray-800 border border-gray-100"
-              }`}
-            >
-              <div className="leading-relaxed">{msg.text}</div>
-              <div
-                className={`text-xs text-right mt-1 ${msg.fromMe ? "text-purple-100" : "text-gray-400"}`}
-              >
-                                {msg.time}
               </div>
             </div>
-          </div>
-        ))}
+          ),
+        )}
       </div>
 
       {/* Enhanced Input */}
       <div className="p-4 bg-white/90 backdrop-blur-sm flex items-center border-t border-gray-100 shadow-lg">
-
-                    
-                    <button
+        <button
           onClick={() => setShowPhotoInput(true)}
           className="mr-3 p-3 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
         >
