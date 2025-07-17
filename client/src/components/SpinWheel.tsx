@@ -511,9 +511,9 @@ const SpinWheel: React.FC = () => {
           <div className="h-safe-bottom bg-black/20"></div>
         </div>
       </div>
-    </div>
+        </div>
 
-      {/* Enhanced Result Modal - Native Style */}
+    {/* Enhanced Result Modal - Native Style */}
       {showResult && result && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-6">
           <div className="relative w-full max-w-sm">
