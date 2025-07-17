@@ -324,38 +324,6 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* Testimonials Carousel */}
-          <div className="w-full mb-6">
-            <div className="bg-gradient-to-br from-white/95 to-rose-50/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-rose-200/50 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-500"></div>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-crimson-400 to-rose-500 rounded-full flex items-center justify-center shadow-md">
-                  <span className="text-white font-bold text-sm">
-                    {testimonials[currentTestimonial].name[0]}
-                  </span>
-                </div>
-                <div>
-                  <div className="font-semibold text-rose-800">
-                    {testimonials[currentTestimonial].name}
-                  </div>
-                  <div className="flex gap-1">
-                    {[...Array(testimonials[currentTestimonial].rating)].map(
-                      (_, i) => (
-                        <Star
-                          key={i}
-                          className="h-3 w-3 text-gold-500 fill-current"
-                        />
-                      ),
-                    )}
-                  </div>
-                </div>
-              </div>
-              <p className="text-rose-700 text-sm italic font-medium">
-                "{testimonials[currentTestimonial].text}"
-              </p>
-            </div>
-          </div>
-
           {/* Quick Actions */}
           <div className="w-full grid grid-cols-2 gap-3 mb-6">
             <Button
