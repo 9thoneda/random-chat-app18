@@ -421,48 +421,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Enhanced Gender Filter */}
-          <div className="w-full mb-6">
-            <GenderFilter
-              isPremium={isPremium}
-              onGenderSelect={(gender: string) => {
-                console.log("Selected gender:", gender);
-              }}
-              onUpgrade={handleUpgrade}
-            />
-          </div>
-
-          {/* Enhanced Main Action Button */}
-          <div className="w-full mb-4">
-            <Button
-              className={`w-full py-6 text-xl font-bold rounded-3xl text-white shadow-2xl transform transition-all duration-300 relative overflow-hidden ${
-                isConnecting
-                  ? "bg-gradient-to-r from-green-500 to-emerald-600 scale-95"
-                  : "bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 hover:scale-105 hover:shadow-3xl"
-              }`}
-              onClick={handleStartCall}
-              disabled={isConnecting}
-            >
-              {/* Button Background Animation */}
-              <div className="absolute inset-0 bg-gradient-to-r from-gold-200/30 via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-
-              <div className="relative z-10 flex items-center justify-center gap-3">
-                {isConnecting ? (
-                  <>
-                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Finding your match...</span>
-                  </>
-                ) : (
-                  <>
-                    <Heart className="h-6 w-6" />
-                    <span>{t("home.start")}</span>
-                    <Sparkles className="h-5 w-5" />
-                  </>
-                )}
-              </div>
-            </Button>
-          </div>
-
           {/* Quick Actions */}
           <div className="w-full grid grid-cols-2 gap-3 mb-6">
             <Button
