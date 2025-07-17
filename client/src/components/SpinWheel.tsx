@@ -315,15 +315,15 @@ const SpinWheel: React.FC = () => {
         {/* Main Content Area - Native Scrollable */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Title Section */}
-          <div className="text-center py-6 px-4">
-            <div className="flex justify-center mb-4">
+          <div className="text-center py-4 sm:py-6 px-4">
+            <div className="flex justify-center mb-3 sm:mb-4">
               <div className="relative">
-                <div className="text-6xl animate-bounce">🎰</div>
-                <div className="absolute -top-2 -right-2 text-2xl animate-ping">
+                <div className="text-5xl sm:text-6xl animate-bounce">🎰</div>
+                <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 text-xl sm:text-2xl animate-ping">
                   ✨
                 </div>
                 <div
-                  className="absolute -bottom-2 -left-2 text-xl animate-ping"
+                  className="absolute -bottom-1 -left-1 sm:-bottom-2 sm:-left-2 text-lg sm:text-xl animate-ping"
                   style={{ animationDelay: "0.5s" }}
                 >
                   ⭐
@@ -331,16 +331,16 @@ const SpinWheel: React.FC = () => {
               </div>
             </div>
 
-            <h1 className="text-3xl font-extrabold text-white mb-2 drop-shadow-lg">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 drop-shadow-lg leading-tight">
               Spin & Win Fortune!
             </h1>
 
-            <p className="text-white/90 font-medium text-lg drop-shadow-md">
-              🎲 Test your luck and win amazing rewards! 🎲
+            <p className="text-white/90 font-medium text-base sm:text-lg drop-shadow-md">
+              🎲 Test your luck and win rewards! 🎲
             </p>
 
-            {/* Daily Spin Counter - Native Card Style */}
-            <div className="mt-6 mx-4 bg-white/20 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/30">
+            {/* Responsive Daily Spin Counter */}
+            <div className="mt-4 sm:mt-6 mx-2 sm:mx-4 bg-white/20 backdrop-blur-lg rounded-2xl px-4 sm:px-6 py-3 sm:py-4 border border-white/30">
               <div className="flex items-center gap-3 justify-center">
                 <div className="bg-white/30 p-2 rounded-full">
                   <TrendingUp className="h-5 w-5 text-white" />
