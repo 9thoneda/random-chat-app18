@@ -243,6 +243,47 @@ export default function Home() {
           </div>
         </header>
 
+        {/* Enhanced Banner Carousel - Moved to top as Ad */}
+        <div className="w-full relative">
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-1000 ease-in-out"
+              style={{
+                transform: `translateX(-${currentBannerIndex * 100}%)`,
+              }}
+            >
+              {bannerImages.map((image, index) => (
+                <div key={index} className="w-full flex-shrink-0 relative">
+                  <img
+                    src={image}
+                    alt={`Ad Banner ${index + 1}`}
+                    className="w-full h-24 object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-2 left-4 text-white">
+                    <p className="text-xs opacity-90">Advertisement</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Enhanced Carousel Dots */}
+          <div className="absolute bottom-1 right-2 flex gap-1">
+            {bannerImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentBannerIndex(index)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  currentBannerIndex === index
+                    ? "bg-white w-4"
+                    : "bg-white/60 w-1.5"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
         <div className="flex-1 flex flex-col px-6 py-6 relative z-10">
           {/* App Name & Tagline */}
           <div className="mb-6 text-center">
@@ -302,50 +343,6 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* Enhanced Banner Carousel */}
-          <div className="w-full mb-6 relative">
-            <div className="overflow-hidden rounded-3xl shadow-2xl border-4 border-white">
-              <div
-                className="flex transition-transform duration-1000 ease-in-out"
-                style={{
-                  transform: `translateX(-${currentBannerIndex * 100}%)`,
-                }}
-              >
-                {bannerImages.map((image, index) => (
-                  <div key={index} className="w-full flex-shrink-0 relative">
-                    <img
-                      src={image}
-                      alt={`Banner ${index + 1}`}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <h3 className="font-bold text-lg">Find Your Soulmate</h3>
-                      <p className="text-sm opacity-90">
-                        Where hearts connect across India
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Enhanced Carousel Dots */}
-            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2">
-              {bannerImages.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentBannerIndex(index)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    currentBannerIndex === index
-                      ? "bg-white w-8 shadow-lg"
-                      : "bg-white/60 w-2"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
           {/* Stats Section */}
           <div className="w-full grid grid-cols-3 gap-3 mb-6">
             {stats.map((stat, index) => (
@@ -362,31 +359,6 @@ export default function Home() {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Enhanced Features Grid */}
-          <div className="w-full grid grid-cols-3 gap-3 mb-6">
-            <div className="bg-gradient-to-br from-rose-100 to-pink-100 rounded-2xl p-4 text-center shadow-lg border border-rose-200 hover:scale-105 hover:shadow-xl transition-all duration-300 hover:from-rose-150 hover:to-pink-150">
-              <Video className="h-8 w-8 mx-auto mb-2 text-rose-600" />
-              <div className="font-bold text-sm text-rose-700">
-                {t("home.features.hd")}
-              </div>
-              <div className="text-xs text-rose-500">See every smile</div>
-            </div>
-            <div className="bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl p-4 text-center shadow-lg border border-emerald-200 hover:scale-105 hover:shadow-xl transition-all duration-300 hover:from-emerald-150 hover:to-green-150">
-              <Shield className="h-8 w-8 mx-auto mb-2 text-green-600" />
-              <div className="font-bold text-sm text-green-700">
-                {t("home.features.secure")}
-              </div>
-              <div className="text-xs text-green-500">Your moments, secure</div>
-            </div>
-            <div className="bg-gradient-to-br from-purple-100 to-indigo-100 rounded-2xl p-4 text-center shadow-lg border border-purple-200 hover:scale-105 hover:shadow-xl transition-all duration-300 hover:from-purple-150 hover:to-indigo-150">
-              <Zap className="h-8 w-8 mx-auto mb-2 text-purple-600" />
-              <div className="font-bold text-sm text-purple-700">
-                {t("home.features.instant")}
-              </div>
-              <div className="text-xs text-purple-500">Find your spark</div>
-            </div>
           </div>
 
           {/* Testimonials Carousel */}
