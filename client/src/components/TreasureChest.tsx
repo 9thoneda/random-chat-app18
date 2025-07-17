@@ -182,48 +182,37 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
     }
   };
 
-  const earningMethods = [
+    const earningMethods = [
     {
       id: "daily",
       title: "Daily Login Bonus",
-      coins: 5,
+      coins: 10,
       icon: Calendar,
-      color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50",
-      description: "Open the app daily",
+      color: "from-sindoor-500 to-gulmohar-600",
+      bgColor: "bg-gradient-to-br from-sindoor-25 to-gulmohar-25",
+      description: "Open the app daily for rewards",
       action: claimDailyBonus,
       available: canClaimDailyBonus,
-      buttonText: canClaimDailyBonus ? "Claim 5 Coins" : "Claimed Today",
+      buttonText: canClaimDailyBonus ? "🎁 Earn +10 Coins" : "✅ Claimed Today",
       streak: currentStreak,
+      highlight: "Earn +10",
     },
     {
       id: "ads",
       title: "Watch Rewarded Ads",
-      coins: 10,
+      coins: 15,
       icon: Play,
-      color: "from-green-500 to-emerald-600",
-      bgColor: "bg-green-50",
-      description: `Up to ${maxAdsPerDay} times per day`,
+      color: "from-jasmine-500 to-henna-600",
+      bgColor: "bg-gradient-to-br from-jasmine-25 to-henna-25",
+      description: `Watch ads and earn instant coins`,
       action: watchAd,
       available: adsWatchedToday < maxAdsPerDay,
       buttonText:
         adsWatchedToday < maxAdsPerDay
-          ? `Watch Ad (${maxAdsPerDay - adsWatchedToday} left)`
-          : "Daily Limit Reached",
+          ? `🎯 Earn +15 Coins (${maxAdsPerDay - adsWatchedToday} left)`
+          : "✅ Daily Limit Reached",
       progress: `${adsWatchedToday}/${maxAdsPerDay} today`,
-    },
-    {
-      id: "chat",
-      title: "Complete Video/Voice Chats",
-      coins: 3,
-      icon: Video,
-      color: "from-pink-500 to-rose-600",
-      bgColor: "bg-pink-50",
-      description: "Per completed chat",
-      action: completeChat,
-      available: true,
-      buttonText: "Complete a Chat",
-      automatic: true,
+      highlight: "Earn +15",
     },
   ];
 
@@ -254,42 +243,39 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
             <X size={22} />
           </Button>
 
-          {/* Animated Treasure Chest */}
+                    {/* Attractive Diamond Icon */}
           <div className="flex justify-center mb-4">
             <div
               className={`relative ${isAnimating ? "animate-bounce" : ""} transform hover:scale-110 transition-transform duration-300`}
             >
-              <div className="w-24 h-20 bg-gradient-to-br from-rose-500 via-pink-600 to-purple-600 rounded-xl relative overflow-hidden shadow-2xl border-2 border-yellow-300">
-                <div className="absolute inset-0 bg-gradient-to-br from-rose-400 via-pink-500 to-purple-500"></div>
-                <div
-                  className={`absolute top-0 left-0 right-0 h-8 bg-gradient-to-br from-rose-300 via-pink-400 to-purple-400 rounded-t-xl transform-gpu transition-transform duration-500 ${isAnimating ? "rotate-12 -translate-y-3" : ""}`}
-                ></div>
-                <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-yellow-300 rounded-full border border-yellow-500 shadow-sm"></div>
+              <div className="w-24 h-24 bg-gradient-to-br from-sindoor-400 via-gulmohar-500 to-jasmine-400 rounded-2xl relative overflow-hidden shadow-2xl border-3 border-jasmine-300 flex items-center justify-center">
+                <Diamond className="h-12 w-12 text-white drop-shadow-lg" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/10 rounded-2xl"></div>
                 {isAnimating && (
                   <>
-                    <div className="absolute -top-3 -left-3 text-yellow-400 text-xl animate-ping">
+                    <div className="absolute -top-3 -left-3 text-jasmine-300 text-xl animate-ping">
                       ✨
                     </div>
                     <div
-                      className="absolute -top-4 -right-2 text-orange-400 text-lg animate-ping"
+                      className="absolute -top-4 -right-2 text-sindoor-300 text-lg animate-ping"
                       style={{ animationDelay: "0.2s" }}
                     >
-                      ✨
+                      💎
                     </div>
                     <div
-                      className="absolute -top-2 left-1/2 text-yellow-300 text-lg animate-ping"
+                      className="absolute -top-2 left-1/2 text-gulmohar-300 text-lg animate-ping"
                       style={{ animationDelay: "0.4s" }}
                     >
                       ✨
                     </div>
                     <div
-                      className="absolute -bottom-1 -left-2 text-pink-400 text-sm animate-ping"
+                      className="absolute -bottom-1 -left-2 text-jasmine-400 text-sm animate-ping"
                       style={{ animationDelay: "0.6s" }}
                     >
-                      ✨
+                      💫
                     </div>
                     <div
-                      className="absolute -bottom-2 -right-1 text-purple-400 text-sm animate-ping"
+                      className="absolute -bottom-2 -right-1 text-sindoor-400 text-sm animate-ping"
                       style={{ animationDelay: "0.8s" }}
                     >
                       ✨
@@ -325,14 +311,15 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
             </div>
           )}
 
-          {/* Spin Wheel Button */}
+                    {/* Spin Wheel Button */}
           <div className="mt-3">
             <button
               onClick={() => {
                 onClose();
                 navigate("/spin-wheel");
               }}
-              className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-bounce"
+              className="bg-gradient-to-r from-sindoor-500 via-gulmohar-500 to-jasmine-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              style={{ animation: "bounce 1s infinite" }}
             >
               <div className="flex items-center gap-2">
                 <RotateCcw className="h-5 w-5" />
@@ -443,66 +430,45 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
               ))}
             </div>
 
-            {/* Trust Signals */}
-            <div className="grid grid-cols-3 gap-2 text-center text-xs">
-              <div className="flex flex-col items-center p-2 bg-green-50 rounded-lg">
-                <Shield className="h-4 w-4 text-green-600 mb-1" />
-                <span className="text-green-700 font-semibold">
-                  Secure Payment
-                </span>
-              </div>
-              <div className="flex flex-col items-center p-2 bg-blue-50 rounded-lg">
-                <Zap className="h-4 w-4 text-blue-600 mb-1" />
-                <span className="text-blue-700 font-semibold">
-                  Instant Delivery
-                </span>
-              </div>
-              <div className="flex flex-col items-center p-2 bg-purple-50 rounded-lg">
-                <Heart className="h-4 w-4 text-purple-600 mb-1" />
-                <span className="text-purple-700 font-semibold">
-                  Best Value
-                </span>
-              </div>
-            </div>
+            
           </div>
 
-          {/* Earn Free Coins Section - Condensed */}
+                    {/* Enhanced Free Coins Section */}
           <div className="space-y-3">
-            <h3 className="font-bold text-green-800 text-center flex items-center justify-center gap-2 text-base">
-              <div className="bg-green-100 p-1.5 rounded-full">
-                <Gift className="h-5 w-5 text-green-600" />
+            <h3 className="font-bold text-sindoor-800 text-center flex items-center justify-center gap-2 text-base">
+              <div className="bg-gradient-to-r from-sindoor-100 to-gulmohar-100 p-2 rounded-full shadow-md">
+                <Gift className="h-6 w-6 text-sindoor-600" />
               </div>
-              🎁 Free Coins
+              🎁 Free Coins - No Payment!
             </h3>
 
             <div className="grid grid-cols-1 gap-2">
               {earningMethods.map((method) => (
-                <div
+                                <div
                   key={method.id}
-                  className={`${method.bgColor} rounded-xl p-3 border-2 border-opacity-30 shadow-sm hover:shadow-md transition-all duration-300`}
+                  className={`${method.bgColor} rounded-xl p-4 border-2 border-sindoor-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-3">
                       <div
-                        className={`bg-gradient-to-r ${method.color} p-1.5 rounded-full shadow-md`}
+                        className={`bg-gradient-to-r ${method.color} p-2 rounded-full shadow-lg animate-pulse`}
                       >
-                        <method.icon className="h-4 w-4 text-white" />
+                        <method.icon className="h-6 w-6 text-white" />
                       </div>
-                      <div>
-                        <h4 className="font-bold text-gray-800 text-sm">
+                      <div className="flex-1">
+                        <h4 className="font-bold text-gray-800 text-base">
                           {method.title}
                         </h4>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-sm text-gray-600">
                           {method.description}
                         </p>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold text-sm text-green-600">
-                        +{method.coins}
+                      <div className="text-right">
+                        <div className="bg-gradient-to-r from-sindoor-500 to-gulmohar-500 text-white px-3 py-1 rounded-full font-bold text-sm shadow-md">
+                          {method.highlight}
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1">coins</div>
                       </div>
-                      <div className="text-xs text-gray-500">coins</div>
-                    </div>
                   </div>
 
                   {/* Progress or Status */}
@@ -522,14 +488,14 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
                     </div>
                   )}
 
-                  {/* Action Button */}
+                                    {/* Enhanced Action Button */}
                   {!method.automatic && (
                     <Button
                       onClick={method.action}
                       disabled={!method.available}
-                      className={`w-full font-bold py-1.5 rounded-lg shadow-md transition-all duration-300 text-sm ${
+                      className={`w-full font-bold py-3 rounded-xl shadow-lg transition-all duration-300 text-base transform hover:scale-105 ${
                         method.available
-                          ? `bg-gradient-to-r ${method.color} hover:shadow-lg text-white`
+                          ? `bg-gradient-to-r ${method.color} hover:shadow-xl text-white animate-pulse`
                           : "bg-gray-300 text-gray-500 cursor-not-allowed"
                       }`}
                     >
@@ -537,11 +503,7 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
                     </Button>
                   )}
 
-                  {method.automatic && (
-                    <div className="text-center text-xs text-gray-600 font-medium bg-gray-100 py-1.5 rounded-lg">
-                      ⚡ Earned automatically when you complete chats
-                    </div>
-                  )}
+                  
                 </div>
               ))}
             </div>
