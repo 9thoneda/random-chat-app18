@@ -330,7 +330,7 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
             <button
               onClick={() => {
                 onClose();
-                window.location.href = "/spin-wheel";
+                navigate("/spin-wheel");
               }}
               className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-bounce"
             >
