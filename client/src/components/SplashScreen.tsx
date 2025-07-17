@@ -106,10 +106,10 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 
         {/* Firebase Storage Connection Status */}
         {connectionStatus.showConnectionTest && (
-          <div className="mt-6 bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-orange-200 max-w-sm w-full">
+          <div className="mt-6 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-xl border border-passion-200 max-w-sm w-full">
             <div className="flex items-center gap-3">
-              <Database className="w-5 h-5 text-orange-600" />
-              <span className="font-semibold text-orange-800">
+              <Database className="w-5 h-5 text-passion-600" />
+              <span className="font-semibold text-romance-800">
                 Firebase Storage
               </span>
 
