@@ -446,7 +446,7 @@ const ChatPageContent = ({
   };
 
   return (
-    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 shadow-xl overflow-hidden flex flex-col relative pb-20">
+    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-passion-50 via-romance-25 to-bollywood-50 shadow-xl overflow-hidden flex flex-col relative pb-20">
       {/* Enhanced Header */}
       <div className="px-6 py-6 bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 text-white shadow-xl relative overflow-hidden">
         {/* Animated Background Elements */}
