@@ -250,9 +250,24 @@ export default function PhotoSharingInput({
                     className="flex-1 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700"
                   >
                     {isUploading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        Sending...
+                      <div className="flex flex-col items-center gap-1 w-full">
+                        <div className="flex items-center gap-2">
+                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          Uploading...
+                        </div>
+                        {uploadProgress > 0 && (
+                          <div className="w-full bg-white/20 rounded-full h-1">
+                            <div
+                              className="bg-white h-1 rounded-full transition-all duration-300"
+                              style={{ width: `${uploadProgress}%` }}
+                            ></div>
+                          </div>
+                        )}
+                        {uploadProgress > 0 && (
+                          <span className="text-xs text-white/80">
+                            {Math.round(uploadProgress)}%
+                          </span>
+                        )}
                       </div>
                     ) : (
                       <div className="flex items-center gap-2">
