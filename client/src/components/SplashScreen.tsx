@@ -75,7 +75,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-orange-100 to-orange-50 transition-opacity duration-500 ${isVisible ? "opacity-100" : "opacity-0"}`}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-passion-100 via-romance-50 to-bollywood-100 transition-opacity duration-500 ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
       <div className="flex flex-col items-center justify-center animate-fade-in">
         <div className="relative mb-8 transform hover:scale-105 transition-transform duration-300">
