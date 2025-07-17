@@ -86,16 +86,6 @@ function App() {
               );
             }
 
-            // Initialize coins if not present (for existing users)
-            try {
-              await initializeCoins(user.uid);
-            } catch (error) {
-              console.error(
-                "Error initializing coins for existing user:",
-                error,
-              );
-            }
-
             if (!userData.onboardingComplete) {
               // User exists but onboarding not complete
               navigate("/onboarding", { replace: true });
