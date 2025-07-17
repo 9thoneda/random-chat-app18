@@ -89,7 +89,7 @@ type Message = {
   time: string;
   isViewed?: boolean;
 };
-type Chat = (typeof initialChats)[number];
+
 
 const ChatPageWrapper = () => {
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
