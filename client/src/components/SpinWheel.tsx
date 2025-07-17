@@ -299,14 +299,23 @@ const SpinWheel: React.FC = () => {
             <div className="flex items-center justify-between px-4 py-3 h-14 min-h-[56px]">
               <button
                 onClick={() => {
-                  // Try to go back, fallback to home if no history
-                  if (window.history.length > 1) {
-                    navigate(-1);
-                  } else {
+                  console.log("Back button clicked");
+                  try {
+                    // First try to go back in history
+                    if (window.history.length > 1) {
+                      console.log("Navigating back in history");
+                      navigate(-1);
+                    } else {
+                      console.log("No history, navigating to home");
+                      navigate("/");
+                    }
+                  } catch (error) {
+                    console.error("Navigation error:", error);
+                    // Fallback to home page
                     navigate("/");
                   }
                 }}
-                className="flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors duration-300 bg-white/20 backdrop-blur-sm rounded-full touch-manipulation"
+                className="flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors duration-300 bg-white/20 backdrop-blur-sm rounded-full touch-manipulation active:scale-95"
               >
                 <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
               </button>
