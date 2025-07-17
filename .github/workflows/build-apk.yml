@@ -1,0 +1,76 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: |
+            package-lock.json
+            client/package-lock.json
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 33
+          build-tools: 33.0.0
+
+      - name: Install root dependencies
+        run: npm install
+
+      - name: Install client dependencies
+        run: |
+          cd client
+          npm install
+
+      - name: Build web application
+        run: |
+          cd client
+          npm run build
+
+      - name: Sync Capacitor
+        run: |
+          cd client
+          npx cap sync android
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x client/android/gradlew
+
+      - name: Build debug APK
+        run: |
+          cd client/android
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ajnabicam-debug-apk
+          path: client/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+
+      - name: Build summary
+        run: |
+          echo "## 📱 APK Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Build Status**: Success" >> $GITHUB_STEP_SUMMARY
+          echo "📦 **Debug APK**: Available for download" >> $GITHUB_STEP_SUMMARY
