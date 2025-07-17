@@ -260,12 +260,13 @@ const SpinWheel: React.FC = () => {
     localStorage.setItem("spinsToday", "0");
   };
 
-  return (
-    /* Responsive Mobile App Layout - 360dp x 640dp reference */
-        <div
-      className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 w-full max-w-sm mx-auto relative"
-      style={{ maxWidth: "360px" }}
-    >
+    return (
+    <>
+      {/* Scrollable Mobile App Layout - 360dp x 640dp reference */}
+      <div
+        className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 w-full max-w-sm mx-auto relative"
+        style={{ maxWidth: "360px" }}
+      >
       {/* Fixed Animated Background */}
       <div className="fixed inset-0 overflow-hidden max-w-sm mx-auto" style={{ maxWidth: "360px" }}>
         <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
