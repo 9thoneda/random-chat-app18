@@ -151,6 +151,26 @@ export default function PhotoSharingInput({
                   </Button>
                 </div>
 
+                {/* Error display */}
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 mt-4">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle
+                        size={20}
+                        className="text-red-600 flex-shrink-0 mt-0.5"
+                      />
+                      <div>
+                        <h4 className="font-semibold text-red-800 text-sm mb-1">
+                          Upload Error
+                        </h4>
+                        <p className="text-red-700 text-xs leading-relaxed">
+                          {error}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Privacy notice */}
                 <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mt-6">
                   <div className="flex items-start gap-3">
