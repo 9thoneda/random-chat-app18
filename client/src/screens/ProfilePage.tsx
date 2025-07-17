@@ -57,7 +57,7 @@ const ProfilePage: React.FC = () => {
   const { friends, removeFriend, canAddMoreFriends, maxFreeLimit } =
     useFriends();
   const { isPremium, setPremium, premiumExpiry } = usePremium();
-  const { coins: firestoreCoins, isLoading: coinsLoading } = useCoin();
+  const { coins, isLoading: coinsLoading } = useCoin();
   const { t } = useLanguage();
 
   const [username, setUsername] = useState<string>("User");
