@@ -23,6 +23,16 @@ export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
 
 // Analytics only works in HTTPS / production
-export const analytics = (await isSupported().catch(() => false))
-  ? getAnalytics(firebaseApp)
-  : null;
+// Initialize analytics asynchronously to avoid top-level await
+let analytics: any = null;
+isSupported()
+  .then((supported) => {
+    if (supported) {
+      analytics = getAnalytics(firebaseApp);
+    }
+  })
+  .catch(() => {
+    analytics = null;
+  });
+
+export { analytics };
