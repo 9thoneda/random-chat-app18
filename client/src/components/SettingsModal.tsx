@@ -294,56 +294,9 @@ export default function SettingsModal({ isOpen, onClose, settingType }: Settings
       </div>
 
       <div className="space-y-3">
-        <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-3">
-            <Lock className="h-5 w-5 text-green-600" />
-            <div>
-              <span className="font-medium text-gray-800">Two-Factor Authentication</span>
-              <p className="text-xs text-gray-500">Add extra security to your account</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setAccountSettings(prev => ({ ...prev, twoFactorAuth: !prev.twoFactorAuth }))}
-            className={`w-12 h-6 rounded-full transition-colors ${
-              accountSettings.twoFactorAuth ? 'bg-green-500' : 'bg-gray-300'
-            }`}
-          >
-            <div className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform ${
-              accountSettings.twoFactorAuth ? 'translate-x-6' : 'translate-x-0.5'
-            }`} />
-          </button>
-        </div>
-
-        <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-3">
-            <Bell className="h-5 w-5 text-blue-600" />
-            <div>
-              <span className="font-medium text-gray-800">Login Alerts</span>
-              <p className="text-xs text-gray-500">Get notified of new login attempts</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setAccountSettings(prev => ({ ...prev, loginAlerts: !prev.loginAlerts }))}
-            className={`w-12 h-6 rounded-full transition-colors ${
-              accountSettings.loginAlerts ? 'bg-green-500' : 'bg-gray-300'
-            }`}
-          >
-            <div className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform ${
-              accountSettings.loginAlerts ? 'translate-x-6' : 'translate-x-0.5'
-            }`} />
-          </button>
-        </div>
-
         <div className="bg-yellow-50 rounded-xl p-4 border border-yellow-200">
           <h5 className="font-semibold text-yellow-800 mb-3">Data Management</h5>
           <div className="space-y-3">
-            <Button
-              onClick={() => alert('📥 Your data download will be ready in 24-48 hours. We\'ll send you an email when it\'s ready!')}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl"
-            >
-              Download My Data
-            </Button>
-            
             <Button
               onClick={() => {
                 if (confirm('⚠️ Are you sure you want to delete your account? This action cannot be undone.')) {

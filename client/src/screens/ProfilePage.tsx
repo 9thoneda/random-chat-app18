@@ -177,8 +177,8 @@ const ProfilePage: React.FC = () => {
       {/* Profile Image Section */}
       <div className="flex flex-col items-center">
         <div className="relative group">
-          <div className="w-32 h-32 rounded-full bg-gradient-to-br from-rose-200 to-pink-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
-            <div className="absolute inset-0 rounded-full border-2 border-rose-400 animate-ping opacity-20"></div>
+          <div className="w-full h-64 rounded-lg bg-gradient-to-br from-rose-200 to-pink-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
+            <div className="absolute inset-0 rounded-lg border-2 border-rose-400 animate-ping opacity-20"></div>
             {profileImage ? (
               <img src={profileImage} alt="Profile" className="object-cover w-full h-full relative z-10" />
             ) : (
@@ -187,13 +187,13 @@ const ProfilePage: React.FC = () => {
                 <div className="text-rose-700 text-xs font-bold">{t('profile.addPhoto')}</div>
               </div>
             )}
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
               <Camera className="h-8 w-8 text-white" />
             </div>
           </div>
           <button
             onClick={handleImageUploadClick}
-            className="absolute -bottom-2 -right-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12"
+            className="absolute -bottom-2 right-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12"
           >
             <Camera className="h-4 w-4" />
           </button>
@@ -247,19 +247,13 @@ const ProfilePage: React.FC = () => {
       </div>
 
       {/* Quick Stats Cards */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-yellow-700">
               {coinsLoading ? "..." : firestoreCoins}
             </div>
             <div className="text-xs text-yellow-600 font-medium">Coins</div>
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-blue-700">{userStats.totalChats}</div>
-            <div className="text-xs text-blue-600 font-medium">Total Chats</div>
           </CardContent>
         </Card>
         <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
@@ -304,81 +298,6 @@ const ProfilePage: React.FC = () => {
             <p className="text-xs text-green-600 font-medium">
               {t('profile.referral.share')}
             </p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
-  const renderStatsTab = () => (
-    <div className="space-y-6">
-      {/* Detailed Stats */}
-      <div className="grid grid-cols-2 gap-4">
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3 mb-2">
-              <Clock className="h-5 w-5 text-purple-600" />
-              <span className="text-purple-700 font-semibold text-sm">Hours Spent</span>
-            </div>
-            <div className="text-2xl font-bold text-purple-800">{userStats.hoursSpent}h</div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-pink-50 to-pink-100 border-pink-200">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3 mb-2">
-              <Heart className="h-5 w-5 text-pink-600" />
-              <span className="text-pink-700 font-semibold text-sm">Favorite Time</span>
-            </div>
-            <div className="text-lg font-bold text-pink-800">{userStats.favoriteTime}</div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100 border-indigo-200">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3 mb-2">
-              <Calendar className="h-5 w-5 text-indigo-600" />
-              <span className="text-indigo-700 font-semibold text-sm">Member Since</span>
-            </div>
-            <div className="text-lg font-bold text-indigo-800">{userStats.joinDate}</div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3 mb-2">
-              <TrendingUp className="h-5 w-5 text-yellow-600" />
-              <span className="text-yellow-700 font-semibold text-sm">Activity Level</span>
-            </div>
-            <div className="text-lg font-bold text-yellow-800">High</div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Progress Bars */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Progress to Next Level</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span>Chats Completed</span>
-              <span>127/150</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full" style={{width: '85%'}}></div>
-            </div>
-          </div>
-          
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span>Friends Made</span>
-              <span>23/30</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full" style={{width: '77%'}}></div>
-            </div>
           </div>
         </CardContent>
       </Card>
@@ -485,7 +404,6 @@ const ProfilePage: React.FC = () => {
           <div className="flex bg-gray-50 border-b border-gray-200">
             {[
               { id: 'profile', label: 'Profile', icon: User },
-              { id: 'stats', label: 'Stats', icon: TrendingUp },
               { id: 'achievements', label: 'Awards', icon: Award }
             ].map((tab) => (
               <button
@@ -506,7 +424,6 @@ const ProfilePage: React.FC = () => {
           {/* Tab Content */}
           <div className="p-6">
             {activeTab === 'profile' && renderProfileTab()}
-            {activeTab === 'stats' && renderStatsTab()}
             {activeTab === 'achievements' && renderAchievementsTab()}
           </div>
 
