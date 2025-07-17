@@ -22,12 +22,51 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
   });
 
   useEffect(() => {
+    // Start connection test after 1 second
+    const connectionTimer = setTimeout(() => {
+      setConnectionStatus((prev) => ({
+        ...prev,
+        isTestingConnection: true,
+        showConnectionTest: true,
+      }));
+
+      testFirebaseStorageConnection()
+        .then((result) => {
+          setConnectionStatus((prev) => ({
+            ...prev,
+            isTestingConnection: false,
+            connectionResult: result,
+          }));
+        })
+        .catch((error) => {
+          setConnectionStatus((prev) => ({
+            ...prev,
+            isTestingConnection: false,
+            connectionResult: {
+              isConnected: false,
+              status: "error",
+              message: "Connection test failed",
+              details: {
+                canRead: false,
+                canWrite: false,
+                canDelete: false,
+                error: error.message,
+              },
+            },
+          }));
+        });
+    }, 1000);
+
+    // Hide splash after 4 seconds (increased to show connection status)
     const timer = setTimeout(() => {
       setIsVisible(false);
       setTimeout(onComplete, 500); // Wait for fade out animation
-    }, 3000); // Show splash for 3 seconds
+    }, 4000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(connectionTimer);
+    };
   }, [onComplete]);
 
   if (!isVisible) {
