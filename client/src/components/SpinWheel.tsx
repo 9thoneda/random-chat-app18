@@ -262,12 +262,12 @@ const SpinWheel: React.FC = () => {
 
   return (
     /* Responsive Mobile App Layout - 360dp x 640dp reference */
-    <div
-      className="fixed inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 overflow-hidden w-full h-full max-w-sm mx-auto"
-      style={{ maxWidth: "360px", minHeight: "640px" }}
+        <div
+      className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 w-full max-w-sm mx-auto relative"
+      style={{ maxWidth: "360px" }}
     >
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Fixed Animated Background */}
+      <div className="fixed inset-0 overflow-hidden max-w-sm mx-auto" style={{ maxWidth: "360px" }}>
         <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
         <div
           className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-pink-500/20 to-red-500/20 rounded-full animate-pulse"
@@ -288,10 +288,10 @@ const SpinWheel: React.FC = () => {
         ))}
       </div>
 
-      {/* Native Mobile Layout Structure */}
-      <div className="relative z-10 flex flex-col h-full">
-        {/* Status Bar Safe Area */}
-        <div className="h-safe-top bg-black/20"></div>
+      {/* Scrollable Content Structure */}
+      <div className="relative z-10 min-h-screen">
+        {/* Fixed Header with Back Button */}
+        <div className="sticky top-0 z-20 bg-black/40 backdrop-blur-lg border-b border-white/10">
 
         {/* Responsive Native App Header - 56dp height */}
         <div className="flex items-center justify-between px-4 py-3 bg-black/30 backdrop-blur-lg border-b border-white/10 h-14 min-h-[56px]">
