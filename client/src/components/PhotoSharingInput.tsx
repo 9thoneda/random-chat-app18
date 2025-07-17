@@ -85,6 +85,8 @@ export default function PhotoSharingInput({
   const handleCancel = () => {
     setSelectedFile(null);
     setPreviewUrl("");
+    setError("");
+    setUploadProgress(0);
     onCancel();
   };
 
