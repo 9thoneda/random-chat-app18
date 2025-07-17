@@ -1,9 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "./ui/button";
-import { 
-  ArrowLeft, Play, Gift, Coins, Star, Zap, X, RotateCcw, 
-  AlertCircle, CheckCircle, TrendingUp, Sparkles, Crown, 
-  Flame, Diamond
+import {
+  ArrowLeft,
+  Play,
+  Gift,
+  Coins,
+  Star,
+  Zap,
+  X,
+  RotateCcw,
+  AlertCircle,
+  CheckCircle,
+  TrendingUp,
+  Sparkles,
+  Crown,
+  Flame,
+  Diamond,
 } from "lucide-react";
 import { useCoin } from "../context/CoinProvider";
 import { useNavigate } from "react-router-dom";
@@ -20,30 +32,72 @@ const SpinWheel: React.FC = () => {
   const navigate = useNavigate();
   const { coins, addCoins, watchAd, adsWatchedToday, maxAdsPerDay } = useCoin();
   const wheelRef = useRef<HTMLDivElement>(null);
-  
+
   const [isSpinning, setIsSpinning] = useState(false);
   const [result, setResult] = useState<SpinResult | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [hasSpunToday, setHasSpunToday] = useState(false);
   const [spinsToday, setSpinsToday] = useState(0);
-  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const [particles, setParticles] = useState<
+    Array<{ id: number; x: number; y: number }>
+  >([]);
   const maxSpinsPerDay = 3;
 
   // Enhanced wheel segments with vibrant colors and patterns
   const wheelSegments = [
-    { coins: 10, color: "from-emerald-400 to-emerald-600", bgColor: "#10B981", label: "10 Coins", probability: 50, icon: "💎", pattern: "dots" },
-    { coins: 0, color: "from-gray-400 to-gray-600", bgColor: "#6B7280", label: "Try Again", probability: 25, icon: "🔄", pattern: "stripes" },
-    { coins: 20, color: "from-amber-400 to-orange-500", bgColor: "#F59E0B", label: "20 Coins", probability: 15, icon: "⭐", pattern: "zigzag" },
-    { coins: 0, color: "from-slate-400 to-slate-600", bgColor: "#64748B", label: "Better Luck", probability: 7, icon: "🍀", pattern: "waves" },
-    { coins: 50, color: "from-red-400 to-pink-500", bgColor: "#EF4444", label: "JACKPOT!", probability: 3, icon: "🎰", pattern: "stars" },
+    {
+      coins: 10,
+      color: "from-emerald-400 to-emerald-600",
+      bgColor: "#10B981",
+      label: "10 Coins",
+      probability: 50,
+      icon: "💎",
+      pattern: "dots",
+    },
+    {
+      coins: 0,
+      color: "from-gray-400 to-gray-600",
+      bgColor: "#6B7280",
+      label: "Try Again",
+      probability: 25,
+      icon: "🔄",
+      pattern: "stripes",
+    },
+    {
+      coins: 20,
+      color: "from-amber-400 to-orange-500",
+      bgColor: "#F59E0B",
+      label: "20 Coins",
+      probability: 15,
+      icon: "⭐",
+      pattern: "zigzag",
+    },
+    {
+      coins: 0,
+      color: "from-slate-400 to-slate-600",
+      bgColor: "#64748B",
+      label: "Better Luck",
+      probability: 7,
+      icon: "🍀",
+      pattern: "waves",
+    },
+    {
+      coins: 50,
+      color: "from-red-400 to-pink-500",
+      bgColor: "#EF4444",
+      label: "JACKPOT!",
+      probability: 3,
+      icon: "🎰",
+      pattern: "stars",
+    },
   ];
 
   useEffect(() => {
     // Check daily spin count from localStorage
     const today = new Date().toDateString();
-    const lastSpinDate = localStorage.getItem('lastSpinDate');
-    const savedSpinsToday = parseInt(localStorage.getItem('spinsToday') || '0');
-    
+    const lastSpinDate = localStorage.getItem("lastSpinDate");
+    const savedSpinsToday = parseInt(localStorage.getItem("spinsToday") || "0");
+
     if (lastSpinDate === today) {
       setSpinsToday(savedSpinsToday);
       setHasSpunToday(savedSpinsToday >= maxSpinsPerDay);
@@ -51,8 +105,8 @@ const SpinWheel: React.FC = () => {
       // Reset for new day
       setSpinsToday(0);
       setHasSpunToday(false);
-      localStorage.setItem('lastSpinDate', today);
-      localStorage.setItem('spinsToday', '0');
+      localStorage.setItem("lastSpinDate", today);
+      localStorage.setItem("spinsToday", "0");
     }
   }, []);
 
@@ -60,14 +114,16 @@ const SpinWheel: React.FC = () => {
   useEffect(() => {
     if (isSpinning) {
       const interval = setInterval(() => {
-        setParticles(prev => [
-          ...prev,
-          {
-            id: Date.now() + Math.random(),
-            x: Math.random() * 100,
-            y: Math.random() * 100
-          }
-        ].slice(-20)); // Keep only last 20 particles
+        setParticles((prev) =>
+          [
+            ...prev,
+            {
+              id: Date.now() + Math.random(),
+              x: Math.random() * 100,
+              y: Math.random() * 100,
+            },
+          ].slice(-20),
+        ); // Keep only last 20 particles
       }, 200);
 
       return () => clearInterval(interval);
@@ -79,7 +135,7 @@ const SpinWheel: React.FC = () => {
   const getRandomResult = (): SpinResult => {
     const random = Math.random() * 100;
     let cumulativeProbability = 0;
-    
+
     for (const segment of wheelSegments) {
       cumulativeProbability += segment.probability;
       if (random <= cumulativeProbability) {
@@ -89,42 +145,46 @@ const SpinWheel: React.FC = () => {
             message: "Better luck next time! 🍀",
             requiresAd: false,
             color: segment.bgColor,
-            icon: segment.icon
+            icon: segment.icon,
           };
         } else {
           return {
             coins: segment.coins,
-            message: segment.coins === 50 ? `🎉 JACKPOT! You won ${segment.coins} coins! 🎉` : `Congratulations! You won ${segment.coins} coins! 🎉`,
+            message:
+              segment.coins === 50
+                ? `🎉 JACKPOT! You won ${segment.coins} coins! 🎉`
+                : `Congratulations! You won ${segment.coins} coins! 🎉`,
             requiresAd: true,
             color: segment.bgColor,
-            icon: segment.icon
+            icon: segment.icon,
           };
         }
       }
     }
-    
+
     // Fallback
     return {
       coins: 0,
       message: "Better luck next time! 🍀",
       requiresAd: false,
       color: "#6B7280",
-      icon: "🔄"
+      icon: "🔄",
     };
   };
 
   const spinWheel = () => {
     if (isSpinning || hasSpunToday) return;
-    
+
     setIsSpinning(true);
     setShowResult(false);
     setResult(null);
 
     // Generate random rotation (4-8 full rotations + random angle)
     const randomRotation = 1440 + Math.random() * 1440; // 4-8 full rotations
-    
+
     if (wheelRef.current) {
-      wheelRef.current.style.transition = 'transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      wheelRef.current.style.transition =
+        "transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
       wheelRef.current.style.transform = `rotate(${randomRotation}deg)`;
     }
 
@@ -134,12 +194,12 @@ const SpinWheel: React.FC = () => {
       setResult(spinResult);
       setShowResult(true);
       setIsSpinning(false);
-      
+
       // Update daily spin count
       const newSpinsToday = spinsToday + 1;
       setSpinsToday(newSpinsToday);
-      localStorage.setItem('spinsToday', newSpinsToday.toString());
-      
+      localStorage.setItem("spinsToday", newSpinsToday.toString());
+
       if (newSpinsToday >= maxSpinsPerDay) {
         setHasSpunToday(true);
       }
@@ -161,7 +221,9 @@ const SpinWheel: React.FC = () => {
         await watchAd();
         // Add coins after ad
         await addCoins(result.coins);
-        alert(`🎉 Amazing! You watched an ad and earned ${result.coins} coins!`);
+        alert(
+          `🎉 Amazing! You watched an ad and earned ${result.coins} coins!`,
+        );
         setShowResult(false);
         setResult(null);
       } catch (error) {
@@ -174,7 +236,7 @@ const SpinWheel: React.FC = () => {
           alert("You've reached your daily ad limit. Come back tomorrow!");
           return;
         }
-        
+
         try {
           await watchAd();
           await addCoins(10);
@@ -195,26 +257,29 @@ const SpinWheel: React.FC = () => {
     // For testing purposes - reset daily limit
     setSpinsToday(0);
     setHasSpunToday(false);
-    localStorage.setItem('spinsToday', '0');
+    localStorage.setItem("spinsToday", "0");
   };
 
   return (
-    {/* Native Mobile App Layout - Full Screen */}
+    /* Native Mobile App Layout - Full Screen */
     <div className="fixed inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-pink-500/20 to-red-500/20 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-        
+        <div
+          className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-pink-500/20 to-red-500/20 rounded-full animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
+
         {/* Floating particles */}
-        {particles.map(particle => (
+        {particles.map((particle) => (
           <div
             key={particle.id}
             className="absolute w-2 h-2 bg-white rounded-full opacity-60 animate-ping"
             style={{
               left: `${particle.x}%`,
               top: `${particle.y}%`,
-              animationDuration: '2s'
+              animationDuration: "2s",
             }}
           />
         ))}
@@ -224,7 +289,7 @@ const SpinWheel: React.FC = () => {
       <div className="relative z-10 flex flex-col h-full">
         {/* Status Bar Safe Area */}
         <div className="h-safe-top bg-black/20"></div>
-        
+
         {/* Native App Header */}
         <div className="flex items-center justify-between px-4 py-4 bg-black/30 backdrop-blur-lg border-b border-white/10">
           <button
@@ -233,9 +298,11 @@ const SpinWheel: React.FC = () => {
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
-          
-          <div className="text-white font-bold text-xl tracking-wide">Spin & Win</div>
-          
+
+          <div className="text-white font-bold text-xl tracking-wide">
+            Spin & Win
+          </div>
+
           <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full px-4 py-2 shadow-lg">
             <Coins className="h-5 w-5 text-white" />
             <span className="font-bold text-white text-lg">{coins}</span>
@@ -249,19 +316,26 @@ const SpinWheel: React.FC = () => {
             <div className="flex justify-center mb-4">
               <div className="relative">
                 <div className="text-6xl animate-bounce">🎰</div>
-                <div className="absolute -top-2 -right-2 text-2xl animate-ping">✨</div>
-                <div className="absolute -bottom-2 -left-2 text-xl animate-ping" style={{animationDelay: '0.5s'}}>⭐</div>
+                <div className="absolute -top-2 -right-2 text-2xl animate-ping">
+                  ✨
+                </div>
+                <div
+                  className="absolute -bottom-2 -left-2 text-xl animate-ping"
+                  style={{ animationDelay: "0.5s" }}
+                >
+                  ⭐
+                </div>
               </div>
             </div>
-            
+
             <h1 className="text-3xl font-extrabold text-white mb-2 drop-shadow-lg">
               Spin & Win Fortune!
             </h1>
-            
+
             <p className="text-white/90 font-medium text-lg drop-shadow-md">
               🎲 Test your luck and win amazing rewards! 🎲
             </p>
-            
+
             {/* Daily Spin Counter - Native Card Style */}
             <div className="mt-6 mx-4 bg-white/20 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/30">
               <div className="flex items-center gap-3 justify-center">
@@ -285,9 +359,9 @@ const SpinWheel: React.FC = () => {
             <div className="relative mb-8">
               {/* Outer glow ring */}
               <div className="absolute -inset-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-full opacity-50 blur-xl animate-pulse"></div>
-              
+
               {/* Wheel Container */}
-              <div 
+              <div
                 ref={wheelRef}
                 className="relative w-72 h-72 rounded-full border-8 border-white shadow-2xl overflow-hidden"
                 style={{
@@ -298,7 +372,7 @@ const SpinWheel: React.FC = () => {
                     #F59E0B 144deg 216deg,
                     #64748B 216deg 288deg,
                     #EF4444 288deg 360deg
-                  )`
+                  )`,
                 }}
               >
                 {/* Decorative patterns overlay */}
@@ -310,49 +384,63 @@ const SpinWheel: React.FC = () => {
                       className="absolute w-full h-0.5 bg-white/50 origin-left top-1/2"
                       style={{
                         transform: `rotate(${angle}deg)`,
-                        transformOrigin: '50% 50%'
+                        transformOrigin: "50% 50%",
                       }}
                     />
                   ))}
-                  
+
                   {/* Center circle with animated elements */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center shadow-xl border-4 border-yellow-400">
                       <div className="text-center">
-                        <div className="text-lg font-bold text-purple-600 animate-pulse">SPIN</div>
-                        <div className="text-xs font-bold text-gray-600">WIN!</div>
+                        <div className="text-lg font-bold text-purple-600 animate-pulse">
+                          SPIN
+                        </div>
+                        <div className="text-xs font-bold text-gray-600">
+                          WIN!
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Segment labels and icons */}
                 <div className="absolute top-6 left-1/2 transform -translate-x-1/2 text-center">
                   <div className="text-2xl">💎</div>
-                  <div className="text-white font-bold text-sm drop-shadow-lg">10</div>
+                  <div className="text-white font-bold text-sm drop-shadow-lg">
+                    10
+                  </div>
                 </div>
-                
+
                 <div className="absolute right-6 top-1/2 transform -translate-y-1/2 text-center">
                   <div className="text-2xl">🔄</div>
-                  <div className="text-white font-bold text-sm drop-shadow-lg">Try</div>
+                  <div className="text-white font-bold text-sm drop-shadow-lg">
+                    Try
+                  </div>
                 </div>
-                
+
                 <div className="absolute bottom-10 right-10 text-center">
                   <div className="text-2xl">⭐</div>
-                  <div className="text-white font-bold text-sm drop-shadow-lg">20</div>
+                  <div className="text-white font-bold text-sm drop-shadow-lg">
+                    20
+                  </div>
                 </div>
-                
+
                 <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-center">
                   <div className="text-2xl">🍀</div>
-                  <div className="text-white font-bold text-sm drop-shadow-lg">Luck</div>
+                  <div className="text-white font-bold text-sm drop-shadow-lg">
+                    Luck
+                  </div>
                 </div>
-                
+
                 <div className="absolute bottom-10 left-10 text-center">
                   <div className="text-3xl animate-pulse">🎰</div>
-                  <div className="text-white font-bold text-sm drop-shadow-lg">50!</div>
+                  <div className="text-white font-bold text-sm drop-shadow-lg">
+                    50!
+                  </div>
                 </div>
               </div>
-              
+
               {/* Enhanced Pointer */}
               <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-20">
                 <div className="relative">
@@ -369,7 +457,9 @@ const SpinWheel: React.FC = () => {
               <div className="space-y-4">
                 <div className="bg-white/20 backdrop-blur-lg text-white font-bold py-6 px-8 rounded-2xl shadow-lg border border-white/30 text-center">
                   <div className="text-xl mb-2">🎯 Daily Limit Reached!</div>
-                  <div className="text-sm opacity-90">Come back tomorrow for more spins!</div>
+                  <div className="text-sm opacity-90">
+                    Come back tomorrow for more spins!
+                  </div>
                 </div>
                 <button
                   onClick={resetDaily}
@@ -383,9 +473,9 @@ const SpinWheel: React.FC = () => {
                 onClick={spinWheel}
                 disabled={isSpinning}
                 className={`w-full py-6 rounded-2xl font-extrabold text-xl shadow-2xl transition-all duration-300 transform border-4 ${
-                  isSpinning 
-                    ? 'bg-gray-400 cursor-not-allowed border-gray-500 scale-95' 
-                    : 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 hover:shadow-3xl hover:scale-105 border-white active:scale-95'
+                  isSpinning
+                    ? "bg-gray-400 cursor-not-allowed border-gray-500 scale-95"
+                    : "bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 hover:shadow-3xl hover:scale-105 border-white active:scale-95"
                 }`}
               >
                 {isSpinning ? (
@@ -433,36 +523,47 @@ const SpinWheel: React.FC = () => {
                       left: `${Math.random() * 100}%`,
                       top: `${Math.random() * 100}%`,
                       animationDelay: `${Math.random() * 2}s`,
-                      animationDuration: `${1 + Math.random()}s`
+                      animationDuration: `${1 + Math.random()}s`,
                     }}
                   />
                 ))}
               </div>
             )}
-            
+
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl border-4 border-white shadow-3xl relative overflow-hidden">
               {/* Result glow effect */}
-              <div 
+              <div
                 className="absolute inset-0 opacity-10 animate-pulse"
                 style={{ backgroundColor: result.color }}
               />
-              
+
               <div className="text-center relative z-10 p-8">
                 <div className="flex justify-center mb-6">
                   {result.coins > 0 ? (
                     <div className="relative">
-                      <div className="text-8xl animate-bounce">{result.icon}</div>
-                      <div className="absolute -top-4 -right-4 text-4xl animate-ping">🎉</div>
-                      <div className="absolute -bottom-4 -left-4 text-3xl animate-ping" style={{animationDelay: '0.5s'}}>✨</div>
+                      <div className="text-8xl animate-bounce">
+                        {result.icon}
+                      </div>
+                      <div className="absolute -top-4 -right-4 text-4xl animate-ping">
+                        🎉
+                      </div>
+                      <div
+                        className="absolute -bottom-4 -left-4 text-3xl animate-ping"
+                        style={{ animationDelay: "0.5s" }}
+                      >
+                        ✨
+                      </div>
                     </div>
                   ) : (
                     <div className="relative">
                       <div className="text-6xl">{result.icon}</div>
-                      <div className="absolute -top-2 -right-2 text-2xl animate-pulse">💫</div>
+                      <div className="absolute -top-2 -right-2 text-2xl animate-pulse">
+                        💫
+                      </div>
                     </div>
                   )}
                 </div>
-                
+
                 <h2 className="text-2xl font-extrabold mb-4">
                   {result.coins > 0 ? (
                     <div className="space-y-2">
@@ -470,7 +571,10 @@ const SpinWheel: React.FC = () => {
                         🎊 WINNER! 🎊
                       </div>
                       <div className="text-lg text-gray-700">
-                        You won <span className="text-green-600 font-extrabold">{result.coins} coins!</span>
+                        You won{" "}
+                        <span className="text-green-600 font-extrabold">
+                          {result.coins} coins!
+                        </span>
                       </div>
                     </div>
                   ) : (
@@ -479,8 +583,10 @@ const SpinWheel: React.FC = () => {
                     </div>
                   )}
                 </h2>
-                
-                <p className="text-gray-600 font-medium mb-8">{result.message}</p>
+
+                <p className="text-gray-600 font-medium mb-8">
+                  {result.message}
+                </p>
 
                 {/* Action Buttons */}
                 <div className="space-y-4">
@@ -490,7 +596,8 @@ const SpinWheel: React.FC = () => {
                         <div className="flex items-center gap-3 mb-3">
                           <Play className="h-6 w-6 text-blue-600" />
                           <p className="text-blue-800 font-bold">
-                            🎬 Watch a quick ad to claim your {result.coins} coins!
+                            🎬 Watch a quick ad to claim your {result.coins}{" "}
+                            coins!
                           </p>
                         </div>
                         <p className="text-blue-600 text-sm">
