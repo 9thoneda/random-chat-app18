@@ -29,24 +29,25 @@ export default function PhotoSharingInput({
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.type.startsWith("image/")) {
-      // Check file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Photo size must be less than 5MB");
-        return;
-      }
+    setError(""); // Clear previous errors
 
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          setPreviewUrl(e.target.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
-    } else {
-      alert("Please select a valid image file");
+    if (!file) return;
+
+    // Validate file using our utility
+    const validation = validateImageFile(file);
+    if (!validation.isValid) {
+      setError(validation.error || "Invalid file");
+      return;
     }
+
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        setPreviewUrl(e.target.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSendPhoto = async () => {
