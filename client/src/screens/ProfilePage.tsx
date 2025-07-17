@@ -364,7 +364,7 @@ const ProfilePage: React.FC = () => {
         <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-yellow-700">
-              {coinsLoading ? "..." : firestoreCoins}
+              {coinsLoading ? "..." : coins}
             </div>
             <div className="text-xs text-yellow-600 font-medium">Coins</div>
           </CardContent>
