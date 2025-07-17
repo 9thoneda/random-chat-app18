@@ -684,6 +684,11 @@ const ProfilePage: React.FC = () => {
         isOpen={showHelpModal}
         onClose={() => setShowHelpModal(false)}
       />
+
+      <TreasureChest
+        isOpen={showTreasureChest}
+        onClose={() => setShowTreasureChest(false)}
+      />
     </>
   );
 };
