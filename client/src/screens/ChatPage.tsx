@@ -267,27 +267,27 @@ const ChatPageContent = ({
   };
 
   return (
-    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 shadow-xl overflow-hidden flex flex-col relative pb-20">
+    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-white via-rose-25 to-pink-25 shadow-xl overflow-hidden flex flex-col relative pb-20">
       {/* Enhanced Header */}
-      <div className="px-6 py-6 bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 text-white shadow-lg relative overflow-hidden">
+      <div className="px-6 py-8 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 text-white shadow-2xl relative overflow-hidden">
         {/* Header Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-gold-100/20 to-white/10 backdrop-blur-sm"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gold-200/10 to-transparent"></div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="absolute inset-0 bg-gradient-to-r from-white/15 via-white/5 to-white/15 backdrop-blur-sm"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div className="flex items-center justify-between mb-6">
           <div className="relative z-10 flex items-center justify-between w-full">
           <div className="flex items-center">
             <button 
               onClick={() => navigate('/')} 
-              className="mr-3 hover:scale-110 transition-transform"
+              className="mr-4 hover:scale-110 transition-all duration-200 p-2 rounded-full hover:bg-white/20"
               aria-label="Go to home"
             >
               <ArrowLeft size={24} />
             </button> 
-            <h1 className="flex-grow text-center text-2xl font-extrabold tracking-wide">Chats</h1>
+            <h1 className="flex-grow text-center text-3xl font-extrabold tracking-wide drop-shadow-sm">Chats</h1>
           </div>
           {totalUnreadCount > 0 && (
-            <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-              <span className="text-sm font-semibold">{totalUnreadCount} new</span>
+            <div className="bg-white/25 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30 shadow-lg">
+              <span className="text-sm font-bold">{totalUnreadCount} new</span>
             </div>
           )}
           </div>
@@ -295,18 +295,18 @@ const ChatPageContent = ({
         
         {/* Search Bar */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-rose-200 h-4 w-4" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 h-5 w-5" />
           <Input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search chats and messages..." 
-            className="w-full pl-10 pr-10 py-3 rounded-full border-0 bg-white/30 backdrop-blur-sm text-white placeholder-rose-200 focus:outline-none focus:ring-2 focus:ring-white/30"
+            placeholder="Search conversations..." 
+            className="w-full pl-12 pr-12 py-4 rounded-2xl border-0 bg-white/25 backdrop-blur-md text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/35 transition-all duration-200 text-base font-medium"
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-rose-200 hover:text-white"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors duration-200 p-1 rounded-full hover:bg-white/20"
             >
               <X size={16} />
             </button>
@@ -319,9 +319,9 @@ const ChatPageContent = ({
         {/* Friends Section */}
         {friendChats.length > 0 && (
           <>
-            <div className="px-4 py-3 bg-green-50 border-b border-green-100">
-              <h3 className="text-sm font-semibold text-green-700 flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <div className="px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100/50">
+              <h3 className="text-sm font-bold text-green-700 flex items-center gap-3">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                 Friends ({friendChats.length})
               </h3>
             </div>
@@ -345,8 +345,8 @@ const ChatPageContent = ({
         {regularChats.length > 0 && (
           <>
             {friendChats.length > 0 && (
-              <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
-                <h3 className="text-sm font-semibold text-gray-700">Recent Chats</h3>
+              <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-slate-50 border-b border-gray-100/50">
+                <h3 className="text-sm font-bold text-gray-700">Recent Chats</h3>
               </div>
             )}
             {regularChats.map((chat) => (
@@ -367,31 +367,31 @@ const ChatPageContent = ({
 
         {/* No Results */}
         {filteredChats.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-64 text-center px-8 py-12">
+          <div className="flex flex-col items-center justify-center h-96 text-center px-8 py-16">
             <div className="relative mb-6">
-              <div className="text-8xl mb-2 animate-bounce">
+              <div className="text-9xl mb-4 animate-float">
                 {search ? '🔍' : '💬'}
               </div>
               {!search && (
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-rose-500 rounded-full animate-ping"></div>
+                <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full animate-ping opacity-75"></div>
               )}
             </div>
-            <div className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl p-6 border border-rose-200 shadow-2xl max-w-sm">
-              <h3 className="text-xl font-bold text-gray-700 mb-3">
+            <div className="bg-gradient-to-br from-white to-rose-50 rounded-3xl p-8 border-2 border-rose-100 shadow-2xl max-w-sm backdrop-blur-sm">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">
                 {search ? 'No chats found' : 'No chats yet'}
               </h3>
-              <p className="text-gray-600 mb-4 leading-relaxed">
+              <p className="text-gray-600 mb-6 leading-relaxed text-base">
                 {search 
                   ? `No results for "${search}". Try a different search term.`
-                  : 'Start a conversation to see your chats appear here! Connect with new people and build meaningful conversations.'
+                  : 'Ready to make new connections? Start your first conversation and watch your chat list come to life!'
                 }
               </p>
               {!search && (
                 <Button 
                   onClick={() => navigate('/video-chat')}
-                  className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-semibold px-6 py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200"
+                  className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold px-8 py-3 rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
                 >
-                  Start Your First Chat
+                  🚀 Start Your First Chat
                 </Button>
               )}
             </div>
@@ -426,10 +426,10 @@ const ChatItem = ({
 }) => {
   return (
     <div 
-      className={`flex items-center p-4 cursor-pointer relative border-b border-rose-100 transition-all duration-200 rounded-xl hover:bg-rose-50/50 hover:shadow-lg transform hover:scale-[1.02] ${
-        chat.isFriend ? 'bg-green-50/50' : ''
+      className={`flex items-center p-5 cursor-pointer relative border-b border-gray-100/50 transition-all duration-300 hover:bg-gradient-to-r hover:from-rose-50/80 hover:to-pink-50/80 hover:shadow-lg transform hover:scale-[1.01] active:scale-[0.99] ${
+        chat.isFriend ? 'bg-gradient-to-r from-green-50/60 to-emerald-50/60' : 'bg-white/80'
       } ${
-        chat.unreadCount > 0 ? 'bg-rose-50 border-l-4 border-rose-500 shadow-lg' : ''
+        chat.unreadCount > 0 ? 'bg-gradient-to-r from-rose-50 to-pink-50 border-l-4 border-rose-400 shadow-md' : ''
       }`}
       onClick={() => {
         if (longPressedChatId !== chat.id) onChatClick(chat); 
@@ -443,52 +443,52 @@ const ChatItem = ({
         <img
           src={chat.avatar}
           alt={`${chat.name} avatar`}
-          className={`w-14 h-14 rounded-full object-cover shadow-md transition-all duration-200 border-4 border-white ${
-            chat.unreadCount > 0 ? 'border-rose-400' : 'border-white'
+          className={`w-16 h-16 rounded-full object-cover shadow-lg transition-all duration-300 border-4 ${
+            chat.unreadCount > 0 ? 'border-rose-300 shadow-rose-200' : 'border-white shadow-gray-200'
           }`}
         />
         {chat.unreadCount > 0 && (
-          <div className="absolute -top-1 -right-1 w-6 h-6 bg-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse">
+          <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-r from-rose-500 to-pink-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse border-2 border-white">
             {chat.unreadCount > 9 ? '9+' : chat.unreadCount}
           </div>
         )}
         {chat.isFriend && chat.time === 'Online' && (
-          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-3 border-white rounded-full shadow-md animate-pulse"></div>
         )}
       </div>
 
-      <div className="ml-4 flex-1 min-w-0">
-        <div className="flex justify-between items-start mb-1">
+      <div className="ml-5 flex-1 min-w-0">
+        <div className="flex justify-between items-start mb-2">
           <div className="flex items-center gap-2">
-            <h2 className={`truncate transition-colors duration-200 ${
-              chat.unreadCount > 0 ? 'font-bold text-rose-700 text-lg' : 'font-semibold text-gray-800'
+            <h2 className={`truncate transition-colors duration-200 text-lg ${
+              chat.unreadCount > 0 ? 'font-bold text-rose-700' : 'font-semibold text-gray-800'
             }`}>
               {chat.name}
             </h2>
             {chat.isFriend && (
-              <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">
+              <span className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 text-xs px-3 py-1 rounded-full font-bold border border-green-200 shadow-sm">
                 Friend
               </span>
             )}
           </div>
-          <span className={`text-xs flex-shrink-0 ml-2 ${
-            chat.unreadCount > 0 ? 'text-rose-600 font-semibold' : 'text-gray-500'
+          <span className={`text-xs flex-shrink-0 ml-3 font-medium ${
+            chat.unreadCount > 0 ? 'text-rose-600 font-bold' : 'text-gray-500'
           }`}>
             {chat.time}
           </span>
         </div>
         
-        <p className={`text-sm truncate transition-colors duration-200 ${
-          chat.unreadCount > 0 ? 'text-gray-800 font-semibold' : 'text-gray-600'
+        <p className={`text-sm truncate transition-colors duration-200 leading-relaxed ${
+          chat.unreadCount > 0 ? 'text-gray-800 font-medium' : 'text-gray-600'
         }`}>
           {chat.lastMessage}
         </p>
         
         {/* Premium Feature: Last Seen */}
         {isPremium && chat.lastSeen && chat.time !== 'Online' && (
-          <div className="flex items-center gap-1 mt-1">
+          <div className="flex items-center gap-2 mt-2">
             <Clock className="h-3 w-3 text-gray-400" />
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-gray-500 font-medium">
               Last seen {formatLastSeen(chat.lastSeen)}
             </span>
           </div>
@@ -496,7 +496,7 @@ const ChatItem = ({
       </div>
 
       {longPressedChatId === chat.id && (
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex gap-2">
+        <div className="absolute right-5 top-1/2 -translate-y-1/2 z-10 flex gap-3 bg-white rounded-xl shadow-xl border border-gray-200 p-2">
           <Button
             size="sm"
             variant="destructive"
@@ -504,6 +504,7 @@ const ChatItem = ({
               e.stopPropagation();
               onDelete(chat.id);
             }}
+            className="font-semibold"
           >
             Delete
           </Button>
@@ -514,6 +515,7 @@ const ChatItem = ({
               e.stopPropagation();
               setLongPressedChatId(null);
             }}
+            className="font-semibold"
           >
             Cancel
           </Button>
