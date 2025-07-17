@@ -254,7 +254,7 @@ export default function Home() {
                   <img
                     src={image}
                     alt={`Ad Banner ${index + 1}`}
-                    className="w-full h-40 object-cover"
+                    className="w-full h-32 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
                   <div className="absolute bottom-2 left-4 text-white">
