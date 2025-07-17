@@ -146,6 +146,7 @@ function App() {
         <Route path="/referral-code" element={<ReferralCodeScreen />} />
         <Route path="/ai-chatbot" element={<AIChatbotPage />} />
         <Route path="/spin-wheel" element={<SpinWheel />} />
+        <Route path="/storage-debug" element={<StorageDebugPage />} />
       </Routes>
     </div>
   );
