@@ -266,7 +266,7 @@ export default function Home() {
           </div>
 
           {/* Enhanced Carousel Dots */}
-          <div className="absolute bottom-1 right-20 flex gap-1">
+          <div className="absolute bottom-1 right-18 flex gap-1">
             {bannerImages.map((_, index) => (
               <button
                 key={index}
