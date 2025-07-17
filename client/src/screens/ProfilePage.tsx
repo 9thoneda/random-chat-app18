@@ -191,16 +191,63 @@ const ProfilePage: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const imageDataUrl = reader.result as string;
-        setProfileImage(imageDataUrl);
-        localStorage.setItem("ajnabicam_profile_image", imageDataUrl);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    setUploadError("");
+
+    // Validate file
+    const validation = validateImageFile(file);
+    if (!validation.isValid) {
+      setUploadError(validation.error || "Invalid file");
+      return;
+    }
+
+    // Create preview immediately for better UX
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        setProfileImage(e.target.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
+
+    setIsUploadingImage(true);
+    setUploadProgress(0);
+
+    try {
+      // Get user ID (you might want to get this from auth context)
+      const userId = localStorage.getItem("ajnabicam_user_id") || "anonymous";
+
+      // Upload to Firebase Storage
+      const result = await uploadProfileImage(file, userId, (progress) =>
+        setUploadProgress(progress),
+      );
+
+      // Save the Firebase Storage URL
+      setProfileImage(result.url);
+      localStorage.setItem("ajnabicam_profile_image", result.url);
+      localStorage.setItem("ajnabicam_profile_path", result.path);
+
+      console.log("Profile image uploaded successfully:", result.url);
+    } catch (error: any) {
+      console.error("Error uploading profile image:", error);
+      const errorMessage = getStorageErrorMessage(error);
+      setUploadError(errorMessage);
+
+      // Revert to previous image on error
+      const previousImage = localStorage.getItem("ajnabicam_profile_image");
+      if (previousImage) {
+        setProfileImage(previousImage);
+      } else {
+        setProfileImage(getDefaultAvatar(userGender));
+      }
+    } finally {
+      setIsUploadingImage(false);
+      setUploadProgress(0);
     }
   };
 
