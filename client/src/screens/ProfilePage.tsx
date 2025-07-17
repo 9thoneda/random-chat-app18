@@ -6,6 +6,7 @@ import PremiumPaywall from "../components/PremiumPaywall";
 import LanguageSelector from "../components/LanguageSelector";
 import SettingsModal from "../components/SettingsModal";
 import HelpSupportModal from "../components/HelpSupportModal";
+
 import { useFriends } from "../context/FriendsProvider";
 import { useCoin } from "../context/CoinProvider";
 import {
@@ -37,6 +38,7 @@ import {
   EyeOff,
   Sparkles,
   Medal,
+
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import {
@@ -54,7 +56,7 @@ const ProfilePage: React.FC = () => {
   const { friends, removeFriend, canAddMoreFriends, maxFreeLimit } =
     useFriends();
   const { isPremium, setPremium, premiumExpiry } = usePremium();
-  const { coins: firestoreCoins, isLoading: coinsLoading } = useCoin();
+  const { coins, isLoading: coinsLoading } = useCoin();
   const { t } = useLanguage();
 
   const [username, setUsername] = useState<string>("User");
@@ -69,6 +71,7 @@ const ProfilePage: React.FC = () => {
     "privacy" | "notifications" | "account" | "general" | null
   >(null);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
+
   const [activeTab, setActiveTab] = useState<
     "profile" | "stats" | "achievements"
   >("profile");
@@ -250,35 +253,58 @@ const ProfilePage: React.FC = () => {
 
   const renderProfileTab = () => (
     <div className="space-y-6">
-      {/* Profile Image Section */}
+      {/* Enhanced Profile Image Section */}
       <div className="flex flex-col items-center">
         <div className="relative group">
-          <div className="w-full h-64 rounded-lg bg-gradient-to-br from-rose-200 to-pink-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
-            <div className="absolute inset-0 rounded-lg border-2 border-rose-400 animate-ping opacity-20"></div>
+          {/* Larger circular profile image */}
+          <div className="w-40 h-40 rounded-full bg-gradient-to-br from-rose-200 via-pink-300 to-purple-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
+            {/* Animated border ring */}
+            <div className="absolute inset-0 rounded-full border-4 border-gradient-to-r from-rose-400 via-pink-400 to-purple-400 animate-pulse opacity-30"></div>
+
+            {/* Premium glow effect for premium users */}
+            {isPremium && (
+              <div className="absolute inset-0 rounded-full border-4 border-yellow-400 animate-pulse shadow-[0_0_20px_rgba(251,191,36,0.6)]"></div>
+            )}
+
             {profileImage ? (
               <img
                 src={profileImage}
                 alt="Profile"
-                className="object-cover w-full h-full relative z-10"
-              />
-            ) : (
-              <div className="text-center relative z-10">
-                <User className="h-12 w-12 text-rose-600 mx-auto mb-2" />
+
                 <div className="text-rose-700 text-xs font-bold">
                   {t("profile.addPhoto")}
                 </div>
               </div>
             )}
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-              <Camera className="h-8 w-8 text-white" />
+
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full flex items-center justify-center">
+              <div className="text-center text-white">
+                <Camera className="h-8 w-8 mx-auto mb-1" />
+                <div className="text-xs font-semibold">Change Photo</div>
+              </div>
             </div>
           </div>
+
+          {/* Camera button with premium styling */}
           <button
             onClick={handleImageUploadClick}
-            className="absolute -bottom-2 right-2 bg-gradient-to-r from-rose-500 to-pink-600 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12"
+            className={`absolute -bottom-2 -right-2 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 ${
+              isPremium
+                ? "bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500"
+                : "bg-gradient-to-r from-rose-500 to-pink-600"
+            }`}
           >
-            <Camera className="h-4 w-4" />
+            <Camera className="h-5 w-5" />
           </button>
+
+          {/* Premium crown indicator */}
+          {isPremium && (
+            <div className="absolute -top-3 -right-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-2 shadow-lg animate-bounce">
+              <Crown className="h-5 w-5 text-white" />
+            </div>
+          )}
+
           <input
             type="file"
             ref={fileInputRef}
@@ -333,7 +359,7 @@ const ProfilePage: React.FC = () => {
         <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-yellow-700">
-              {coinsLoading ? "..." : firestoreCoins}
+              {coinsLoading ? "..." : coins}
             </div>
             <div className="text-xs text-yellow-600 font-medium">Coins</div>
           </CardContent>
@@ -452,9 +478,7 @@ const ProfilePage: React.FC = () => {
             >
               <ArrowLeft size={24} />
             </button>
-            <h1 className="flex-grow text-center text-2xl font-extrabold tracking-wide">
-              {t("profile.title")}
-            </h1>
+
             <button
               onClick={handlePremiumClick}
               className="hover:scale-110 transition-transform bg-white/20 backdrop-blur-sm rounded-full p-2"
@@ -637,6 +661,11 @@ const ProfilePage: React.FC = () => {
       <HelpSupportModal
         isOpen={showHelpModal}
         onClose={() => setShowHelpModal(false)}
+      />
+
+      <TreasureChest
+        isOpen={showTreasureChest}
+        onClose={() => setShowTreasureChest(false)}
       />
     </>
   );

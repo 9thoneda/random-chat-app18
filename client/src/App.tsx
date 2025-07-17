@@ -20,6 +20,7 @@ import UserSetup from "./screens/UserSetup";
 import PersonalChat from "./screens/PersonalChat";
 import FriendsPage from "./screens/FriendsPage";
 import AIChatbotPage from "./screens/AIChatbotPage";
+import SpinWheel from "./components/SpinWheel";
 
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +31,6 @@ interface UserData {
   username: string | null;
   language: string;
   referredBy: string | null;
-  coins?: number;
   coins?: number;
   createdAt: any;
 }
@@ -61,34 +61,30 @@ function App() {
               onboardingComplete: false,
               gender: null,
               username: null,
-              language: 'en', // Default language
+              language: "en", // Default language
               referredBy: null,
               createdAt: new Date(),
-              coins: 100 // Initialize with 100 coins
+              coins: 100, // Initialize with 100 coins
             };
 
             await setDoc(userDocRef, initialUserData);
             console.log("Created new user document");
-            
+
             // Redirect to onboarding for new users
             navigate("/onboarding", { replace: true });
           } else {
             // Existing user - check onboarding status
             const userData = userDocSnap.data() as UserData;
             console.log("Existing user data:", userData);
-            
+
             // Initialize coins if not present (for existing users)
             try {
               await initializeCoins(user.uid);
             } catch (error) {
-              console.error("Error initializing coins for existing user:", error);
-            }
-            
-            // Initialize coins if not present (for existing users)
-            try {
-              await initializeCoins(user.uid);
-            } catch (error) {
-              console.error("Error initializing coins for existing user:", error);
+              console.error(
+                "Error initializing coins for existing user:",
+                error,
+              );
             }
 
             if (!userData.onboardingComplete) {
@@ -148,6 +144,7 @@ function App() {
         <Route path="/refer" element={<ReferToUnlock />} />
         <Route path="/referral-code" element={<ReferralCodeScreen />} />
         <Route path="/ai-chatbot" element={<AIChatbotPage />} />
+        <Route path="/spin-wheel" element={<SpinWheel />} />
       </Routes>
     </div>
   );
