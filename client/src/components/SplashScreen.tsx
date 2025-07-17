@@ -103,6 +103,100 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         <p className="text-orange-800 text-lg font-medium mt-4 animate-pulse">
           Loading amazing connections...
         </p>
+
+        {/* Firebase Storage Connection Status */}
+        {connectionStatus.showConnectionTest && (
+          <div className="mt-6 bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-orange-200 max-w-sm w-full">
+            <div className="flex items-center gap-3">
+              <Database className="w-5 h-5 text-orange-600" />
+              <span className="font-semibold text-orange-800">
+                Firebase Storage
+              </span>
+
+              {connectionStatus.isTestingConnection ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-orange-300 border-t-orange-600 rounded-full animate-spin"></div>
+                  <span className="text-sm text-orange-700">Testing...</span>
+                </div>
+              ) : connectionStatus.connectionResult ? (
+                <div className="flex items-center gap-2">
+                  {connectionStatus.connectionResult.isConnected ? (
+                    <>
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                      <Wifi className="w-4 h-4 text-green-600" />
+                      <span className="text-sm text-green-700 font-medium">
+                        Connected
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <XCircle className="w-4 h-4 text-red-600" />
+                      <span className="text-sm text-red-700 font-medium">
+                        Failed
+                      </span>
+                    </>
+                  )}
+                </div>
+              ) : null}
+            </div>
+
+            {/* Connection result message */}
+            {connectionStatus.connectionResult && (
+              <p
+                className={`text-xs mt-2 ${
+                  connectionStatus.connectionResult.isConnected
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                {connectionStatus.connectionResult.message}
+              </p>
+            )}
+
+            {/* Connection capabilities */}
+            {connectionStatus.connectionResult?.details &&
+              !connectionStatus.isTestingConnection && (
+                <div className="flex gap-3 mt-2 text-xs">
+                  <span
+                    className={`flex items-center gap-1 ${
+                      connectionStatus.connectionResult.details.canWrite
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {connectionStatus.connectionResult.details.canWrite
+                      ? "✓"
+                      : "✗"}{" "}
+                    Write
+                  </span>
+                  <span
+                    className={`flex items-center gap-1 ${
+                      connectionStatus.connectionResult.details.canRead
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {connectionStatus.connectionResult.details.canRead
+                      ? "✓"
+                      : "✗"}{" "}
+                    Read
+                  </span>
+                  <span
+                    className={`flex items-center gap-1 ${
+                      connectionStatus.connectionResult.details.canDelete
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {connectionStatus.connectionResult.details.canDelete
+                      ? "✓"
+                      : "✗"}{" "}
+                    Delete
+                  </span>
+                </div>
+              )}
+          </div>
+        )}
       </div>
     </div>
   );
