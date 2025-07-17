@@ -271,9 +271,9 @@ export default function Home() {
               <button
                 key={index}
                 onClick={() => setCurrentBannerIndex(index)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
+                className={`h-5 rounded-full transition-all duration-300 ${
                   currentBannerIndex === index
-                    ? "bg-white w-7"
+                    ? "bg-white w-4"
                     : "bg-white/60 w-1.5"
                 }`}
               />
