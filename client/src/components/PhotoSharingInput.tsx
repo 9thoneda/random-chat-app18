@@ -1,6 +1,11 @@
 import { useState, useRef } from "react";
 import { Camera, Image, X, Upload, AlertCircle } from "lucide-react";
 import { Button } from "./ui/button";
+import {
+  uploadChatPhoto,
+  validateImageFile,
+  getStorageErrorMessage,
+} from "../lib/storageUtils";
 
 interface PhotoSharingInputProps {
   onPhotoSelected: (photoUrl: string) => void;
