@@ -261,8 +261,11 @@ const SpinWheel: React.FC = () => {
   };
 
   return (
-    /* Native Mobile App Layout - Full Screen */
-    <div className="fixed inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 overflow-hidden">
+    /* Responsive Mobile App Layout - 360dp x 640dp reference */
+    <div
+      className="fixed inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 overflow-hidden w-full h-full max-w-sm mx-auto"
+      style={{ maxWidth: "360px", minHeight: "640px" }}
+    >
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
