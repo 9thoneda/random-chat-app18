@@ -534,61 +534,61 @@ const ProfilePage: React.FC = () => {
           </div>
 
           {/* Settings Section */}
-          <div className="p-6 bg-gray-50 border-t border-gray-200">
-            <h3 className="font-bold text-rose-800 text-lg flex items-center gap-3 mb-4">
-              <div className="bg-rose-100 p-2 rounded-full">
-                <Settings className="h-5 w-5 text-rose-600" />
+          <div className="p-4 bg-gray-50 border-t border-gray-200">
+            <h3 className="font-bold text-rose-800 text-base flex items-center gap-2 mb-3">
+              <div className="bg-rose-100 p-1.5 rounded-full">
+                <Settings className="h-4 w-4 text-rose-600" />
               </div>
               {t("profile.settings")}
             </h3>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => handleSettingsClick("privacy")}
-                className="flex flex-col items-center p-4 rounded-xl bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md transform hover:scale-[1.02]"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
               >
-                <Shield className="h-6 w-6 text-rose-600 mb-2" />
-                <span className="text-rose-700 font-semibold text-sm">
+                <Shield className="h-5 w-5 text-rose-600 mb-1" />
+                <span className="text-rose-700 font-semibold text-xs">
                   Privacy
                 </span>
               </button>
 
               <button
                 onClick={() => handleSettingsClick("notifications")}
-                className="flex flex-col items-center p-4 rounded-xl bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md transform hover:scale-[1.02]"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
               >
-                <Bell className="h-6 w-6 text-rose-600 mb-2" />
-                <span className="text-rose-700 font-semibold text-sm">
+                <Bell className="h-5 w-5 text-rose-600 mb-1" />
+                <span className="text-rose-700 font-semibold text-xs">
                   Notifications
                 </span>
               </button>
 
               <button
                 onClick={() => handleSettingsClick("account")}
-                className="flex flex-col items-center p-4 rounded-xl bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md transform hover:scale-[1.02]"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
               >
-                <User className="h-6 w-6 text-rose-600 mb-2" />
-                <span className="text-rose-700 font-semibold text-sm">
+                <User className="h-5 w-5 text-rose-600 mb-1" />
+                <span className="text-rose-700 font-semibold text-xs">
                   Account
                 </span>
               </button>
 
               <button
                 onClick={() => setShowLanguageSelector(true)}
-                className="flex flex-col items-center p-4 rounded-xl bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md transform hover:scale-[1.02]"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
               >
-                <Globe className="h-6 w-6 text-rose-600 mb-2" />
-                <span className="text-rose-700 font-semibold text-sm">
+                <Globe className="h-5 w-5 text-rose-600 mb-1" />
+                <span className="text-rose-700 font-semibold text-xs">
                   Language
                 </span>
               </button>
 
               <button
                 onClick={() => setShowHelpModal(true)}
-                className="flex flex-col items-center p-4 rounded-xl bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md transform hover:scale-[1.02]"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
               >
-                <HelpCircle className="h-6 w-6 text-rose-600 mb-2" />
-                <span className="text-rose-700 font-semibold text-sm">
+                <HelpCircle className="h-5 w-5 text-rose-600 mb-1" />
+                <span className="text-rose-700 font-semibold text-xs">
                   Help
                 </span>
               </button>
@@ -600,10 +600,10 @@ const ProfilePage: React.FC = () => {
                     navigate("/onboarding");
                   }
                 }}
-                className="flex flex-col items-center p-4 rounded-xl bg-white hover:bg-red-50 transition-all duration-300 border border-red-200 shadow-sm hover:shadow-md transform hover:scale-[1.02]"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-red-50 transition-all duration-300 border border-red-200 shadow-sm hover:shadow-md"
               >
-                <LogOut className="h-6 w-6 text-red-600 mb-2" />
-                <span className="text-red-700 font-semibold text-sm">
+                <LogOut className="h-5 w-5 text-red-600 mb-1" />
+                <span className="text-red-700 font-semibold text-xs">
                   Logout
                 </span>
               </button>
