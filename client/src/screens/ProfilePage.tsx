@@ -72,6 +72,7 @@ const ProfilePage: React.FC = () => {
     "privacy" | "notifications" | "account" | "general" | null
   >(null);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
+  const [showTreasureChest, setShowTreasureChest] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<
     "profile" | "stats" | "achievements"
   >("profile");
