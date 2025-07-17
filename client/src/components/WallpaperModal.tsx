@@ -160,7 +160,7 @@ const wallpaperThemes = [
   {
     id: 17,
     name: "Ice Crystal",
-    icon: Ice,
+    icon: Snowflake,
     gradient: "from-blue-400 via-cyan-400 to-white",
     emotion: "mysterious",
   },
@@ -183,7 +183,7 @@ const wallpaperThemes = [
   {
     id: 20,
     name: "Sunset Café",
-    icon: Sunset,
+    icon: Image,
     gradient: "from-orange-300 via-red-300 to-purple-300",
     emotion: "cozy",
   },
@@ -229,7 +229,7 @@ const wallpaperThemes = [
   {
     id: 26,
     name: "Diamond Shine",
-    icon: Diamond,
+    icon: Gem,
     gradient: "from-gray-300 via-blue-300 to-purple-300",
     emotion: "luxury",
   },
