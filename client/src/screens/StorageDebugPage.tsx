@@ -120,7 +120,7 @@ export default function StorageDebugPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-passion-50 via-romance-25 to-bollywood-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 text-white p-6 shadow-xl">
         <div className="max-w-md mx-auto flex items-center gap-4">
