@@ -14,6 +14,7 @@ import {
   getStorageErrorMessage,
   validateImageFile,
 } from "../lib/storageUtils";
+import { getUserId, getUserProfile, saveUserProfile } from "../lib/userUtils";
 import {
   Crown,
   Camera,
