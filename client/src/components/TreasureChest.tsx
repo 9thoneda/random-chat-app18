@@ -322,6 +322,26 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
               </div>
             </div>
           )}
+
+          {/* Spin Wheel Button */}
+          <div className="mt-3">
+            <button
+              onClick={() => {
+                onClose();
+                window.location.href = "/spin-wheel";
+              }}
+              className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-bounce"
+            >
+              <div className="flex items-center gap-2">
+                <RotateCcw className="h-5 w-5" />
+                <span>🎰 Spin & Win Coins!</span>
+                <ExternalLink className="h-4 w-4" />
+              </div>
+            </button>
+            <div className="text-xs text-purple-600 font-semibold mt-1 bg-purple-100 rounded-full px-3 py-1 inline-block">
+              ✨ Try your luck! Watch ads to win up to 50 coins! ✨
+            </div>
+          </div>
         </CardHeader>
 
         <CardContent className="space-y-4 relative z-10 overflow-y-auto max-h-[calc(98vh-180px)] pb-4">
