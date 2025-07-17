@@ -326,7 +326,7 @@ const PersonalChat = ({
               <div
                 className={`px-4 py-3 rounded-2xl max-w-xs shadow-sm transition-all duration-200 hover:shadow-md ${
                   msg.fromMe
-                    ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white"
+                    ? "bg-gradient-to-r from-passion-500 to-romance-600 text-white"
                     : "bg-white/90 backdrop-blur-sm text-gray-800 border border-gray-100"
                 }`}
               >
