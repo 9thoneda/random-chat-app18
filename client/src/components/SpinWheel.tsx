@@ -13,6 +13,10 @@ import {
   AlertCircle,
   CheckCircle,
   TrendingUp,
+  Sparkles,
+  Crown,
+  Flame,
+  Diamond,
 } from "lucide-react";
 import { useCoin } from "../context/CoinProvider";
 import { useNavigate } from "react-router-dom";
