@@ -293,21 +293,21 @@ const SpinWheel: React.FC = () => {
         {/* Status Bar Safe Area */}
         <div className="h-safe-top bg-black/20"></div>
 
-        {/* Native App Header */}
-        <div className="flex items-center justify-between px-4 py-4 bg-black/30 backdrop-blur-lg border-b border-white/10">
+        {/* Responsive Native App Header - 56dp height */}
+        <div className="flex items-center justify-between px-4 py-3 bg-black/30 backdrop-blur-lg border-b border-white/10 h-14 min-h-[56px]">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors duration-300 bg-white/20 backdrop-blur-sm rounded-full"
+            className="flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors duration-300 bg-white/20 backdrop-blur-sm rounded-full touch-manipulation"
           >
-            <ArrowLeft className="h-6 w-6" />
+            <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
 
-          <div className="text-white font-bold text-xl tracking-wide">
+          <div className="text-white font-bold text-lg sm:text-xl tracking-wide truncate px-2">
             Spin & Win
           </div>
 
-          <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full px-4 py-2 shadow-lg">
-            <Coins className="h-5 w-5 text-white" />
+          <div className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full px-3 sm:px-4 py-2 shadow-lg">
+            <Coins className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             <span className="font-bold text-white text-lg">{coins}</span>
           </div>
         </div>
