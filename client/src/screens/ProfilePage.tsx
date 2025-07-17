@@ -313,7 +313,7 @@ const ProfilePage: React.FC = () => {
       <div className="flex flex-col items-center">
         <div className="relative group">
           {/* Larger circular profile image */}
-          <div className="w-40 h-40 rounded-full bg-gradient-to-br from-rose-200 via-pink-300 to-purple-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
+          <div className="w-40 h-40 rounded-full bg-gradient-to-br from-passion-200 via-romance-300 to-royal-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
             {/* Animated border ring */}
             <div className="absolute inset-0 rounded-full border-4 border-gradient-to-r from-rose-400 via-pink-400 to-purple-400 animate-pulse opacity-30"></div>
 
