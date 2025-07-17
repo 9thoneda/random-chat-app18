@@ -316,7 +316,7 @@ const ProfilePage: React.FC = () => {
           {/* Larger circular profile image */}
           <div className="w-40 h-40 rounded-full bg-gradient-to-br from-passion-200 via-romance-300 to-royal-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
             {/* Animated border ring */}
-            <div className="absolute inset-0 rounded-full border-4 border-gradient-to-r from-passion-400 via-romance-400 to-royal-400 animate-pulse opacity-30"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-passion-400 animate-pulse opacity-30"></div>
 
             {/* Premium glow effect for premium users */}
             {isPremium && (
@@ -421,24 +421,24 @@ const ProfilePage: React.FC = () => {
                 type="text"
                 value={username}
                 onChange={handleUsernameChange}
-                className="flex-grow px-4 py-3 rounded-xl border-2 border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:border-rose-500 bg-rose-50 text-lg font-semibold transition-all duration-200"
+                className="flex-grow px-4 py-3 rounded-xl border-2 border-passion-300 focus:outline-none focus:ring-2 focus:ring-passion-400 focus:border-passion-500 bg-passion-50 text-lg font-semibold transition-all duration-200 romantic-input"
                 autoFocus
               />
               <Button
                 onClick={handleUsernameSave}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-marigold-500 to-bollywood-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Check className="h-4 w-4" />
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <div className="flex-grow text-center px-4 py-3 rounded-xl bg-gradient-to-r from-rose-50 to-pink-50 text-rose-800 font-bold text-xl border-2 border-rose-200 shadow-sm">
+              <div className="flex-grow text-center px-4 py-3 rounded-xl bg-gradient-to-r from-passion-50 to-romance-50 text-passion-800 font-bold text-xl border-2 border-passion-200 shadow-sm">
                 {username}
               </div>
               <Button
                 onClick={() => setIsEditingUsername(true)}
-                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-royal-500 to-royal-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Edit3 className="h-4 w-4" />
               </Button>
@@ -447,28 +447,28 @@ const ProfilePage: React.FC = () => {
         </div>
 
         {/* User Level Badge */}
-        <div className="mt-4 flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 rounded-full border border-purple-200">
-          <Medal className="h-5 w-5 text-purple-600" />
-          <span className="text-purple-700 font-semibold">Level 5 Chatter</span>
+        <div className="mt-4 flex items-center gap-2 bg-gradient-to-r from-royal-100 to-passion-100 px-4 py-2 rounded-full border border-royal-200">
+          <Medal className="h-5 w-5 text-royal-600" />
+          <span className="text-royal-700 font-semibold">Level 5 Chatter</span>
         </div>
       </div>
 
       {/* Quick Stats Cards */}
       <div className="grid grid-cols-2 gap-3">
-        <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
+        <Card className="bg-gradient-to-br from-marigold-50 to-marigold-100 border-marigold-200">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-yellow-700">
+            <div className="text-2xl font-bold text-marigold-700">
               {coinsLoading ? "..." : coins}
             </div>
-            <div className="text-xs text-yellow-600 font-medium">Coins</div>
+            <div className="text-xs text-marigold-600 font-medium">Coins</div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+        <Card className="bg-gradient-to-br from-coral-50 to-coral-100 border-coral-200">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-700">
+            <div className="text-2xl font-bold text-coral-700">
               {userStats.friendsMade}
             </div>
-            <div className="text-xs text-green-600 font-medium">
+            <div className="text-xs text-coral-600 font-medium">
               Friends Made
             </div>
           </CardContent>
@@ -476,30 +476,30 @@ const ProfilePage: React.FC = () => {
       </div>
 
       {/* Referral Section */}
-      <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 shadow-xl relative overflow-hidden">
+      <Card className="bg-gradient-to-r from-bollywood-50 to-marigold-50 border-2 border-bollywood-200 shadow-xl relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 animate-pulse"></div>
         <CardHeader className="relative z-10">
-          <CardTitle className="flex items-center gap-3 text-green-800">
-            <div className="bg-green-100 p-2 rounded-full">
-              <Gift className="h-6 w-6 text-green-600" />
+          <CardTitle className="flex items-center gap-3 text-bollywood-800">
+            <div className="bg-bollywood-100 p-2 rounded-full">
+              <Gift className="h-6 w-6 text-bollywood-600" />
             </div>
             {t("profile.referral.title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="relative z-10 space-y-4">
-          <div className="bg-white rounded-xl p-4 border border-green-200 shadow-lg">
+          <div className="bg-white rounded-xl p-4 border border-bollywood-200 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-sm text-green-600 font-bold">
+                <span className="text-sm text-bollywood-600 font-bold">
                   {t("profile.referral.id")}
                 </span>
-                <div className="font-mono text-green-800 text-lg font-extrabold tracking-wider">
+                <div className="font-mono text-bollywood-800 text-lg font-extrabold tracking-wider">
                   {referralId}
                 </div>
               </div>
               <Button
                 onClick={handleCopyReferral}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-bollywood-500 to-marigold-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Copy className="h-4 w-4 mr-2" />
                 {t("profile.referral.copy")}
@@ -507,10 +507,10 @@ const ProfilePage: React.FC = () => {
             </div>
           </div>
           <div className="text-center">
-            <p className="text-sm text-green-700 font-bold mb-2">
+            <p className="text-sm text-bollywood-700 font-bold mb-2">
               {t("profile.referral.reward")}
             </p>
-            <p className="text-xs text-green-600 font-medium">
+            <p className="text-xs text-bollywood-600 font-medium">
               {t("profile.referral.share")}
             </p>
           </div>
@@ -524,7 +524,7 @@ const ProfilePage: React.FC = () => {
       {achievements.map((achievement) => (
         <Card
           key={achievement.id}
-          className={`${achievement.unlocked ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-200" : "bg-gray-50 border-gray-200"} transition-all duration-300 hover:shadow-lg`}
+          className={`${achievement.unlocked ? "bg-gradient-to-r from-bollywood-50 to-marigold-50 border-bollywood-200" : "bg-gray-50 border-gray-200"} transition-all duration-300 hover:shadow-lg`}
         >
           <CardContent className="p-4">
             <div className="flex items-center gap-4">
@@ -535,18 +535,18 @@ const ProfilePage: React.FC = () => {
               </div>
               <div className="flex-1">
                 <h3
-                  className={`font-bold ${achievement.unlocked ? "text-green-800" : "text-gray-600"}`}
+                  className={`font-bold ${achievement.unlocked ? "text-bollywood-800" : "text-gray-600"}`}
                 >
                   {achievement.title}
                 </h3>
                 <p
-                  className={`text-sm ${achievement.unlocked ? "text-green-600" : "text-gray-500"}`}
+                  className={`text-sm ${achievement.unlocked ? "text-bollywood-600" : "text-gray-500"}`}
                 >
                   {achievement.description}
                 </p>
               </div>
               {achievement.unlocked && (
-                <div className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                <div className="bg-bollywood-500 text-white px-3 py-1 rounded-full text-xs font-bold">
                   Unlocked
                 </div>
               )}
@@ -640,8 +640,8 @@ const ProfilePage: React.FC = () => {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 font-semibold transition-all duration-200 ${
                   activeTab === tab.id
-                    ? "bg-white text-rose-600 border-b-2 border-rose-500"
-                    : "text-gray-600 hover:text-rose-500 hover:bg-gray-100"
+                    ? "bg-white text-passion-600 border-b-2 border-passion-500"
+                    : "text-gray-600 hover:text-passion-500 hover:bg-gray-100"
                 }`}
               >
                 <tab.icon className="h-4 w-4" />
@@ -658,9 +658,9 @@ const ProfilePage: React.FC = () => {
 
           {/* Settings Section */}
           <div className="p-4 bg-gray-50 border-t border-gray-200">
-            <h3 className="font-bold text-rose-800 text-base flex items-center gap-2 mb-3">
-              <div className="bg-rose-100 p-1.5 rounded-full">
-                <Settings className="h-4 w-4 text-rose-600" />
+            <h3 className="font-bold text-passion-800 text-base flex items-center gap-2 mb-3">
+              <div className="bg-passion-100 p-1.5 rounded-full">
+                <Settings className="h-4 w-4 text-passion-600" />
               </div>
               {t("profile.settings")}
             </h3>
@@ -678,50 +678,50 @@ const ProfilePage: React.FC = () => {
               </button>
               <button
                 onClick={() => handleSettingsClick("privacy")}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <Shield className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <Shield className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Privacy
                 </span>
               </button>
 
               <button
                 onClick={() => handleSettingsClick("notifications")}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <Bell className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <Bell className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Notifications
                 </span>
               </button>
 
               <button
                 onClick={() => handleSettingsClick("account")}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <User className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <User className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Account
                 </span>
               </button>
 
               <button
                 onClick={() => setShowLanguageSelector(true)}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <Globe className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <Globe className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Language
                 </span>
               </button>
 
               <button
                 onClick={() => setShowHelpModal(true)}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <HelpCircle className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <HelpCircle className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Help
                 </span>
               </button>
