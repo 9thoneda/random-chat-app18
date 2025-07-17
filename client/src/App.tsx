@@ -16,6 +16,7 @@ import ChatPage from "./screens/ChatPage";
 import VoicePage from "./screens/VoicePage";
 import HomePage from "./screens/HomePage";
 import ProfilePage from "./screens/ProfilePage";
+import StorageDebugPage from "./screens/StorageDebugPage";
 import UserSetup from "./screens/UserSetup";
 import PersonalChat from "./screens/PersonalChat";
 import FriendsPage from "./screens/FriendsPage";
@@ -40,6 +41,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const auth = getAuth(firebaseApp);
+
+  console.log(
+    "App component rendered, showSplash:",
+    showSplash,
+    "isLoading:",
+    isLoading,
+  );
 
   useEffect(() => {
     if (!showSplash) {
@@ -108,6 +116,7 @@ function App() {
   }, [showSplash, navigate, auth]);
 
   const handleSplashComplete = () => {
+    console.log("Splash screen completed, setting showSplash to false");
     setShowSplash(false);
   };
 
@@ -145,6 +154,7 @@ function App() {
         <Route path="/referral-code" element={<ReferralCodeScreen />} />
         <Route path="/ai-chatbot" element={<AIChatbotPage />} />
         <Route path="/spin-wheel" element={<SpinWheel />} />
+        <Route path="/storage-debug" element={<StorageDebugPage />} />
       </Routes>
     </div>
   );

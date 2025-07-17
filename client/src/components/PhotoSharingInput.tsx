@@ -1,58 +1,82 @@
 import { useState, useRef } from "react";
 import { Camera, Image, X, Upload, AlertCircle } from "lucide-react";
 import { Button } from "./ui/button";
+import {
+  uploadChatPhoto,
+  validateImageFile,
+  getStorageErrorMessage,
+} from "../lib/storageUtils";
 
 interface PhotoSharingInputProps {
-  onPhotoSelected: (photoUrl: string) => void;
+  onPhotoSelected: (photoUrl: string, filePath?: string) => void;
   onCancel: () => void;
+  chatId?: string;
+  userId?: string;
 }
 
 export default function PhotoSharingInput({
   onPhotoSelected,
   onCancel,
+  chatId = "default",
+  userId = "anonymous",
 }: PhotoSharingInputProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [error, setError] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.type.startsWith("image/")) {
-      // Check file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Photo size must be less than 5MB");
-        return;
-      }
+    setError(""); // Clear previous errors
 
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          setPreviewUrl(e.target.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
-    } else {
-      alert("Please select a valid image file");
+    if (!file) return;
+
+    // Validate file using our utility
+    const validation = validateImageFile(file);
+    if (!validation.isValid) {
+      setError(validation.error || "Invalid file");
+      return;
     }
+
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        setPreviewUrl(e.target.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSendPhoto = async () => {
     if (!selectedFile) return;
 
     setIsUploading(true);
+    setError("");
+    setUploadProgress(0);
+
     try {
-      // In a real app, you would upload to your server/cloud storage
-      // For demo purposes, we'll use the data URL
-      onPhotoSelected(previewUrl);
+      // Upload to Firebase Storage with progress tracking
+      const result = await uploadChatPhoto(
+        selectedFile,
+        chatId,
+        userId,
+        (progress) => setUploadProgress(progress),
+      );
+
+      // Call the callback with the Firebase Storage URL
+      onPhotoSelected(result.url, result.path);
 
       // Reset state
       setSelectedFile(null);
       setPreviewUrl("");
-    } catch (error) {
+      setUploadProgress(0);
+    } catch (error: any) {
       console.error("Error uploading photo:", error);
-      alert("Failed to send photo. Please try again.");
+      const errorMessage = getStorageErrorMessage(error);
+      setError(errorMessage);
     } finally {
       setIsUploading(false);
     }
@@ -61,14 +85,16 @@ export default function PhotoSharingInput({
   const handleCancel = () => {
     setSelectedFile(null);
     setPreviewUrl("");
+    setError("");
+    setUploadProgress(0);
     onCancel();
   };
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden">
+      <div className="romantic-card rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-passion-200">
         {/* Header */}
-        <div className="bg-gradient-to-r from-violet-600 to-purple-600 text-white p-6 relative">
+        <div className="bg-gradient-to-r from-passion-600 to-romance-600 text-white p-6 relative">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">Share Photo</h2>
             <button
@@ -124,6 +150,26 @@ export default function PhotoSharingInput({
                     <span className="text-sm font-medium">Camera</span>
                   </Button>
                 </div>
+
+                {/* Error display */}
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 mt-4">
+                    <div className="flex items-start gap-3">
+                      <AlertCircle
+                        size={20}
+                        className="text-red-600 flex-shrink-0 mt-0.5"
+                      />
+                      <div>
+                        <h4 className="font-semibold text-red-800 text-sm mb-1">
+                          Upload Error
+                        </h4>
+                        <p className="text-red-700 text-xs leading-relaxed">
+                          {error}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Privacy notice */}
                 <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mt-6">
@@ -201,12 +247,27 @@ export default function PhotoSharingInput({
                   <Button
                     onClick={handleSendPhoto}
                     disabled={isUploading}
-                    className="flex-1 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700"
+                    className="flex-1 bg-gradient-to-r from-passion-600 to-romance-600 hover:from-passion-700 hover:to-romance-700"
                   >
                     {isUploading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        Sending...
+                      <div className="flex flex-col items-center gap-1 w-full">
+                        <div className="flex items-center gap-2">
+                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          Uploading...
+                        </div>
+                        {uploadProgress > 0 && (
+                          <div className="w-full bg-white/20 rounded-full h-1">
+                            <div
+                              className="bg-white h-1 rounded-full transition-all duration-300"
+                              style={{ width: `${uploadProgress}%` }}
+                            ></div>
+                          </div>
+                        )}
+                        {uploadProgress > 0 && (
+                          <span className="text-xs text-white/80">
+                            {Math.round(uploadProgress)}%
+                          </span>
+                        )}
                       </div>
                     ) : (
                       <div className="flex items-center gap-2">

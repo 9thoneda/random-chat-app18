@@ -16,9 +16,16 @@ export default defineConfig({
     strictPort: true,
     hmr: {
       port: 5173,
-      host: "localhost",
+      host: "0.0.0.0",
     },
     cors: true,
+    watch: {
+      usePolling: true,
+      interval: 1000,
+    },
+    fs: {
+      strict: false,
+    },
   },
   preview: {
     host: "0.0.0.0",

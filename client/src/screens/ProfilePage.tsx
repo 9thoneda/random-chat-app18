@@ -10,6 +10,12 @@ import HelpSupportModal from "../components/HelpSupportModal";
 import { useFriends } from "../context/FriendsProvider";
 import { useCoin } from "../context/CoinProvider";
 import {
+  uploadProfileImage,
+  getStorageErrorMessage,
+  validateImageFile,
+} from "../lib/storageUtils";
+import { getUserId, getUserProfile, saveUserProfile } from "../lib/userUtils";
+import {
   Crown,
   Camera,
   Copy,
@@ -25,10 +31,12 @@ import {
   Bell,
   HelpCircle,
   LogOut,
+  AlertCircle,
   Trash2,
   Download,
   Share2,
   Heart,
+  Database,
   Zap,
   Award,
   TrendingUp,
@@ -38,7 +46,6 @@ import {
   EyeOff,
   Sparkles,
   Medal,
-
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import {
@@ -71,6 +78,9 @@ const ProfilePage: React.FC = () => {
     "privacy" | "notifications" | "account" | "general" | null
   >(null);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
+  const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [uploadError, setUploadError] = useState<string>("");
 
   const [activeTab, setActiveTab] = useState<
     "profile" | "stats" | "achievements"
@@ -184,16 +194,63 @@ const ProfilePage: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const imageDataUrl = reader.result as string;
-        setProfileImage(imageDataUrl);
-        localStorage.setItem("ajnabicam_profile_image", imageDataUrl);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    setUploadError("");
+
+    // Validate file
+    const validation = validateImageFile(file);
+    if (!validation.isValid) {
+      setUploadError(validation.error || "Invalid file");
+      return;
+    }
+
+    // Create preview immediately for better UX
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result) {
+        setProfileImage(e.target.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
+
+    setIsUploadingImage(true);
+    setUploadProgress(0);
+
+    try {
+      // Get user ID
+      const userId = getUserId();
+
+      // Upload to Firebase Storage
+      const result = await uploadProfileImage(file, userId, (progress) =>
+        setUploadProgress(progress),
+      );
+
+      // Save the Firebase Storage URL
+      setProfileImage(result.url);
+      localStorage.setItem("ajnabicam_profile_image", result.url);
+      localStorage.setItem("ajnabicam_profile_path", result.path);
+
+      console.log("Profile image uploaded successfully:", result.url);
+    } catch (error: any) {
+      console.error("Error uploading profile image:", error);
+      const errorMessage = getStorageErrorMessage(error);
+      setUploadError(errorMessage);
+
+      // Revert to previous image on error
+      const previousImage = localStorage.getItem("ajnabicam_profile_image");
+      if (previousImage) {
+        setProfileImage(previousImage);
+      } else {
+        setProfileImage(getDefaultAvatar(userGender));
+      }
+    } finally {
+      setIsUploadingImage(false);
+      setUploadProgress(0);
     }
   };
 
@@ -257,9 +314,9 @@ const ProfilePage: React.FC = () => {
       <div className="flex flex-col items-center">
         <div className="relative group">
           {/* Larger circular profile image */}
-          <div className="w-40 h-40 rounded-full bg-gradient-to-br from-rose-200 via-pink-300 to-purple-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
+          <div className="w-40 h-40 rounded-full bg-gradient-to-br from-passion-200 via-romance-300 to-royal-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
             {/* Animated border ring */}
-            <div className="absolute inset-0 rounded-full border-4 border-gradient-to-r from-rose-400 via-pink-400 to-purple-400 animate-pulse opacity-30"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-passion-400 animate-pulse opacity-30"></div>
 
             {/* Premium glow effect for premium users */}
             {isPremium && (
@@ -270,8 +327,11 @@ const ProfilePage: React.FC = () => {
               <img
                 src={profileImage}
                 alt="Profile"
-
-                <div className="text-rose-700 text-xs font-bold">
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
+                <div className="text-passion-700 text-xs font-bold text-center romantic-text-glow">
                   {t("profile.addPhoto")}
                 </div>
               </div>
@@ -289,10 +349,10 @@ const ProfilePage: React.FC = () => {
           {/* Camera button with premium styling */}
           <button
             onClick={handleImageUploadClick}
-            className={`absolute -bottom-2 -right-2 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 ${
+            className={`absolute -bottom-2 -right-2 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 romantic-button ${
               isPremium
-                ? "bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500"
-                : "bg-gradient-to-r from-rose-500 to-pink-600"
+                ? "bg-gradient-to-r from-marigold-500 via-bollywood-500 to-coral-500"
+                : "bg-gradient-to-r from-passion-500 to-romance-600"
             }`}
           >
             <Camera className="h-5 w-5" />
@@ -311,8 +371,47 @@ const ProfilePage: React.FC = () => {
             style={{ display: "none" }}
             accept="image/*"
             onChange={handleImageChange}
+            disabled={isUploadingImage}
           />
+
+          {/* Upload Progress */}
+          {isUploadingImage && (
+            <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
+              <div className="text-center text-white">
+                <div className="w-8 h-8 border-3 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-2"></div>
+                <div className="text-xs font-semibold">
+                  Uploading {Math.round(uploadProgress)}%
+                </div>
+                {uploadProgress > 0 && (
+                  <div className="w-16 bg-white/20 rounded-full h-1 mt-1 mx-auto">
+                    <div
+                      className="bg-white h-1 rounded-full transition-all duration-300"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
+
+        {/* Upload Error */}
+        {uploadError && (
+          <div className="mt-4 w-full max-w-sm bg-red-50 border border-red-200 rounded-xl p-3">
+            <div className="flex items-start gap-2">
+              <AlertCircle
+                size={16}
+                className="text-red-600 flex-shrink-0 mt-0.5"
+              />
+              <div>
+                <h4 className="font-semibold text-red-800 text-sm">
+                  Upload Failed
+                </h4>
+                <p className="text-red-700 text-xs mt-1">{uploadError}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Username Section */}
         <div className="mt-6 w-full max-w-sm">
@@ -322,24 +421,24 @@ const ProfilePage: React.FC = () => {
                 type="text"
                 value={username}
                 onChange={handleUsernameChange}
-                className="flex-grow px-4 py-3 rounded-xl border-2 border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:border-rose-500 bg-rose-50 text-lg font-semibold transition-all duration-200"
+                className="flex-grow px-4 py-3 rounded-xl border-2 border-passion-300 focus:outline-none focus:ring-2 focus:ring-passion-400 focus:border-passion-500 bg-passion-50 text-lg font-semibold transition-all duration-200 romantic-input"
                 autoFocus
               />
               <Button
                 onClick={handleUsernameSave}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-marigold-500 to-bollywood-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Check className="h-4 w-4" />
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <div className="flex-grow text-center px-4 py-3 rounded-xl bg-gradient-to-r from-rose-50 to-pink-50 text-rose-800 font-bold text-xl border-2 border-rose-200 shadow-sm">
+              <div className="flex-grow text-center px-4 py-3 rounded-xl bg-gradient-to-r from-passion-50 to-romance-50 text-passion-800 font-bold text-xl border-2 border-passion-200 shadow-sm">
                 {username}
               </div>
               <Button
                 onClick={() => setIsEditingUsername(true)}
-                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-royal-500 to-royal-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Edit3 className="h-4 w-4" />
               </Button>
@@ -348,28 +447,28 @@ const ProfilePage: React.FC = () => {
         </div>
 
         {/* User Level Badge */}
-        <div className="mt-4 flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 rounded-full border border-purple-200">
-          <Medal className="h-5 w-5 text-purple-600" />
-          <span className="text-purple-700 font-semibold">Level 5 Chatter</span>
+        <div className="mt-4 flex items-center gap-2 bg-gradient-to-r from-royal-100 to-passion-100 px-4 py-2 rounded-full border border-royal-200">
+          <Medal className="h-5 w-5 text-royal-600" />
+          <span className="text-royal-700 font-semibold">Level 5 Chatter</span>
         </div>
       </div>
 
       {/* Quick Stats Cards */}
       <div className="grid grid-cols-2 gap-3">
-        <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
+        <Card className="bg-gradient-to-br from-marigold-50 to-marigold-100 border-marigold-200">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-yellow-700">
+            <div className="text-2xl font-bold text-marigold-700">
               {coinsLoading ? "..." : coins}
             </div>
-            <div className="text-xs text-yellow-600 font-medium">Coins</div>
+            <div className="text-xs text-marigold-600 font-medium">Coins</div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+        <Card className="bg-gradient-to-br from-coral-50 to-coral-100 border-coral-200">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-700">
+            <div className="text-2xl font-bold text-coral-700">
               {userStats.friendsMade}
             </div>
-            <div className="text-xs text-green-600 font-medium">
+            <div className="text-xs text-coral-600 font-medium">
               Friends Made
             </div>
           </CardContent>
@@ -377,30 +476,30 @@ const ProfilePage: React.FC = () => {
       </div>
 
       {/* Referral Section */}
-      <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 shadow-xl relative overflow-hidden">
+      <Card className="bg-gradient-to-r from-bollywood-50 to-marigold-50 border-2 border-bollywood-200 shadow-xl relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 animate-pulse"></div>
         <CardHeader className="relative z-10">
-          <CardTitle className="flex items-center gap-3 text-green-800">
-            <div className="bg-green-100 p-2 rounded-full">
-              <Gift className="h-6 w-6 text-green-600" />
+          <CardTitle className="flex items-center gap-3 text-bollywood-800">
+            <div className="bg-bollywood-100 p-2 rounded-full">
+              <Gift className="h-6 w-6 text-bollywood-600" />
             </div>
             {t("profile.referral.title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="relative z-10 space-y-4">
-          <div className="bg-white rounded-xl p-4 border border-green-200 shadow-lg">
+          <div className="bg-white rounded-xl p-4 border border-bollywood-200 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-sm text-green-600 font-bold">
+                <span className="text-sm text-bollywood-600 font-bold">
                   {t("profile.referral.id")}
                 </span>
-                <div className="font-mono text-green-800 text-lg font-extrabold tracking-wider">
+                <div className="font-mono text-bollywood-800 text-lg font-extrabold tracking-wider">
                   {referralId}
                 </div>
               </div>
               <Button
                 onClick={handleCopyReferral}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-bollywood-500 to-marigold-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 <Copy className="h-4 w-4 mr-2" />
                 {t("profile.referral.copy")}
@@ -408,10 +507,10 @@ const ProfilePage: React.FC = () => {
             </div>
           </div>
           <div className="text-center">
-            <p className="text-sm text-green-700 font-bold mb-2">
+            <p className="text-sm text-bollywood-700 font-bold mb-2">
               {t("profile.referral.reward")}
             </p>
-            <p className="text-xs text-green-600 font-medium">
+            <p className="text-xs text-bollywood-600 font-medium">
               {t("profile.referral.share")}
             </p>
           </div>
@@ -425,7 +524,7 @@ const ProfilePage: React.FC = () => {
       {achievements.map((achievement) => (
         <Card
           key={achievement.id}
-          className={`${achievement.unlocked ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-200" : "bg-gray-50 border-gray-200"} transition-all duration-300 hover:shadow-lg`}
+          className={`${achievement.unlocked ? "bg-gradient-to-r from-bollywood-50 to-marigold-50 border-bollywood-200" : "bg-gray-50 border-gray-200"} transition-all duration-300 hover:shadow-lg`}
         >
           <CardContent className="p-4">
             <div className="flex items-center gap-4">
@@ -436,18 +535,18 @@ const ProfilePage: React.FC = () => {
               </div>
               <div className="flex-1">
                 <h3
-                  className={`font-bold ${achievement.unlocked ? "text-green-800" : "text-gray-600"}`}
+                  className={`font-bold ${achievement.unlocked ? "text-bollywood-800" : "text-gray-600"}`}
                 >
                   {achievement.title}
                 </h3>
                 <p
-                  className={`text-sm ${achievement.unlocked ? "text-green-600" : "text-gray-500"}`}
+                  className={`text-sm ${achievement.unlocked ? "text-bollywood-600" : "text-gray-500"}`}
                 >
                   {achievement.description}
                 </p>
               </div>
               {achievement.unlocked && (
-                <div className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                <div className="bg-bollywood-500 text-white px-3 py-1 rounded-full text-xs font-bold">
                   Unlocked
                 </div>
               )}
@@ -465,9 +564,9 @@ const ProfilePage: React.FC = () => {
           {t("app.name")} - {t("profile.title")}
         </title>
       </Helmet>
-      <main className="flex flex-col items-center min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-rose-50 to-pink-50 px-2 py-4 relative pb-20">
+      <main className="flex flex-col items-center min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-passion-50 via-romance-25 to-bollywood-50 px-2 py-4 relative pb-20">
         {/* Enhanced Header */}
-        <div className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 text-white font-bold text-xl rounded-t-2xl shadow-xl relative overflow-hidden">
+        <div className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-passion-500 via-romance-500 to-royal-600 text-white font-bold text-xl rounded-t-2xl shadow-xl relative overflow-hidden">
           <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
 
@@ -541,8 +640,8 @@ const ProfilePage: React.FC = () => {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 font-semibold transition-all duration-200 ${
                   activeTab === tab.id
-                    ? "bg-white text-rose-600 border-b-2 border-rose-500"
-                    : "text-gray-600 hover:text-rose-500 hover:bg-gray-100"
+                    ? "bg-white text-passion-600 border-b-2 border-passion-500"
+                    : "text-gray-600 hover:text-passion-500 hover:bg-gray-100"
                 }`}
               >
                 <tab.icon className="h-4 w-4" />
@@ -559,60 +658,70 @@ const ProfilePage: React.FC = () => {
 
           {/* Settings Section */}
           <div className="p-4 bg-gray-50 border-t border-gray-200">
-            <h3 className="font-bold text-rose-800 text-base flex items-center gap-2 mb-3">
-              <div className="bg-rose-100 p-1.5 rounded-full">
-                <Settings className="h-4 w-4 text-rose-600" />
+            <h3 className="font-bold text-passion-800 text-base flex items-center gap-2 mb-3">
+              <div className="bg-passion-100 p-1.5 rounded-full">
+                <Settings className="h-4 w-4 text-passion-600" />
               </div>
               {t("profile.settings")}
             </h3>
 
             <div className="grid grid-cols-2 gap-2">
+              {/* Storage Debug Button (Development) */}
+              <button
+                onClick={() => navigate("/storage-debug")}
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-blue-50 transition-all duration-300 border border-blue-200 shadow-sm hover:shadow-md"
+              >
+                <Database className="h-5 w-5 text-blue-600 mb-1" />
+                <span className="text-blue-700 font-semibold text-xs">
+                  Storage Debug
+                </span>
+              </button>
               <button
                 onClick={() => handleSettingsClick("privacy")}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <Shield className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <Shield className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Privacy
                 </span>
               </button>
 
               <button
                 onClick={() => handleSettingsClick("notifications")}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <Bell className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <Bell className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Notifications
                 </span>
               </button>
 
               <button
                 onClick={() => handleSettingsClick("account")}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <User className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <User className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Account
                 </span>
               </button>
 
               <button
                 onClick={() => setShowLanguageSelector(true)}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <Globe className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <Globe className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Language
                 </span>
               </button>
 
               <button
                 onClick={() => setShowHelpModal(true)}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
               >
-                <HelpCircle className="h-5 w-5 text-rose-600 mb-1" />
-                <span className="text-rose-700 font-semibold text-xs">
+                <HelpCircle className="h-5 w-5 text-passion-600 mb-1" />
+                <span className="text-passion-700 font-semibold text-xs">
                   Help
                 </span>
               </button>
@@ -661,11 +770,6 @@ const ProfilePage: React.FC = () => {
       <HelpSupportModal
         isOpen={showHelpModal}
         onClose={() => setShowHelpModal(false)}
-      />
-
-      <TreasureChest
-        isOpen={showTreasureChest}
-        onClose={() => setShowTreasureChest(false)}
       />
     </>
   );

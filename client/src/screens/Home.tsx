@@ -163,45 +163,51 @@ export default function Home() {
           {t("app.name")} - Random Video Chat - Live chat with ajnabis
         </title>
       </Helmet>
-      <main className="flex flex-col min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 relative pb-20 overflow-hidden">
-        {/* Animated Background Elements */}
+      <main className="flex flex-col min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-sindoor-25 via-jasmine-25 to-henna-25 relative pb-20 overflow-hidden">
+        {/* Enhanced Animated Background Elements with Indian flair */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-pink-300 to-rose-400 rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute top-32 right-8 w-16 h-16 bg-gradient-to-br from-purple-300 to-pink-400 rounded-full opacity-30 animate-bounce"></div>
+          <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-sindoor-300 to-henna-400 rounded-full opacity-20 animate-pulse"></div>
+          <div className="absolute top-32 right-8 w-16 h-16 bg-gradient-to-br from-royal-300 to-gulmohar-400 rounded-full opacity-30 animate-bounce"></div>
           <div
-            className="absolute bottom-40 left-6 w-12 h-12 bg-gradient-to-br from-rose-300 to-crimson-400 rounded-full opacity-25 animate-pulse"
+            className="absolute bottom-40 left-6 w-12 h-12 bg-gradient-to-br from-jasmine-300 to-sindoor-400 rounded-full opacity-25 animate-pulse"
             style={{ animationDelay: "1s" }}
           ></div>
           <div
-            className="absolute bottom-60 right-12 w-8 h-8 bg-gradient-to-br from-pink-400 to-purple-400 rounded-full opacity-20 animate-bounce"
+            className="absolute bottom-60 right-12 w-8 h-8 bg-gradient-to-br from-passion-400 to-royal-400 rounded-full opacity-20 animate-bounce"
             style={{ animationDelay: "2s" }}
           ></div>
-          {/* Add romantic heart shapes */}
+          {/* Add romantic Indian symbols */}
           <div
-            className="absolute top-20 right-20 text-pink-300 text-2xl opacity-30 animate-pulse"
+            className="absolute top-20 right-20 text-sindoor-400 text-2xl opacity-40 animate-pulse"
             style={{ animationDelay: "0.5s" }}
           >
             💕
           </div>
           <div
-            className="absolute bottom-80 left-16 text-rose-300 text-xl opacity-25 animate-bounce"
+            className="absolute bottom-80 left-16 text-henna-400 text-xl opacity-35 animate-bounce"
             style={{ animationDelay: "1.5s" }}
           >
-            💖
+            🌸
           </div>
           <div
-            className="absolute top-60 left-8 text-purple-300 text-lg opacity-20 animate-pulse"
+            className="absolute top-60 left-8 text-jasmine-400 text-lg opacity-30 animate-pulse"
             style={{ animationDelay: "2.5s" }}
           >
             ✨
           </div>
+          <div
+            className="absolute top-80 right-6 text-gulmohar-400 text-base opacity-25 animate-bounce"
+            style={{ animationDelay: "3s" }}
+          >
+            🪷
+          </div>
         </div>
 
-        {/* Enhanced Header */}
-        <header className="w-full bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 shadow-lg px-6 py-6 border-b border-pink-100 relative overflow-hidden">
-          {/* Header Background Pattern */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-gold-100/20 to-white/10 backdrop-blur-sm"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gold-200/10 to-transparent"></div>
+        {/* Enhanced Header with Indian romantic colors */}
+        <header className="w-full bg-gradient-to-r from-sindoor-500 via-gulmohar-500 to-royal-600 shadow-lg px-6 py-6 border-b border-sindoor-100 relative overflow-hidden">
+          {/* Header Background Pattern with Indian touch */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/15 via-jasmine-100/25 to-white/15 backdrop-blur-sm"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-henna-200/15 to-transparent"></div>
 
           <div className="relative z-10 flex items-center justify-between">
             {/* App Name & Premium Badge */}
@@ -210,7 +216,7 @@ export default function Home() {
                 {t("app.name")}
               </h1>
               {isPremium && (
-                <div className="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-orange-500 px-3 py-1 rounded-full">
+                <div className="flex items-center gap-1 bg-gradient-to-r from-jasmine-400 to-gulmohar-500 px-3 py-1 rounded-full shadow-md">
                   <Crown className="h-4 w-4 text-white" />
                   <span className="text-white text-xs font-bold">PREMIUM</span>
                 </div>
@@ -231,7 +237,7 @@ export default function Home() {
               <Button
                 onClick={() => setShowTreasureChest(true)}
                 disabled={coinsLoading}
-                className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-semibold px-4 py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200"
+                className="bg-gradient-to-r from-jasmine-500 to-gulmohar-600 hover:from-jasmine-600 hover:to-gulmohar-700 text-white font-semibold px-4 py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200"
               >
                 <Coins className="h-4 w-4 mr-2" />
                 {coinsLoading ? "..." : coins}
@@ -298,14 +304,14 @@ export default function Home() {
             <Button
               className={`w-full py-6 text-xl font-bold rounded-3xl text-white shadow-2xl transform transition-all duration-300 relative overflow-hidden ${
                 isConnecting
-                  ? "bg-gradient-to-r from-green-500 to-emerald-600 scale-95"
-                  : "bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 hover:scale-105 hover:shadow-3xl"
+                  ? "bg-gradient-to-r from-mehendi-500 to-mehendi-600 scale-95"
+                  : "bg-gradient-to-r from-sindoor-500 via-gulmohar-500 to-royal-600 hover:scale-105 hover:shadow-3xl"
               }`}
               onClick={handleStartCall}
               disabled={isConnecting}
             >
               {/* Button Background Animation */}
-              <div className="absolute inset-0 bg-gradient-to-r from-gold-200/30 via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-jasmine-200/40 via-white/25 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
 
               <div className="relative z-10 flex items-center justify-center gap-3">
                 {isConnecting ? (
@@ -357,15 +363,15 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Floating Coin Store Button */}
+        {/* Floating Coin Store Button with Indian colors */}
         <button
           onClick={() => setShowTreasureChest(true)}
-          className="fixed bottom-24 right-4 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 z-40 animate-pulse"
+          className="fixed bottom-24 right-4 bg-gradient-to-r from-jasmine-500 via-gulmohar-500 to-sindoor-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 z-40 animate-pulse"
         >
           <div className="relative">
             <Coins className="h-6 w-6" />
             {coins > 0 && (
-              <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+              <div className="absolute -top-2 -right-2 bg-sindoor-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-md">
                 {coins > 99 ? "99+" : coins}
               </div>
             )}
@@ -387,5 +393,4 @@ export default function Home() {
       />
     </>
   );
-
 }
