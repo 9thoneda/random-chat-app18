@@ -43,8 +43,8 @@ export default function BottomNavBar() {
           key={item.label}
           className={`flex flex-col items-center justify-center flex-1 py-2 px-1 focus:outline-none transition-all duration-200 ${
             location.pathname === item.path
-              ? "text-rose-500 scale-110"
-              : "text-gray-400 hover:text-rose-300"
+              ? "text-passion-500 scale-110"
+              : "text-gray-400 hover:text-passion-300"
           }`}
           onClick={() => navigate(item.path)}
         >
