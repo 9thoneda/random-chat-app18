@@ -394,9 +394,9 @@ const SpinWheel: React.FC = () => {
 
                   {/* Center circle with animated elements */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center shadow-xl border-4 border-yellow-400">
+                    <div className="bg-white rounded-full w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center shadow-xl border-3 sm:border-4 border-yellow-400">
                       <div className="text-center">
-                        <div className="text-lg font-bold text-purple-600 animate-pulse">
+                        <div className="text-sm sm:text-lg font-bold text-purple-600 animate-pulse">
                           SPIN
                         </div>
                         <div className="text-xs font-bold text-gray-600">
