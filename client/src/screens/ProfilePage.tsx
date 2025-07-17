@@ -220,8 +220,8 @@ const ProfilePage: React.FC = () => {
     setUploadProgress(0);
 
     try {
-      // Get user ID (you might want to get this from auth context)
-      const userId = localStorage.getItem("ajnabicam_user_id") || "anonymous";
+      // Get user ID
+      const userId = getUserId();
 
       // Upload to Firebase Storage
       const result = await uploadProfileImage(file, userId, (progress) =>
