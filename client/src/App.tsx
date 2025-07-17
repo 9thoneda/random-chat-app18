@@ -116,6 +116,7 @@ function App() {
   }, [showSplash, navigate, auth]);
 
   const handleSplashComplete = () => {
+    console.log("Splash screen completed, setting showSplash to false");
     setShowSplash(false);
   };
 
