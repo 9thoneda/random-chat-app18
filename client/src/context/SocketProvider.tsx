@@ -79,9 +79,10 @@ export const SocketProvider = ({children} : {children: ReactNode}) => {
             if (socket) {
                 console.log('Component unmounting, closing socket');
                 socket.close();
+                setSocket(null);
             }
         };
-    }, []);
+    }, [socket]);
 
     return (
         <SocketContext.Provider value={{socket, setSocket}}>

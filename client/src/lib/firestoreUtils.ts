@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc, increment, runTransaction } from "firebase/firestore";
+import { doc, getDoc, updateDoc, increment, runTransaction, setDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
 /**
@@ -164,8 +164,14 @@ export async function initializeCoins(uid: string): Promise<number> {
       
       return userData.coins;
     } else {
-      console.warn(`User document not found for uid: ${uid}`);
-      return 0;
+      // Create user document with initial coins if it doesn't exist
+      await setDoc(userDocRef, {
+        coins: 100,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      console.log(`Created user document with 100 coins for user ${uid}`);
+      return 100;
     }
   } catch (error) {
     console.error("Error initializing coins:", error);

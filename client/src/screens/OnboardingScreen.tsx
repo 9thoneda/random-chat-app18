@@ -19,7 +19,17 @@ export default function OnboardingScreen() {
   const auth = getAuth(firebaseApp);
 
   const handleContinue = async () => {
-    if (username.trim() && gender && !isLoading) {
+    if (!username.trim()) {
+      alert('Please enter a username');
+      return;
+    }
+    
+    if (!gender) {
+      alert('Please select your gender');
+      return;
+    }
+    
+    if (!isLoading) {
       setIsLoading(true);
       
       try {
@@ -35,6 +45,7 @@ export default function OnboardingScreen() {
           gender,
           language,
           onboardingComplete: true,
+          coins: 100, // Initialize with coins
           updatedAt: new Date()
         }, { merge: true });
 
@@ -67,6 +78,7 @@ export default function OnboardingScreen() {
         gender: 'other',
         language,
         onboardingComplete: true,
+        coins: 100, // Initialize with coins
         updatedAt: new Date()
       }, { merge: true });
 

@@ -586,7 +586,7 @@ export default function VideoChat() {
     setRemoteChatToken(null);
 
     socket?.emit("skip");
-  }, [socket, isFriendCall, remoteChatToken]);
+  }, [socket, isFriendCall, remoteChatToken, handleChatComplete]);
 
   useEffect(() => {
     if (flag !== true) {

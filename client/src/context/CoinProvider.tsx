@@ -250,7 +250,8 @@ export const CoinProvider = ({ children }: CoinProviderProps) => {
   const completeChat = async (): Promise<void> => {
     const success = await addCoins(3);
     if (success) {
-      alert("🎉 Chat completed! You earned 3 coins!");
+      // Don't show alert for automatic coin earning
+      console.log("🎉 Chat completed! You earned 3 coins!");
     }
   };
 

@@ -98,7 +98,8 @@ function App() {
         } catch (error) {
           console.error("Error during user initialization:", error);
           // Fallback to onboarding on error
-          navigate("/onboarding", { replace: true });
+          // Don't navigate on error to prevent infinite loops
+          console.log("Continuing without navigation due to error");
         } finally {
           setIsLoading(false);
         }

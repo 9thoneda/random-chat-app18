@@ -58,10 +58,11 @@ class PeerService {
                 await this.peer.setLocalDescription(new RTCSessionDescription(offer));
                 return this.peer.localDescription;
             }
+            console.warn('Peer not in stable state for creating offer:', this.peer?.signalingState);
             return null;
         } catch (error) {
             console.error('Error creating offer:', error);
-            throw error;
+            return null;
         }
     }
 
@@ -73,10 +74,11 @@ class PeerService {
                 await this.peer.setLocalDescription(new RTCSessionDescription(answer));
                 return this.peer.localDescription;
             }
+            console.warn('Peer not in correct state for creating answer:', this.peer?.signalingState);
             return null;
         } catch (error) {
             console.error('Error creating answer:', error);
-            throw error;
+            return null;
         }
     }
 
@@ -84,10 +86,11 @@ class PeerService {
         try {
             if(this.peer && this.peer.signalingState === 'have-local-offer'){
                 await this.peer.setRemoteDescription(new RTCSessionDescription(answer));
+            } else {
+                console.warn('Peer not in correct state for setting remote description:', this.peer?.signalingState);
             }
         } catch (error) {
             console.error('Error setting remote description:', error);
-            throw error;
         }
     }
 }
