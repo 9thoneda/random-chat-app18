@@ -24,6 +24,8 @@ import {
   Trophy,
   Diamond,
   AlertCircle,
+  RotateCcw,
+  ExternalLink,
 } from "lucide-react";
 import { useCoin } from "../context/CoinProvider";
 import { usePremium } from "../context/PremiumProvider";
