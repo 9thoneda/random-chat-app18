@@ -6,7 +6,7 @@ import PremiumPaywall from "../components/PremiumPaywall";
 import LanguageSelector from "../components/LanguageSelector";
 import SettingsModal from "../components/SettingsModal";
 import HelpSupportModal from "../components/HelpSupportModal";
-import TreasureChest from "../components/TreasureChest";
+
 import { useFriends } from "../context/FriendsProvider";
 import { useCoin } from "../context/CoinProvider";
 import {
@@ -38,8 +38,7 @@ import {
   EyeOff,
   Sparkles,
   Medal,
-  Coins,
-  ShoppingBag,
+
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import {
@@ -72,7 +71,7 @@ const ProfilePage: React.FC = () => {
     "privacy" | "notifications" | "account" | "general" | null
   >(null);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
-  const [showTreasureChest, setShowTreasureChest] = useState<boolean>(false);
+
   const [activeTab, setActiveTab] = useState<
     "profile" | "stats" | "achievements"
   >("profile");
@@ -271,11 +270,7 @@ const ProfilePage: React.FC = () => {
               <img
                 src={profileImage}
                 alt="Profile"
-                className="object-cover w-full h-full relative z-10 rounded-full"
-              />
-            ) : (
-              <div className="text-center relative z-10">
-                <User className="h-16 w-16 text-rose-600 mx-auto mb-2" />
+
                 <div className="text-rose-700 text-xs font-bold">
                   {t("profile.addPhoto")}
                 </div>
@@ -483,24 +478,7 @@ const ProfilePage: React.FC = () => {
             >
               <ArrowLeft size={24} />
             </button>
-            <div className="flex-grow text-center">
-              <h1 className="text-xl font-extrabold tracking-wide">
-                {t("profile.title")}
-              </h1>
-              {/* Coin Display */}
-              <button
-                onClick={() => setShowTreasureChest(true)}
-                className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 mt-1 hover:bg-white/30 transition-all duration-300 hover:scale-105"
-              >
-                <div className="flex items-center gap-2">
-                  <Coins className="h-4 w-4 text-yellow-300 animate-pulse" />
-                  <span className="text-sm font-bold text-yellow-100">
-                    {coins}
-                  </span>
-                  <ShoppingBag className="h-3 w-3 text-yellow-300" />
-                </div>
-              </button>
-            </div>
+
             <button
               onClick={handlePremiumClick}
               className="hover:scale-110 transition-transform bg-white/20 backdrop-blur-sm rounded-full p-2"
