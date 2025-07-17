@@ -262,12 +262,15 @@ const SpinWheel: React.FC = () => {
 
   return (
     /* Responsive Mobile App Layout - 360dp x 640dp reference */
-        <div
+    <div
       className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 w-full max-w-sm mx-auto relative"
       style={{ maxWidth: "360px" }}
     >
       {/* Fixed Animated Background */}
-      <div className="fixed inset-0 overflow-hidden max-w-sm mx-auto" style={{ maxWidth: "360px" }}>
+      <div
+        className="fixed inset-0 overflow-hidden max-w-sm mx-auto"
+        style={{ maxWidth: "360px" }}
+      >
         <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
         <div
           className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-pink-500/20 to-red-500/20 rounded-full animate-pulse"
@@ -292,28 +295,29 @@ const SpinWheel: React.FC = () => {
       <div className="relative z-10 min-h-screen">
         {/* Fixed Header with Back Button */}
         <div className="sticky top-0 z-20 bg-black/40 backdrop-blur-lg border-b border-white/10">
+          <div className="flex items-center justify-between px-4 py-3 h-14 min-h-[56px]">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors duration-300 bg-white/20 backdrop-blur-sm rounded-full touch-manipulation"
+            >
+              <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+            </button>
 
-        {/* Responsive Native App Header - 56dp height */}
-        <div className="flex items-center justify-between px-4 py-3 bg-black/30 backdrop-blur-lg border-b border-white/10 h-14 min-h-[56px]">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center justify-center w-10 h-10 text-white hover:text-yellow-300 transition-colors duration-300 bg-white/20 backdrop-blur-sm rounded-full touch-manipulation"
-          >
-            <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
-          </button>
+            <div className="text-white font-bold text-lg sm:text-xl tracking-wide truncate px-2">
+              Spin & Win
+            </div>
 
-          <div className="text-white font-bold text-lg sm:text-xl tracking-wide truncate px-2">
-            Spin & Win
-          </div>
-
-          <div className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full px-3 sm:px-4 py-2 shadow-lg">
-            <Coins className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-            <span className="font-bold text-white text-lg">{coins}</span>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full px-3 sm:px-4 py-2 shadow-lg">
+              <Coins className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              <span className="font-bold text-white text-base sm:text-lg">
+                {coins}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Main Content Area - Native Scrollable */}
-        <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Scrollable Main Content */}
+        <div className="overflow-y-auto pb-safe-bottom">
           {/* Title Section */}
           <div className="text-center py-4 sm:py-6 px-4">
             <div className="flex justify-center mb-3 sm:mb-4">
