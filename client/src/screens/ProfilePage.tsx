@@ -664,6 +664,16 @@ const ProfilePage: React.FC = () => {
             </h3>
 
             <div className="grid grid-cols-2 gap-2">
+              {/* Storage Debug Button (Development) */}
+              <button
+                onClick={() => navigate("/storage-debug")}
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-blue-50 transition-all duration-300 border border-blue-200 shadow-sm hover:shadow-md"
+              >
+                <Database className="h-5 w-5 text-blue-600 mb-1" />
+                <span className="text-blue-700 font-semibold text-xs">
+                  Storage Debug
+                </span>
+              </button>
               <button
                 onClick={() => handleSettingsClick("privacy")}
                 className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-rose-50 transition-all duration-300 border border-rose-200 shadow-sm hover:shadow-md"
