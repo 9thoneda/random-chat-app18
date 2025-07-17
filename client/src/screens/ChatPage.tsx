@@ -1,56 +1,75 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { ArrowLeft, MoreVertical, Send, Search, X, Clock } from 'lucide-react';
-import BottomNavBar from '../components/BottomNavBar';
-import { useFriends } from '../context/FriendsProvider';
-import { usePremium } from '../context/PremiumProvider';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import {
+  ArrowLeft,
+  MoreVertical,
+  Send,
+  Search,
+  X,
+  Clock,
+  Users,
+  MessageCircle,
+  Star,
+  Heart,
+} from "lucide-react";
+import BottomNavBar from "../components/BottomNavBar";
+import { useFriends } from "../context/FriendsProvider";
+import { usePremium } from "../context/PremiumProvider";
 
 const initialChats = [
   {
     id: 1,
-    name: 'Aman Kumar',
-    lastMessage: 'What\'s up? How are you doing today?',
-    time: '10:24 AM',
+    name: "Aman Kumar",
+    lastMessage: "What's up? How are you doing today?",
+    time: "10:24 AM",
     unreadCount: 3,
-    avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    avatar:
+      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
     isFriend: false,
     lastSeen: new Date(Date.now() - 2 * 60 * 1000), // 2 minutes ago
+    isTyping: false,
   },
   {
     id: 2,
-    name: 'Priya Sharma',
-    lastMessage: 'Haha 😂 That was so funny!',
-    time: 'Yesterday',
+    name: "Priya Sharma",
+    lastMessage: "Haha 😂 That was so funny!",
+    time: "Yesterday",
     unreadCount: 0,
-    avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    avatar:
+      "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
     isFriend: false,
     lastSeen: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
+    isTyping: false,
   },
   {
     id: 3,
-    name: 'Stranger #314',
-    lastMessage: 'Let\'s connect again soon 💕',
-    time: 'Monday',
+    name: "Stranger #314",
+    lastMessage: "Let's connect again soon 💕",
+    time: "Monday",
     unreadCount: 1,
-    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    avatar:
+      "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
     isFriend: false,
     lastSeen: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+    isTyping: false,
   },
   {
     id: 4,
-    name: 'Rahul Singh',
-    lastMessage: 'Nice talking to you!',
-    time: 'Tuesday',
+    name: "Rahul Singh",
+    lastMessage: "Nice talking to you!",
+    time: "Tuesday",
     unreadCount: 2,
-    avatar: 'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+    avatar:
+      "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
     isFriend: false,
     lastSeen: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 1 week ago
+    isTyping: true,
   },
 ];
 
-type Chat = typeof initialChats[number];
+type Chat = (typeof initialChats)[number];
 
 const ChatPageWrapper = () => {
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
@@ -59,15 +78,16 @@ const ChatPageWrapper = () => {
 
   // Merge friends into chats
   useEffect(() => {
-    const friendChats = friends.map(friend => ({
+    const friendChats = friends.map((friend) => ({
       id: parseInt(friend.id) || Math.random(),
       name: friend.name,
-      lastMessage: friend.isOnline ? 'Online now' : 'Tap to start chatting',
-      time: friend.isOnline ? 'Online' : 'Offline',
+      lastMessage: friend.isOnline ? "Online now" : "Tap to start chatting",
+      time: friend.isOnline ? "Online" : "Offline",
       unreadCount: 0,
       avatar: friend.avatar,
       isFriend: true,
       lastSeen: friend.lastSeen || new Date(),
+      isTyping: false,
     }));
 
     setChats([...friendChats, ...initialChats]);
@@ -83,7 +103,13 @@ const ChatPageWrapper = () => {
     );
   }
 
-  return <ChatPageContent onChatClick={setSelectedChat} chats={chats} setChats={setChats} />;
+  return (
+    <ChatPageContent
+      onChatClick={setSelectedChat}
+      chats={chats}
+      setChats={setChats}
+    />
+  );
 };
 
 const PersonalChat = ({
@@ -98,13 +124,13 @@ const PersonalChat = ({
   const [messages, setMessages] = useState([
     { fromMe: false, text: chat.lastMessage, time: chat.time },
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   useEffect(() => {
     setMessages([{ fromMe: false, text: chat.lastMessage, time: chat.time }]);
     // Mark chat as read
-    setChats(prev =>
-      prev.map(c => (c.id === chat.id ? { ...c, unreadCount: 0 } : c))
+    setChats((prev) =>
+      prev.map((c) => (c.id === chat.id ? { ...c, unreadCount: 0 } : c)),
     );
   }, [chat, setChats]);
 
@@ -113,10 +139,13 @@ const PersonalChat = ({
       const newMsg = {
         fromMe: true,
         text: input,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       };
-      setMessages(prev => [...prev, newMsg]);
-      setInput('');
+      setMessages((prev) => [...prev, newMsg]);
+      setInput("");
 
       const updatedChat = {
         ...chat,
@@ -124,70 +153,78 @@ const PersonalChat = ({
         time: newMsg.time,
         unreadCount: 0,
       };
-      setChats(prev =>
-        prev.map(c => (c.id === chat.id ? updatedChat : c))
-      );
+      setChats((prev) => prev.map((c) => (c.id === chat.id ? updatedChat : c)));
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSend();
     }
   };
 
   return (
-    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 shadow-xl overflow-hidden flex flex-col relative pb-20">
+    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-slate-50 via-white to-rose-50 shadow-xl overflow-hidden flex flex-col relative pb-20">
       {/* Enhanced Header */}
-      <div className="p-4 bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 flex items-center shadow-lg relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-gold-100/20 to-white/10 backdrop-blur-sm"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gold-200/10 to-transparent"></div>
-        <button 
-          onClick={onBack} 
-          className="mr-3 text-white hover:scale-110 transition-transform"
+      <div className="p-4 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 flex items-center shadow-lg relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-white/10 to-white/5"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent"></div>
+
+        <button
+          onClick={onBack}
+          className="mr-3 text-white hover:scale-110 transition-all duration-200 p-2 rounded-full hover:bg-white/20"
           aria-label="Go back"
         >
           <ArrowLeft size={24} />
         </button>
-        <img 
+        <img
           src={chat.avatar}
-          alt={`${chat.name} avatar`} 
-          className="w-12 h-12 rounded-full object-cover mr-3 border-4 border-white shadow-lg" 
+          alt={`${chat.name} avatar`}
+          className="w-12 h-12 rounded-full object-cover mr-3 border-3 border-white/50 shadow-lg backdrop-blur-sm"
         />
-        <div className="flex-1">
+        <div className="flex-1 relative z-10">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-white text-lg block">{chat.name}</span>
+            <span className="font-bold text-white text-lg">{chat.name}</span>
             {chat.isFriend && (
-              <span className="bg-green-400 text-green-800 text-xs px-2 py-1 rounded-full font-semibold">
+              <span className="bg-emerald-400/20 backdrop-blur-sm text-emerald-100 text-xs px-2 py-1 rounded-full font-semibold border border-emerald-300/30">
                 Friend
               </span>
             )}
           </div>
-          <span className="text-rose-100 text-xs">
-            {chat.isFriend && chat.time === 'Online' ? 'Online' : 'Last seen recently'}
+          <span className="text-indigo-100 text-xs">
+            {chat.isFriend && chat.time === "Online" ? (
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                Online
+              </div>
+            ) : (
+              "Last seen recently"
+            )}
           </span>
         </div>
-        <button className="text-white hover:scale-110 transition-transform">
+        <button className="text-white hover:scale-110 transition-all duration-200 p-2 rounded-full hover:bg-white/20">
           <MoreVertical size={20} />
         </button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 bg-gradient-to-br from-rose-50 to-pink-50">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`mb-3 flex ${msg.fromMe ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${msg.fromMe ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`px-4 py-3 rounded-2xl max-w-xs shadow-md ${
+              className={`px-4 py-3 rounded-2xl max-w-xs shadow-sm transition-all duration-200 hover:shadow-md ${
                 msg.fromMe
-                  ? 'bg-gradient-to-r from-rose-500 to-pink-600 text-white'
-                  : 'bg-white text-gray-800 border border-rose-200'
+                  ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white"
+                  : "bg-white/90 backdrop-blur-sm text-gray-800 border border-gray-100"
               }`}
             >
               <div className="leading-relaxed">{msg.text}</div>
-              <div className={`text-xs text-right mt-1 ${msg.fromMe ? 'text-rose-100' : 'text-gray-400'}`}>
+              <div
+                className={`text-xs text-right mt-1 ${msg.fromMe ? "text-purple-100" : "text-gray-400"}`}
+              >
                 {msg.time}
               </div>
             </div>
@@ -196,16 +233,16 @@ const PersonalChat = ({
       </div>
 
       {/* Enhanced Input */}
-      <div className="p-4 bg-white flex items-center border-t border-rose-100 shadow-lg">
+      <div className="p-4 bg-white/90 backdrop-blur-sm flex items-center border-t border-gray-100 shadow-lg">
         <input
-          className="flex-1 px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white/80 backdrop-blur-sm"
+          className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent bg-gray-50/50 backdrop-blur-sm transition-all duration-200"
           placeholder="Type a message..."
           value={input}
-          onChange={e => setInput(e.target.value)}
+          onChange={(e) => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
         />
         <Button
-          className="ml-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+          className="ml-3 px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-2xl font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
           onClick={handleSend}
           disabled={!input.trim()}
         >
@@ -228,8 +265,10 @@ const ChatPageContent = ({
   chats: Chat[];
   setChats: React.Dispatch<React.SetStateAction<Chat[]>>;
 }) => {
-  const [search, setSearch] = useState('');
-  const [longPressedChatId, setLongPressedChatId] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
+  const [longPressedChatId, setLongPressedChatId] = useState<number | null>(
+    null,
+  );
   const navigate = useNavigate();
   const { isPremium } = usePremium();
 
@@ -239,19 +278,23 @@ const ChatPageContent = ({
 
   const handleDelete = (chatId: number) => {
     setLongPressedChatId(null);
-    setChats(prev => prev.filter(chat => chat.id !== chatId));
+    setChats((prev) => prev.filter((chat) => chat.id !== chatId));
   };
 
-  const filteredChats = chats.filter(chat =>
-    chat.name.toLowerCase().includes(search.toLowerCase()) ||
-    chat.lastMessage.toLowerCase().includes(search.toLowerCase())
+  const filteredChats = chats.filter(
+    (chat) =>
+      chat.name.toLowerCase().includes(search.toLowerCase()) ||
+      chat.lastMessage.toLowerCase().includes(search.toLowerCase()),
   );
 
-  const totalUnreadCount = chats.reduce((sum, chat) => sum + chat.unreadCount, 0);
+  const totalUnreadCount = chats.reduce(
+    (sum, chat) => sum + chat.unreadCount,
+    0,
+  );
 
   // Separate friends and regular chats
-  const friendChats = filteredChats.filter(chat => chat.isFriend);
-  const regularChats = filteredChats.filter(chat => !chat.isFriend);
+  const friendChats = filteredChats.filter((chat) => chat.isFriend);
+  const regularChats = filteredChats.filter((chat) => !chat.isFriend);
 
   const formatLastSeen = (lastSeen: Date) => {
     const now = new Date();
@@ -259,58 +302,81 @@ const ChatPageContent = ({
     const diffMins = Math.floor(diffMs / (1000 * 60));
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    
-    if (diffMins < 1) return 'Just now';
+
+    if (diffMins < 1) return "Just now";
     if (diffMins < 60) return `${diffMins}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
     return `${diffDays}d ago`;
   };
 
   return (
-    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-white via-rose-25 to-pink-25 shadow-xl overflow-hidden flex flex-col relative pb-20">
+    <div className="max-w-md mx-auto h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 shadow-xl overflow-hidden flex flex-col relative pb-20">
       {/* Enhanced Header */}
-      <div className="px-6 py-8 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 text-white shadow-2xl relative overflow-hidden">
-        {/* Header Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/15 via-white/5 to-white/15 backdrop-blur-sm"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <div className="flex items-center justify-between mb-6">
-          <div className="relative z-10 flex items-center justify-between w-full">
-          <div className="flex items-center">
-            <button 
-              onClick={() => navigate('/')} 
-              className="mr-4 hover:scale-110 transition-all duration-200 p-2 rounded-full hover:bg-white/20"
-              aria-label="Go to home"
-            >
-              <ArrowLeft size={24} />
-            </button> 
-            <h1 className="flex-grow text-center text-3xl font-extrabold tracking-wide drop-shadow-sm">Chats</h1>
-          </div>
-          {totalUnreadCount > 0 && (
-            <div className="bg-white/25 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30 shadow-lg">
-              <span className="text-sm font-bold">{totalUnreadCount} new</span>
+      <div className="px-6 py-6 bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 text-white shadow-xl relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-white/10 to-white/5"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-pink-300/20 via-transparent to-transparent"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-300/10 to-blue-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-rose-300/10 to-pink-400/10 rounded-full blur-2xl"></div>
+
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <button
+                onClick={() => navigate("/")}
+                className="mr-4 hover:scale-110 transition-all duration-200 p-2 rounded-xl hover:bg-white/10 backdrop-blur-sm"
+                aria-label="Go to home"
+              >
+                <ArrowLeft size={24} />
+              </button>
+              <div className="flex items-center gap-3">
+                <MessageCircle className="h-8 w-8 text-white/90" />
+                <h1 className="text-3xl font-bold tracking-tight">Chats</h1>
+              </div>
             </div>
-          )}
+            {totalUnreadCount > 0 && (
+              <div className="bg-gradient-to-r from-rose-500 to-pink-600 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-white/20">
+                <span className="text-sm font-bold flex items-center gap-2">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                  {totalUnreadCount} new
+                </span>
+              </div>
+            )}
           </div>
-        </div>
-        
-        {/* Search Bar */}
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 h-5 w-5" />
-          <Input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search conversations..." 
-            className="w-full pl-12 pr-12 py-4 rounded-2xl border-0 bg-white/25 backdrop-blur-md text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/35 transition-all duration-200 text-base font-medium"
-          />
-          {search && (
-            <button
-              onClick={() => setSearch('')}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors duration-200 p-1 rounded-full hover:bg-white/20"
-            >
-              <X size={16} />
-            </button>
-          )}
+
+          {/* Enhanced Search Bar */}
+          <div className="relative group">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60 h-5 w-5 group-focus-within:text-white/80 transition-colors duration-200" />
+            <Input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search conversations..."
+              className="w-full pl-12 pr-12 py-4 rounded-2xl border-0 bg-white/10 backdrop-blur-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 focus:bg-white/20 transition-all duration-300 text-base font-medium shadow-inner"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/60 hover:text-white transition-colors duration-200 p-1 rounded-full hover:bg-white/10"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+
+          {/* Quick Stats */}
+          <div className="flex justify-between items-center mt-4 text-white/80 text-sm">
+            <span className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              {chats.length} conversation{chats.length !== 1 ? "s" : ""}
+            </span>
+            {friendChats.length > 0 && (
+              <span className="flex items-center gap-2">
+                <Heart className="h-4 w-4 text-emerald-300" />
+                {friendChats.length} friend{friendChats.length !== 1 ? "s" : ""}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -319,25 +385,28 @@ const ChatPageContent = ({
         {/* Friends Section */}
         {friendChats.length > 0 && (
           <>
-            <div className="px-6 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100/50">
-              <h3 className="text-sm font-bold text-green-700 flex items-center gap-3">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <div className="px-6 py-4 bg-gradient-to-r from-emerald-50/80 to-green-50/80 border-b border-emerald-100/50 backdrop-blur-sm">
+              <h3 className="text-sm font-bold text-emerald-700 flex items-center gap-3">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                <Heart className="h-4 w-4" />
                 Friends ({friendChats.length})
               </h3>
             </div>
-            {friendChats.map((chat) => (
-              <ChatItem
-                key={`friend-${chat.id}`}
-                chat={chat}
-                onChatClick={onChatClick}
-                onLongPress={handleLongPress}
-                onDelete={handleDelete}
-                longPressedChatId={longPressedChatId}
-                setLongPressedChatId={setLongPressedChatId}
-                isPremium={isPremium}
-                formatLastSeen={formatLastSeen}
-              />
-            ))}
+            <div className="space-y-1">
+              {friendChats.map((chat) => (
+                <ChatItem
+                  key={`friend-${chat.id}`}
+                  chat={chat}
+                  onChatClick={onChatClick}
+                  onLongPress={handleLongPress}
+                  onDelete={handleDelete}
+                  longPressedChatId={longPressedChatId}
+                  setLongPressedChatId={setLongPressedChatId}
+                  isPremium={isPremium}
+                  formatLastSeen={formatLastSeen}
+                />
+              ))}
+            </div>
           </>
         )}
 
@@ -345,53 +414,58 @@ const ChatPageContent = ({
         {regularChats.length > 0 && (
           <>
             {friendChats.length > 0 && (
-              <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-slate-50 border-b border-gray-100/50">
-                <h3 className="text-sm font-bold text-gray-700">Recent Chats</h3>
+              <div className="px-6 py-4 bg-gradient-to-r from-gray-50/80 to-slate-50/80 border-b border-gray-100/50 backdrop-blur-sm">
+                <h3 className="text-sm font-bold text-gray-700 flex items-center gap-3">
+                  <MessageCircle className="h-4 w-4" />
+                  Recent Chats ({regularChats.length})
+                </h3>
               </div>
             )}
-            {regularChats.map((chat) => (
-              <ChatItem
-                key={`regular-${chat.id}`}
-                chat={chat}
-                onChatClick={onChatClick}
-                onLongPress={handleLongPress}
-                onDelete={handleDelete}
-                longPressedChatId={longPressedChatId}
-                setLongPressedChatId={setLongPressedChatId}
-                isPremium={isPremium}
-                formatLastSeen={formatLastSeen}
-              />
-            ))}
+            <div className="space-y-1">
+              {regularChats.map((chat) => (
+                <ChatItem
+                  key={`regular-${chat.id}`}
+                  chat={chat}
+                  onChatClick={onChatClick}
+                  onLongPress={handleLongPress}
+                  onDelete={handleDelete}
+                  longPressedChatId={longPressedChatId}
+                  setLongPressedChatId={setLongPressedChatId}
+                  isPremium={isPremium}
+                  formatLastSeen={formatLastSeen}
+                />
+              ))}
+            </div>
           </>
         )}
 
-        {/* No Results */}
+        {/* Enhanced Empty State */}
         {filteredChats.length === 0 && (
           <div className="flex flex-col items-center justify-center h-96 text-center px-8 py-16">
-            <div className="relative mb-6">
-              <div className="text-9xl mb-4 animate-float">
-                {search ? '🔍' : '💬'}
+            <div className="relative mb-8">
+              <div className="text-8xl mb-4 transform hover:scale-110 transition-transform duration-300">
+                {search ? "🔍" : "💬"}
               </div>
               {!search && (
-                <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full animate-ping opacity-75"></div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-violet-500 to-purple-600 rounded-full animate-ping opacity-75"></div>
               )}
             </div>
-            <div className="bg-gradient-to-br from-white to-rose-50 rounded-3xl p-8 border-2 border-rose-100 shadow-2xl max-w-sm backdrop-blur-sm">
+            <div className="bg-gradient-to-br from-white/90 to-purple-50/90 backdrop-blur-sm rounded-3xl p-8 border border-purple-100/50 shadow-xl max-w-sm">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                {search ? 'No chats found' : 'No chats yet'}
+                {search ? "No chats found" : "Start Your Journey"}
               </h3>
-              <p className="text-gray-600 mb-6 leading-relaxed text-base">
-                {search 
-                  ? `No results for "${search}". Try a different search term.`
-                  : 'Ready to make new connections? Start your first conversation and watch your chat list come to life!'
-                }
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                {search
+                  ? `No results for "${search}". Try searching with different keywords.`
+                  : "Ready to meet amazing people? Your first conversation is just a tap away!"}
               </p>
               {!search && (
-                <Button 
-                  onClick={() => navigate('/video-chat')}
-                  className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-bold px-8 py-3 rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
+                <Button
+                  onClick={() => navigate("/video-chat")}
+                  className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-bold px-8 py-3 rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
                 >
-                  🚀 Start Your First Chat
+                  <Star className="h-4 w-4 mr-2" />
+                  Start Chatting
                 </Button>
               )}
             </div>
@@ -425,14 +499,18 @@ const ChatItem = ({
   formatLastSeen: (date: Date) => string;
 }) => {
   return (
-    <div 
-      className={`flex items-center p-5 cursor-pointer relative border-b border-gray-100/50 transition-all duration-300 hover:bg-gradient-to-r hover:from-rose-50/80 hover:to-pink-50/80 hover:shadow-lg transform hover:scale-[1.01] active:scale-[0.99] ${
-        chat.isFriend ? 'bg-gradient-to-r from-green-50/60 to-emerald-50/60' : 'bg-white/80'
+    <div
+      className={`flex items-center p-5 cursor-pointer relative transition-all duration-300 hover:bg-gradient-to-r hover:from-violet-50/60 hover:to-purple-50/60 hover:shadow-md transform hover:scale-[1.01] active:scale-[0.99] ${
+        chat.isFriend
+          ? "bg-gradient-to-r from-emerald-50/40 to-green-50/40"
+          : "bg-white/60 backdrop-blur-sm"
       } ${
-        chat.unreadCount > 0 ? 'bg-gradient-to-r from-rose-50 to-pink-50 border-l-4 border-rose-400 shadow-md' : ''
+        chat.unreadCount > 0
+          ? "bg-gradient-to-r from-violet-50/80 to-purple-50/80 border-l-4 border-violet-400 shadow-sm"
+          : "border-b border-gray-100/30"
       }`}
       onClick={() => {
-        if (longPressedChatId !== chat.id) onChatClick(chat); 
+        if (longPressedChatId !== chat.id) onChatClick(chat);
       }}
       onContextMenu={(e) => {
         e.preventDefault();
@@ -443,79 +521,125 @@ const ChatItem = ({
         <img
           src={chat.avatar}
           alt={`${chat.name} avatar`}
-          className={`w-16 h-16 rounded-full object-cover shadow-lg transition-all duration-300 border-4 ${
-            chat.unreadCount > 0 ? 'border-rose-300 shadow-rose-200' : 'border-white shadow-gray-200'
+          className={`w-16 h-16 rounded-full object-cover shadow-md transition-all duration-300 border-3 ${
+            chat.unreadCount > 0 ? "border-violet-300/50" : "border-white/70"
           }`}
         />
+
+        {/* Unread Badge */}
         {chat.unreadCount > 0 && (
-          <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-r from-rose-500 to-pink-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse border-2 border-white">
-            {chat.unreadCount > 9 ? '9+' : chat.unreadCount}
+          <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-violet-500 to-purple-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse border-2 border-white">
+            {chat.unreadCount > 9 ? "9+" : chat.unreadCount}
           </div>
         )}
-        {chat.isFriend && chat.time === 'Online' && (
-          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-3 border-white rounded-full shadow-md animate-pulse"></div>
+
+        {/* Online Status */}
+        {chat.isFriend && chat.time === "Online" && (
+          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm animate-pulse"></div>
+        )}
+
+        {/* Typing Indicator */}
+        {chat.isTyping && (
+          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500 border-2 border-white rounded-full shadow-sm">
+            <div className="w-full h-full rounded-full bg-blue-400 animate-ping"></div>
+          </div>
         )}
       </div>
 
-      <div className="ml-5 flex-1 min-w-0">
-        <div className="flex justify-between items-start mb-2">
-          <div className="flex items-center gap-2">
-            <h2 className={`truncate transition-colors duration-200 text-lg ${
-              chat.unreadCount > 0 ? 'font-bold text-rose-700' : 'font-semibold text-gray-800'
-            }`}>
+      <div className="ml-4 flex-1 min-w-0">
+        <div className="flex justify-between items-start mb-1">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <h2
+              className={`truncate transition-colors duration-200 ${
+                chat.unreadCount > 0
+                  ? "font-bold text-violet-700"
+                  : "font-semibold text-gray-800"
+              }`}
+            >
               {chat.name}
             </h2>
             {chat.isFriend && (
-              <span className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 text-xs px-3 py-1 rounded-full font-bold border border-green-200 shadow-sm">
+              <span className="bg-gradient-to-r from-emerald-100/80 to-green-100/80 text-emerald-700 text-xs px-2 py-1 rounded-full font-semibold border border-emerald-200/50 backdrop-blur-sm flex-shrink-0">
                 Friend
               </span>
             )}
           </div>
-          <span className={`text-xs flex-shrink-0 ml-3 font-medium ${
-            chat.unreadCount > 0 ? 'text-rose-600 font-bold' : 'text-gray-500'
-          }`}>
+          <span
+            className={`text-xs font-medium ml-3 flex-shrink-0 ${
+              chat.unreadCount > 0
+                ? "text-violet-600 font-bold"
+                : "text-gray-500"
+            }`}
+          >
             {chat.time}
           </span>
         </div>
-        
-        <p className={`text-sm truncate transition-colors duration-200 leading-relaxed ${
-          chat.unreadCount > 0 ? 'text-gray-800 font-medium' : 'text-gray-600'
-        }`}>
-          {chat.lastMessage}
-        </p>
-        
+
+        <div className="flex items-center gap-2">
+          {chat.isTyping ? (
+            <div className="flex items-center gap-2 text-blue-600">
+              <div className="flex gap-1">
+                <div className="w-1 h-1 bg-blue-500 rounded-full animate-bounce"></div>
+                <div
+                  className="w-1 h-1 bg-blue-500 rounded-full animate-bounce"
+                  style={{ animationDelay: "0.1s" }}
+                ></div>
+                <div
+                  className="w-1 h-1 bg-blue-500 rounded-full animate-bounce"
+                  style={{ animationDelay: "0.2s" }}
+                ></div>
+              </div>
+              <span className="text-sm font-medium">typing...</span>
+            </div>
+          ) : (
+            <p
+              className={`text-sm truncate transition-colors duration-200 ${
+                chat.unreadCount > 0
+                  ? "text-gray-800 font-medium"
+                  : "text-gray-600"
+              }`}
+            >
+              {chat.lastMessage}
+            </p>
+          )}
+        </div>
+
         {/* Premium Feature: Last Seen */}
-        {isPremium && chat.lastSeen && chat.time !== 'Online' && (
-          <div className="flex items-center gap-2 mt-2">
-            <Clock className="h-3 w-3 text-gray-400" />
-            <span className="text-xs text-gray-500 font-medium">
-              Last seen {formatLastSeen(chat.lastSeen)}
-            </span>
-          </div>
-        )}
+        {isPremium &&
+          chat.lastSeen &&
+          chat.time !== "Online" &&
+          !chat.isTyping && (
+            <div className="flex items-center gap-1 mt-1">
+              <Clock className="h-3 w-3 text-gray-400" />
+              <span className="text-xs text-gray-500">
+                {formatLastSeen(chat.lastSeen)}
+              </span>
+            </div>
+          )}
       </div>
 
+      {/* Long Press Actions */}
       {longPressedChatId === chat.id && (
-        <div className="absolute right-5 top-1/2 -translate-y-1/2 z-10 flex gap-3 bg-white rounded-xl shadow-xl border border-gray-200 p-2">
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex gap-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-gray-200/50 p-2">
           <Button
             size="sm"
             variant="destructive"
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
               onDelete(chat.id);
             }}
-            className="font-semibold"
+            className="text-xs font-semibold"
           >
             Delete
           </Button>
           <Button
             size="sm"
             variant="outline"
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
               setLongPressedChatId(null);
             }}
-            className="font-semibold"
+            className="text-xs font-semibold"
           >
             Cancel
           </Button>
