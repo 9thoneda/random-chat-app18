@@ -115,8 +115,8 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 
               {connectionStatus.isTestingConnection ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-orange-300 border-t-orange-600 rounded-full animate-spin"></div>
-                  <span className="text-sm text-orange-700">Testing...</span>
+                  <div className="w-4 h-4 border-2 border-passion-300 border-t-passion-600 rounded-full animate-spin"></div>
+                  <span className="text-sm text-romance-700">Testing...</span>
                 </div>
               ) : connectionStatus.connectionResult ? (
                 <div className="flex items-center gap-2">
