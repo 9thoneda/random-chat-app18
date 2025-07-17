@@ -20,6 +20,7 @@ import UserSetup from "./screens/UserSetup";
 import PersonalChat from "./screens/PersonalChat";
 import FriendsPage from "./screens/FriendsPage";
 import AIChatbotPage from "./screens/AIChatbotPage";
+import SpinWheel from "./components/SpinWheel";
 
 import { useNavigate } from "react-router-dom";
 
