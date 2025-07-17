@@ -25,14 +25,18 @@ export const storage = getStorage(firebaseApp);
 // Analytics only works in HTTPS / production
 // Initialize analytics asynchronously to avoid top-level await
 let analytics: any = null;
-isSupported()
-  .then((supported) => {
-    if (supported) {
-      analytics = getAnalytics(firebaseApp);
-    }
-  })
-  .catch(() => {
-    analytics = null;
-  });
+
+// Only initialize analytics in production to prevent dev server errors
+if (import.meta.env.PROD) {
+  isSupported()
+    .then((supported) => {
+      if (supported) {
+        analytics = getAnalytics(firebaseApp);
+      }
+    })
+    .catch(() => {
+      analytics = null;
+    });
+}
 
 export { analytics };
