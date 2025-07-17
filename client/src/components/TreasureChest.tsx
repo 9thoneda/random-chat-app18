@@ -50,6 +50,7 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
     hasCompletedOnboarding,
   } = useCoin();
   const { isPremium } = usePremium();
+  const navigate = useNavigate();
   const [isAnimating, setIsAnimating] = useState(false);
   const [showLimitedOffer, setShowLimitedOffer] = useState(true);
   const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
