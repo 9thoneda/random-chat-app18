@@ -22,6 +22,7 @@ import { usePremium } from "../context/PremiumProvider";
 import WallpaperModal from "../components/WallpaperModal";
 import PhotoSharingInput from "../components/PhotoSharingInput";
 import PhotoMessage from "../components/PhotoMessage";
+import { getUserId } from "../lib/userUtils";
 
 const initialChats = [
   {
