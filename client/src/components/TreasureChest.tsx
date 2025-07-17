@@ -13,6 +13,7 @@ interface TreasureChestProps {
 export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
   const { 
     coins, 
+    addCoins,
     watchAd, 
     claimDailyBonus, 
     completeChat,
@@ -45,9 +46,17 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
   const handlePurchasePack = (pack: typeof coinPacks[0]) => {
     // Simulate in-app purchase - in production, integrate with payment gateway
     const purchaseCoins = async () => {
-      // For now, just show success message since addCoins function expects to be called from context
-      alert(`🎉 You purchased ${pack.coins} coins for ${pack.price}!`);
-      // In production, this would integrate with actual payment processing
+      try {
+        const success = await addCoins(pack.coins);
+        if (success) {
+          alert(`🎉 You purchased ${pack.coins} coins for ${pack.price}!`);
+        } else {
+          alert(`❌ Failed to purchase coins. Please try again.`);
+        }
+      } catch (error) {
+        console.error('Error purchasing coins:', error);
+        alert(`❌ Failed to purchase coins. Please try again.`);
+      }
     };
     
     purchaseCoins();

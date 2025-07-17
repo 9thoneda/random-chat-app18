@@ -18,7 +18,7 @@ export default function PremiumPaywall({ isOpen, onClose, onPurchase }: PremiumP
   const [selectedPlan, setSelectedPlan] = useState<string>("weekly");
 
   // Razorpay handler
-  const handleRazorpay = () => {
+  const handleRazorpay = async () => {
     const plan = plans.find(p => p.id === selectedPlan);
     if (!plan) return;
     

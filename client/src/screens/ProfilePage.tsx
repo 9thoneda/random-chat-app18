@@ -8,6 +8,8 @@ import SettingsModal from '../components/SettingsModal';
 import HelpSupportModal from '../components/HelpSupportModal';
 import { useFriends } from '../context/FriendsProvider';
 import { useCoin } from '../context/CoinProvider';
+import { useFriends } from '../context/FriendsProvider';
+import { useCoin } from '../context/CoinProvider';
 import { 
   Crown, Camera, Copy, Star, Gift, ArrowLeft, Edit3, Check, Settings, User, Globe, 
   Shield, Bell, HelpCircle, LogOut, Trash2, Download, Share2, Heart, Zap, 

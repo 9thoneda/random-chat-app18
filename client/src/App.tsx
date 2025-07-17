@@ -30,6 +30,7 @@ interface UserData {
   username: string | null;
   language: string;
   referredBy: string | null;
+  coins?: number;
   createdAt: any;
 }
 
