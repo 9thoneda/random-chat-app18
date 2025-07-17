@@ -495,7 +495,7 @@ const ProfilePage: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <Coins className="h-4 w-4 text-yellow-300 animate-pulse" />
                   <span className="text-sm font-bold text-yellow-100">
-                    {firestoreCoins || coins}
+                    {coins}
                   </span>
                   <ShoppingBag className="h-3 w-3 text-yellow-300" />
                 </div>
