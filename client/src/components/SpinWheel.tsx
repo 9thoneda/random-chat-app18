@@ -357,16 +357,16 @@ const SpinWheel: React.FC = () => {
             </div>
           </div>
 
-          {/* Wheel Section - Centered */}
+          {/* Responsive Wheel Section - Optimized for 360dp width */}
           <div className="flex-1 flex flex-col justify-center items-center px-4">
-            <div className="relative mb-8">
-              {/* Outer glow ring */}
-              <div className="absolute -inset-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-full opacity-50 blur-xl animate-pulse"></div>
+            <div className="relative mb-6 sm:mb-8">
+              {/* Responsive Outer glow ring */}
+              <div className="absolute -inset-4 sm:-inset-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-full opacity-50 blur-lg sm:blur-xl animate-pulse"></div>
 
-              {/* Wheel Container */}
+              {/* Responsive Wheel Container - 280dp for 360dp screen */}
               <div
                 ref={wheelRef}
-                className="relative w-72 h-72 rounded-full border-8 border-white shadow-2xl overflow-hidden"
+                className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full border-6 sm:border-8 border-white shadow-2xl overflow-hidden"
                 style={{
                   background: `conic-gradient(
                     from 0deg,
