@@ -75,6 +75,9 @@ const ProfilePage: React.FC = () => {
     "privacy" | "notifications" | "account" | "general" | null
   >(null);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
+  const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [uploadError, setUploadError] = useState<string>("");
 
   const [activeTab, setActiveTab] = useState<
     "profile" | "stats" | "achievements"
