@@ -271,10 +271,11 @@ export default function Home() {
               <button
                 key={index}
                 onClick={() => setCurrentBannerIndex(index)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${currentBannerIndex === index
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  currentBannerIndex === index
                     ? "bg-white w-4"
                     : "bg-white/60 w-1.5"
-                  }`}
+                }`}
               />
             ))}
           </div>
@@ -295,10 +296,11 @@ export default function Home() {
           {/* Enhanced Main Action Button - Moved to top */}
           <div className="w-full mb-6">
             <Button
-              className={`w-full py-6 text-xl font-bold rounded-3xl text-white shadow-2xl transform transition-all duration-300 relative overflow-hidden ${isConnecting
+              className={`w-full py-6 text-xl font-bold rounded-3xl text-white shadow-2xl transform transition-all duration-300 relative overflow-hidden ${
+                isConnecting
                   ? "bg-gradient-to-r from-green-500 to-emerald-600 scale-95"
                   : "bg-gradient-to-r from-crimson-500 via-rose-500 to-pink-600 hover:scale-105 hover:shadow-3xl"
-                }`}
+              }`}
               onClick={handleStartCall}
               disabled={isConnecting}
             >
@@ -355,6 +357,21 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Floating Coin Store Button */}
+        <button
+          onClick={() => setShowTreasureChest(true)}
+          className="fixed bottom-24 right-4 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 z-40 animate-pulse"
+        >
+          <div className="relative">
+            <Coins className="h-6 w-6" />
+            {coins > 0 && (
+              <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                {coins > 99 ? "99+" : coins}
+              </div>
+            )}
+          </div>
+        </button>
+
         <BottomNavBar />
       </main>
 
@@ -370,5 +387,4 @@ export default function Home() {
       />
     </>
   );
-
 }
