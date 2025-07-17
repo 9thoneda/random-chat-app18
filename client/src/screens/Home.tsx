@@ -166,8 +166,8 @@ export default function Home() {
       <main className="flex flex-col min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-passion-50 via-romance-25 to-bollywood-50 relative pb-20 overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-pink-300 to-rose-400 rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute top-32 right-8 w-16 h-16 bg-gradient-to-br from-purple-300 to-pink-400 rounded-full opacity-30 animate-bounce"></div>
+          <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-passion-300 to-romance-400 rounded-full opacity-20 animate-pulse"></div>
+          <div className="absolute top-32 right-8 w-16 h-16 bg-gradient-to-br from-royal-300 to-passion-400 rounded-full opacity-30 animate-bounce"></div>
           <div
             className="absolute bottom-40 left-6 w-12 h-12 bg-gradient-to-br from-rose-300 to-crimson-400 rounded-full opacity-25 animate-pulse"
             style={{ animationDelay: "1s" }}
