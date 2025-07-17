@@ -54,17 +54,29 @@ export default function PhotoSharingInput({
     if (!selectedFile) return;
 
     setIsUploading(true);
+    setError("");
+    setUploadProgress(0);
+
     try {
-      // In a real app, you would upload to your server/cloud storage
-      // For demo purposes, we'll use the data URL
-      onPhotoSelected(previewUrl);
+      // Upload to Firebase Storage with progress tracking
+      const result = await uploadChatPhoto(
+        selectedFile,
+        chatId,
+        userId,
+        (progress) => setUploadProgress(progress),
+      );
+
+      // Call the callback with the Firebase Storage URL
+      onPhotoSelected(result.url, result.path);
 
       // Reset state
       setSelectedFile(null);
       setPreviewUrl("");
-    } catch (error) {
+      setUploadProgress(0);
+    } catch (error: any) {
       console.error("Error uploading photo:", error);
-      alert("Failed to send photo. Please try again.");
+      const errorMessage = getStorageErrorMessage(error);
+      setError(errorMessage);
     } finally {
       setIsUploading(false);
     }
