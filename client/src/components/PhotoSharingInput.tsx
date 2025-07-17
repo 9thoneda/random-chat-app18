@@ -8,17 +8,23 @@ import {
 } from "../lib/storageUtils";
 
 interface PhotoSharingInputProps {
-  onPhotoSelected: (photoUrl: string) => void;
+  onPhotoSelected: (photoUrl: string, filePath?: string) => void;
   onCancel: () => void;
+  chatId?: string;
+  userId?: string;
 }
 
 export default function PhotoSharingInput({
   onPhotoSelected,
   onCancel,
+  chatId = "default",
+  userId = "anonymous",
 }: PhotoSharingInputProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [error, setError] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
