@@ -173,30 +173,54 @@ export default function GenderFilter({
           })}
         </div>
 
-        {/* Premium Upsell Card - Standout Design */}
+        {/* Ultimate Premium Upsell Card - Maximum Standout */}
         {!isPremium && (
-          <div className="mt-6 relative">
-            {/* Background Blur Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-300/30 via-pink-300/30 to-rose-300/30 backdrop-blur-sm rounded-2xl"></div>
+          <div className="mt-8 relative group">
+            {/* Multiple Layer Background Blur Effect */}
+            <div className="absolute -inset-6 bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-orange-400/20 backdrop-blur-xl rounded-3xl animate-pulse"></div>
+            <div className="absolute -inset-4 bg-gradient-to-r from-purple-300/30 via-pink-300/30 to-orange-300/30 backdrop-blur-lg rounded-3xl"></div>
+            <div className="absolute -inset-2 bg-gradient-to-r from-purple-200/40 via-pink-200/40 to-orange-200/40 backdrop-blur-md rounded-3xl"></div>
 
-            {/* Main Card */}
-            <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 p-5 rounded-2xl shadow-2xl border-2 border-white/50 overflow-hidden">
-              {/* Animated Background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
+            {/* Outer Glow Ring */}
+            <div className="absolute -inset-3 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-3xl opacity-20 blur-xl animate-pulse"></div>
 
-              {/* Glow Effects */}
-              <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-400 rounded-full animate-pulse opacity-70"></div>
-              <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-pink-400 rounded-full animate-pulse opacity-70 animation-delay-500"></div>
+            {/* Main Premium Card */}
+            <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-orange-600 p-8 rounded-3xl shadow-2xl border-3 border-white/60 overflow-hidden group-hover:scale-105 transition-all duration-500">
+              {/* Multiple Animated Backgrounds */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-purple-500/10 animate-pulse"></div>
+
+              {/* Floating Decorative Elements */}
+              <div className="absolute -top-3 -left-3 w-6 h-6 bg-yellow-400 rounded-full animate-bounce opacity-80"></div>
+              <div className="absolute -top-2 -right-4 w-4 h-4 bg-pink-300 rounded-full animate-pulse opacity-70"></div>
+              <div
+                className="absolute -bottom-3 -left-4 w-5 h-5 bg-orange-400 rounded-full animate-bounce opacity-75"
+                style={{ animationDelay: "0.5s" }}
+              ></div>
+              <div
+                className="absolute -bottom-2 -right-3 w-7 h-7 bg-purple-300 rounded-full animate-pulse opacity-60"
+                style={{ animationDelay: "1s" }}
+              ></div>
+
+              {/* Corner Sparkles */}
+              <div className="absolute top-4 right-6 text-yellow-300 text-xl animate-bounce">
+                ✨
+              </div>
+              <div className="absolute bottom-4 left-6 text-pink-300 text-lg animate-pulse">
+                ⭐
+              </div>
 
               <div className="relative z-10 text-center text-white">
-                <div className="mb-3">
-                  <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
-                    <Crown className="h-4 w-4 text-yellow-300" />
+                {/* Premium Badge */}
+                <div className="mb-4">
+                  <div className="inline-flex items-center gap-3 bg-white/25 backdrop-blur-sm px-4 py-2 rounded-full text-base font-bold shadow-lg border border-white/30">
+                    <Crown className="h-5 w-5 text-yellow-300 animate-pulse" />
                     Premium Feature
+                    <Crown className="h-5 w-5 text-yellow-300 animate-pulse" />
                   </div>
                 </div>
 
-                <h3 className="text-lg font-bold mb-2">
+                <h3 className="text-2xl font-bold mb-3 drop-shadow-lg">
                   🎯 Unlock Gender Filtering!
                 </h3>
                 <p className="text-white/90 text-sm mb-4">
