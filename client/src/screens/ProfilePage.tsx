@@ -421,24 +421,24 @@ const ProfilePage: React.FC = () => {
                 type="text"
                 value={username}
                 onChange={handleUsernameChange}
-                className="flex-grow px-4 py-3 rounded-xl border-2 border-passion-300 focus:outline-none focus:ring-2 focus:ring-passion-400 focus:border-passion-500 bg-passion-50 text-lg font-semibold transition-all duration-200 romantic-input"
+                className="flex-grow px-4 py-3 rounded-xl border-2 border-romance-300 focus:outline-none focus:ring-2 focus:ring-romance-400 focus:border-romance-500 bg-romance-50 text-lg font-semibold transition-all duration-200 romantic-input"
                 autoFocus
               />
               <Button
                 onClick={handleUsernameSave}
-                className="bg-gradient-to-r from-marigold-500 to-bollywood-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-romance-400 to-passion-500 text-white px-4 py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
               >
                 <Check className="h-4 w-4" />
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <div className="flex-grow text-center px-4 py-3 rounded-xl bg-gradient-to-r from-passion-50 to-romance-50 text-passion-800 font-bold text-xl border-2 border-passion-200 shadow-sm">
+              <div className="flex-grow text-center px-4 py-3 rounded-xl bg-gradient-to-r from-romance-50 to-passion-50 text-romance-800 font-bold text-xl border-2 border-romance-200 shadow-sm">
                 {username}
               </div>
               <Button
                 onClick={() => setIsEditingUsername(true)}
-                className="bg-gradient-to-r from-royal-500 to-royal-600 text-white px-4 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-passion-400 to-coral-500 text-white px-4 py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
               >
                 <Edit3 className="h-4 w-4" />
               </Button>
@@ -632,7 +632,7 @@ const ProfilePage: React.FC = () => {
           )}
 
           {/* Tab Navigation */}
-          <div className="flex bg-gray-50 border-b border-gray-200">
+          <div className="flex bg-romance-25 border-b border-romance-100">
             {[
               { id: "profile", label: "Profile", icon: User },
               { id: "achievements", label: "Awards", icon: Award },
@@ -642,8 +642,8 @@ const ProfilePage: React.FC = () => {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 font-semibold transition-all duration-200 ${
                   activeTab === tab.id
-                    ? "bg-white text-passion-600 border-b-2 border-passion-500"
-                    : "text-gray-600 hover:text-passion-500 hover:bg-gray-100"
+                    ? "bg-white text-romance-600 border-b-2 border-romance-500"
+                    : "text-gray-600 hover:text-romance-500 hover:bg-romance-50"
                 }`}
               >
                 <tab.icon className="h-4 w-4" />
