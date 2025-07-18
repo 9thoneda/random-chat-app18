@@ -374,7 +374,7 @@ export default function Home() {
         {/* Floating Coin Store Button with Indian colors */}
         <button
           onClick={() => setShowTreasureChest(true)}
-          className="fixed bottom-20 sm:bottom-24 lg:bottom-28 right-3 sm:right-4 lg:right-6 bg-gradient-to-r from-jasmine-500 via-gulmohar-500 to-sindoor-500 text-white p-3 sm:p-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 z-40 animate-pulse"
+          className="fixed bottom-20 sm:bottom-24 lg:bottom-28 right-3 sm:right-4 lg:right-6 bg-gradient-to-r from-peach-500 via-coral-500 to-blush-600 text-white p-3 sm:p-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 z-40 animate-pulse"
         >
           <div className="relative">
             <Coins className="h-5 w-5 sm:h-6 sm:w-6" />
