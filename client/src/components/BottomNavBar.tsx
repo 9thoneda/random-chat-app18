@@ -39,7 +39,14 @@ export default function BottomNavBar() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-peach-200 via-cream-200 to-blush-200 backdrop-blur-md border-t-4 border-peach-400 flex justify-around items-center h-16 sm:h-18 lg:h-20 shadow-2xl shadow-peach-300/50 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto rounded-t-3xl">
+        <nav
+      style={{
+        background: 'linear-gradient(to right, #ffe4c7, #fff0c4, #ffd1d1)',
+        borderTop: '4px solid #ffb574',
+        borderRadius: '24px 24px 0 0',
+        boxShadow: '0 25px 50px -12px rgba(255, 180, 116, 0.5)'
+      }}
+      className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-md flex justify-around items-center h-16 sm:h-18 lg:h-20 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto"
       {navItems.map((item) => {
         const IconComponent = item.icon;
         const isActive = location.pathname === item.path;
