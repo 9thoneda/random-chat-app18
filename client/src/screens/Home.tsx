@@ -239,20 +239,20 @@ export default function Home() {
               </div>
 
               {/* Right: Settings & Coins */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 {/* Settings Button */}
                 <Button
                   onClick={() => navigate("/profile")}
-                  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold p-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 border border-white/30"
+                  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold p-2.5 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 border border-white/30"
                 >
-                  <User className="h-4 w-4" />
+                  <User className="h-5 w-5" />
                 </Button>
 
                 {/* Coins Button */}
                 <Button
                   onClick={() => setShowTreasureChest(true)}
                   disabled={coinsLoading}
-                  className="bg-gradient-to-r from-jasmine-500 to-gulmohar-600 hover:from-jasmine-600 hover:to-gulmohar-700 text-white font-semibold px-3 sm:px-4 py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 text-sm sm:text-base"
+                  className="bg-gradient-to-r from-jasmine-500 to-gulmohar-600 hover:from-jasmine-600 hover:to-gulmohar-700 text-white font-bold px-4 py-2.5 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 text-sm"
                 >
                   <Coins className="h-4 w-4 mr-2" />
                   {coinsLoading ? "..." : coins}
