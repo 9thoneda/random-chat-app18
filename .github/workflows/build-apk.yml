@@ -15,12 +15,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Debug folder contents
+        run: |
+          ls -la
+          cd client
+          ls -la
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "npm"
           cache-dependency-path: |
+            package-lock.json
             client/package-lock.json
 
       - name: Set up JDK 17
@@ -35,21 +42,21 @@ jobs:
           api-level: 33
           build-tools: 33.0.0
 
-      - name: Install client dependencies
+      - name: Install root dependencies (if needed)
         run: |
-          cd client
-          npm ci
+          if [ -f package.json ]; then npm install; fi
+
+      - name: Install client dependencies
+        working-directory: client
+        run: npm install
 
       - name: Build web application
-        run: |
-          cd client
-          npm run build
+        working-directory: client
+        run: npm run build
 
       - name: Sync Capacitor
-        run: |
-          cd client
-          npx cap --version
-          npx cap sync android
+        working-directory: client
+        run: npx cap sync android
 
       - name: Grant execute permission for gradlew
         run: chmod +x client/android/gradlew
