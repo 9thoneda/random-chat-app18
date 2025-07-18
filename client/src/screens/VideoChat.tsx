@@ -48,7 +48,7 @@ interface NegotiationDone {
 }
 
 export default function VideoChat() {
-  const { socket } = useSocket();
+  const { socket, mockMatching, isUsingMockMode } = useSocket();
   const { isPremium, setPremium } = usePremium();
   const { coins, isLoading: coinsLoading } = useCoin();
   const { addFriend, canAddMoreFriends, friends } = useFriends();
@@ -324,9 +324,18 @@ export default function VideoChat() {
 
   // Handle match finding when socket connects and we're searching
   useEffect(() => {
-    if (socket && isSearchingForMatch && !remoteChatToken && !isFriendCall) {
-      console.log("Socket connected, finding match...");
-      socket.emit("find:match");
+    if (isSearchingForMatch && !remoteChatToken && !isFriendCall) {
+      if (socket && !isUsingMockMode) {
+        console.log("Socket connected, finding match...");
+        socket.emit("find:match");
+      } else {
+        console.log("Using mock matching service...");
+        const userId = "user_" + Math.random().toString(36).substr(2, 9);
+        mockMatching.findMatch(userId, (partnerId) => {
+          console.log("Mock match found:", partnerId);
+          handleUserJoined(partnerId);
+        });
+      }
 
       // Set a timeout for match finding (30 seconds)
       const matchTimeout = setTimeout(() => {
@@ -339,7 +348,16 @@ export default function VideoChat() {
 
       return () => clearTimeout(matchTimeout);
     }
-  }, [socket, isSearchingForMatch, remoteChatToken, isFriendCall, navigate]);
+  }, [
+    socket,
+    isUsingMockMode,
+    mockMatching,
+    isSearchingForMatch,
+    remoteChatToken,
+    isFriendCall,
+    navigate,
+    handleUserJoined,
+  ]);
 
   // Premium feature: Switch to voice-only mode during call
   const toggleVoiceOnlyMode = useCallback(async () => {
