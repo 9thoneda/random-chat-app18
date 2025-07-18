@@ -95,7 +95,7 @@ export default function BottomNavBar() {
 
             {/* Active indicator dot */}
             {isActive && (
-              <div className="absolute -top-1 right-1/2 transform translate-x-1/2 w-2 h-2 bg-gradient-to-r from-coral-400 to-blush-400 rounded-full shadow-sm animate-pulse" />
+              <div className="absolute -top-1 right-1/2 transform translate-x-1/2 w-2 h-2 bg-gradient-to-r from-romance-400 to-passion-400 rounded-full shadow-sm animate-pulse" />
             )}
           </button>
         );
