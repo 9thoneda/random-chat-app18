@@ -22,6 +22,7 @@ import PersonalChat from "./screens/PersonalChat";
 import FriendsPage from "./screens/FriendsPage";
 import AIChatbotPage from "./screens/AIChatbotPage";
 import SpinWheel from "./components/SpinWheel";
+import PWAInstallPrompt from "./components/PWAInstallPrompt";
 
 import { useNavigate } from "react-router-dom";
 
