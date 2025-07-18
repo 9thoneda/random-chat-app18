@@ -157,6 +157,9 @@ function App() {
         <Route path="/spin-wheel" element={<SpinWheel />} />
         <Route path="/storage-debug" element={<StorageDebugPage />} />
       </Routes>
+
+      {/* PWA Install Prompt */}
+      <PWAInstallPrompt />
     </div>
   );
 }
