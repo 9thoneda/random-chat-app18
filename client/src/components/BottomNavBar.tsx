@@ -9,6 +9,8 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "../context/LanguageProvider";
 
+// Updated with beautiful peach colors - Cache bust 2024-07-18
+
 const iconSize = 18; // Base size for mobile, will be responsive
 
 export default function BottomNavBar() {
