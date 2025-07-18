@@ -4,37 +4,38 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  const isProduction = mode === 'production';
-  const isDevelopment = command === 'serve';
+  const isProduction = mode === "production";
+  const isDevelopment = command === "serve";
 
   return {
-  plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+    plugins: [react()],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
     },
-  },
     server: {
-    host: "0.0.0.0",
-    port: 5173,
-    strictPort: true,
-    hmr: {
-      port: 5173,
       host: "0.0.0.0",
-      clientPort: 5173,
-      timeout: 60000,
+      port: 5173,
+      strictPort: true,
+      hmr: {
+        port: 5173,
+        host: "0.0.0.0",
+        clientPort: 5173,
+        timeout: 60000,
+      },
+      cors: true,
+      watch: {
+        usePolling: true,
+        interval: 1000,
+      },
+      fs: {
+        strict: false,
+      },
     },
-    cors: true,
-    watch: {
-      usePolling: true,
-      interval: 1000,
+    preview: {
+      host: "0.0.0.0",
+      port: 5173,
     },
-    fs: {
-      strict: false,
-    },
-  },
-  preview: {
-    host: "0.0.0.0",
-    port: 5173,
-  },
+  };
 });
