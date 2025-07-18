@@ -39,7 +39,7 @@ interface UserData {
 
 function App() {
   const [showSplash, setShowSplash] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const auth = getAuth(firebaseApp);
 
