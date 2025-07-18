@@ -17,6 +17,8 @@ export default defineConfig({
     hmr: {
       port: 5173,
       host: "0.0.0.0",
+      clientPort: 5173,
+      timeout: 60000,
     },
     cors: true,
     watch: {
