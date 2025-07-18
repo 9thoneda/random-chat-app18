@@ -32,6 +32,11 @@ export default defineConfig(({ command, mode }) => {
     define: {
       __VITE_IS_MODERN__: false,
     },
+    build: {
+      rollupOptions: {
+        external: isDevelopment ? ["/@vite/client"] : [],
+      },
+    },
     preview: {
       host: "0.0.0.0",
       port: 5173,
