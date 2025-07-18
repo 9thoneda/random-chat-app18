@@ -58,7 +58,7 @@ const stats = [
 ];
 
 export default function Home() {
-  const { socket } = useSocket();
+  const { socket, isUsingMockMode } = useSocket();
   const navigate = useNavigate();
   const { isPremium, setPremium } = usePremium();
   const {
@@ -117,15 +117,15 @@ export default function Home() {
       setIsConnecting(true);
       playSound("join");
 
-      // Send user profile to server for premium priority matching
-      socket?.emit("user:profile", {
-        isPremium,
-        genderFilter: "any",
-        voiceOnly: false,
-      });
-
-      // Emit find match event
-      socket?.emit("find:match");
+      // Send user profile to server for premium priority matching (if socket available)
+      if (socket && !isUsingMockMode) {
+        socket.emit("user:profile", {
+          isPremium,
+          genderFilter: "any",
+          voiceOnly: false,
+        });
+        socket.emit("find:match");
+      }
 
       // Navigate immediately to video chat page (it will handle the waiting state)
       navigate("/video-chat", {
