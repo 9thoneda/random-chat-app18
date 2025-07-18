@@ -66,8 +66,8 @@ export default function GenderFilter({
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4">
-        {/* Gender Options - Vertical Stack */}
-        <div className="space-y-3">
+        {/* Gender Options - Enhanced Design */}
+        <div className="space-y-4">
           {genderOptions.map((option, index) => {
             const isLocked = !isPremium && option.id !== "any";
             const isSelected = selectedGender === option.id;
@@ -75,75 +75,95 @@ export default function GenderFilter({
             return (
               <div
                 key={option.id}
-                className={`relative transform transition-all duration-300 hover:scale-105 ${
-                  isSelected ? "scale-105" : ""
+                className={`relative group transform transition-all duration-500 hover:scale-102 ${
+                  isSelected ? "scale-105 z-10" : ""
                 } animate-slide-in`}
                 style={{
-                  animationDelay: `${index * 100}ms`,
+                  animationDelay: `${index * 150}ms`,
                 }}
               >
+                {/* Glow Effect Background */}
+                {isSelected && (
+                  <div className="absolute -inset-3 bg-gradient-to-r from-rose-400/30 via-pink-400/30 to-purple-400/30 rounded-3xl blur-xl animate-pulse"></div>
+                )}
+
                 <Button
                   variant="ghost"
-                  className={`w-full h-auto p-4 rounded-2xl transition-all duration-300 border-2 relative overflow-hidden ${
+                  className={`w-full h-auto p-6 rounded-3xl transition-all duration-500 border-3 relative overflow-hidden group ${
                     isSelected
-                      ? "bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white shadow-2xl border-rose-400 glow-effect"
-                      : "hover:bg-rose-50 border-rose-200 hover:border-rose-300 hover:shadow-lg"
-                  } ${isLocked ? "opacity-70" : ""}`}
+                      ? `bg-gradient-to-r ${option.color} text-white shadow-2xl border-white/50 animate-pulse-glow`
+                      : `${option.bgColor} border-gray-200 hover:border-gray-300 hover:shadow-xl group-hover:shadow-2xl`
+                  } ${isLocked ? "opacity-75" : ""}`}
                   onClick={() => handleGenderChange(option.id)}
                 >
-                  {/* Animated Background for Selected */}
+                  {/* Shimmer Animation for Selected */}
                   {isSelected && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-shimmer"></div>
                   )}
 
-                  <div className="flex items-center gap-4 w-full relative z-10">
-                    {/* Large Avatar/Emoji */}
-                    <div
-                      className={`relative transition-all duration-300 ${isSelected ? "animate-bounce" : ""}`}
-                    >
+                  <div className="flex items-center gap-6 w-full relative z-10">
+                    {/* Extra Large Avatar/Emoji */}
+                    <div className="relative">
                       <div
-                        className={`w-16 h-16 rounded-full flex items-center justify-center text-3xl ${
+                        className={`w-20 h-20 rounded-full flex items-center justify-center text-4xl transition-all duration-500 ${
                           isSelected
-                            ? "bg-white/20 backdrop-blur-sm shadow-lg"
-                            : "bg-rose-100 hover:bg-rose-200"
-                        } transition-all duration-300`}
+                            ? "bg-white/20 backdrop-blur-md shadow-2xl animate-bounce"
+                            : "bg-white/80 group-hover:bg-white shadow-lg group-hover:shadow-xl"
+                        }`}
                       >
                         {option.emoji}
                       </div>
+
+                      {/* Animated Ring for Selected */}
                       {isSelected && (
-                        <div className="absolute -inset-2 bg-white/30 rounded-full animate-ping"></div>
+                        <>
+                          <div className="absolute -inset-3 border-3 border-white/50 rounded-full animate-ping"></div>
+                          <div className="absolute -inset-1 border-2 border-white/80 rounded-full animate-pulse"></div>
+                        </>
                       )}
+
+                      {/* Hover Ring */}
+                      <div className="absolute -inset-2 border-2 border-transparent group-hover:border-gray-300 rounded-full transition-all duration-300"></div>
                     </div>
 
-                    {/* Content */}
+                    {/* Enhanced Content */}
                     <div className="text-left flex-1">
                       <div
-                        className={`text-lg font-bold mb-1 ${
-                          isSelected ? "text-white" : "text-rose-800"
+                        className={`text-xl font-bold mb-2 transition-all duration-300 ${
+                          isSelected
+                            ? "text-white drop-shadow-lg"
+                            : "text-gray-800 group-hover:text-gray-900"
                         }`}
                       >
                         {option.label}
                       </div>
                       <div
-                        className={`text-sm ${
-                          isSelected ? "text-white/90" : "text-rose-600"
+                        className={`text-sm font-medium transition-all duration-300 ${
+                          isSelected
+                            ? "text-white/90"
+                            : "text-gray-600 group-hover:text-gray-700"
                         }`}
                       >
                         {option.description}
                       </div>
                     </div>
 
-                    {/* Lock Icon */}
+                    {/* Lock Icon with Animation */}
                     {isLocked && (
-                      <div className="p-2 bg-yellow-100 rounded-full">
-                        <Crown className="h-5 w-5 text-yellow-600" />
+                      <div className="p-3 bg-yellow-100 rounded-full shadow-lg animate-bounce">
+                        <Crown className="h-6 w-6 text-yellow-600" />
                       </div>
                     )}
 
-                    {/* Selection Indicator */}
+                    {/* Enhanced Selection Indicator */}
                     {isSelected && (
-                      <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                        <div className="w-3 h-3 bg-rose-500 rounded-full animate-pulse"></div>
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg">
+                          <div className="w-4 h-4 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full animate-pulse"></div>
+                        </div>
+                        <div className="text-white text-xs font-bold">
+                          Selected
+                        </div>
                       </div>
                     )}
                   </div>
