@@ -54,6 +54,7 @@ export default function VideoChat() {
   const { addFriend, canAddMoreFriends, friends } = useFriends();
   const location = useLocation();
   const [remoteChatToken, setRemoteChatToken] = useState<string | null>(null);
+  const [isSearchingForMatch, setIsSearchingForMatch] = useState(false);
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [screenStream, setScreenStream] = useState<MediaStream | null>(null);
@@ -104,7 +105,7 @@ export default function VideoChat() {
 
   const loaderColor = theme === "dark" ? "#D1D5DB" : "#4B5563";
 
-  // Check if this is a friend call
+  // Check if this is a friend call or searching for random match
   useEffect(() => {
     const state = location.state as {
       genderFilter?: string;
@@ -112,6 +113,7 @@ export default function VideoChat() {
       friendCall?: boolean;
       friendId?: string;
       friendName?: string;
+      isSearching?: boolean;
     };
 
     if (state?.friendCall) {
@@ -121,13 +123,20 @@ export default function VideoChat() {
       setTimeout(() => {
         alert("🎬 Enjoy your call! Another ad will show after the call ends.");
       }, 1000);
+    } else if (state?.isSearching) {
+      // User came from home screen to find random match
+      setIsSearchingForMatch(true);
+      // Start finding match if socket is connected
+      if (socket) {
+        socket.emit("find:match");
+      }
     }
 
     if (state?.voiceOnly && isPremium) {
       setIsVoiceOnly(true);
       setIsCameraOn(false);
     }
-  }, [location.state, isPremium]);
+  }, [location.state, isPremium, socket]);
 
   // Show friend online notifications
   useEffect(() => {
@@ -518,8 +527,10 @@ export default function VideoChat() {
 
   const handleUserJoined = useCallback(
     async (remoteId: string) => {
+      console.log("Match found:", remoteId);
       setRemoteChatToken(remoteId);
       setPartnerPremium(false);
+      setIsSearchingForMatch(false); // Stop searching
       playSound("match");
       setShowReport(true);
       const offer = await peerservice.getOffer();
@@ -1010,13 +1021,36 @@ export default function VideoChat() {
               />
             )
           ) : (
-            <div className="flex flex-col items-center justify-center w-full h-full bg-gray-300">
+            <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-rose-100 to-pink-100">
               <ClipLoader color={loaderColor} size={40} />
-              <p className="text-gray-500 mt-2 text-xs">
-                {isFriendCall
-                  ? `Calling ${partnerName}...`
-                  : "Waiting for user to connect..."}
+              <p className="text-gray-600 mt-3 text-sm font-medium">
+                {isSearchingForMatch
+                  ? "🔍 Finding your perfect match..."
+                  : isFriendCall
+                    ? `📞 Calling ${partnerName}...`
+                    : "⏳ Waiting for connection..."}
               </p>
+              {isSearchingForMatch && (
+                <div className="mt-4 flex flex-col items-center">
+                  <div className="flex space-x-1 mb-2">
+                    <div
+                      className="w-2 h-2 bg-rose-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "0ms" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-pink-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "150ms" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "300ms" }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-500 text-center px-4">
+                    Finding someone special just for you...
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
