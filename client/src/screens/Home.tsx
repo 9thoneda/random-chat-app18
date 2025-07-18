@@ -309,8 +309,8 @@ export default function Home() {
             <Button
               className={`w-full py-4 sm:py-6 lg:py-8 text-lg sm:text-xl lg:text-2xl font-bold rounded-2xl sm:rounded-3xl text-white shadow-2xl transform transition-all duration-300 relative overflow-hidden ${
                 isConnecting
-                  ? "bg-gradient-to-r from-mehendi-500 to-mehendi-600 scale-95"
-                  : "bg-gradient-to-r from-sindoor-500 via-gulmohar-500 to-royal-600 hover:scale-105 hover:shadow-3xl"
+                  ? "bg-gradient-to-r from-coral-400 to-blush-500 scale-95"
+                  : "bg-gradient-to-r from-peach-500 via-coral-500 to-blush-600 hover:scale-105 hover:shadow-3xl"
               }`}
               onClick={handleStartCall}
               disabled={isConnecting}
