@@ -85,8 +85,8 @@ export default function BottomNavBar() {
             {/* Label with beautiful styling */}
             <span
               style={{
-                color: isActive ? "#e55a1b" : "#ff9a56",
-                textShadow: "0 1px 2px rgba(255, 154, 86, 0.3)",
+                color: isActive ? "#b53535" : "#e25d5d",
+                textShadow: "0 1px 2px rgba(226, 93, 93, 0.2)",
               }}
               className="text-[10px] sm:text-xs lg:text-sm font-semibold leading-none mt-1 transition-colors duration-300"
             >
