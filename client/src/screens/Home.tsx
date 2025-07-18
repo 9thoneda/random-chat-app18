@@ -18,6 +18,7 @@ import {
   Star,
   Play,
   Globe,
+  User,
 } from "lucide-react";
 import GenderFilter from "../components/GenderFilter";
 import PremiumPaywall from "../components/PremiumPaywall";
