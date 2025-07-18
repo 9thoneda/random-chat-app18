@@ -18,12 +18,7 @@ export default defineConfig(({ command, mode }) => {
       host: "0.0.0.0",
       port: 5173,
       strictPort: true,
-      hmr: {
-        port: 5173,
-        host: "0.0.0.0",
-        protocol: "ws",
-        timeout: 30000,
-      },
+      hmr: false,
       cors: true,
       watch: {
         usePolling: true,
