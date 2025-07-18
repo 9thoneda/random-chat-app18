@@ -22,6 +22,7 @@ import PersonalChat from "./screens/PersonalChat";
 import FriendsPage from "./screens/FriendsPage";
 import AIChatbotPage from "./screens/AIChatbotPage";
 import SpinWheel from "./components/SpinWheel";
+import PWAInstallPrompt from "./components/PWAInstallPrompt";
 
 import { useNavigate } from "react-router-dom";
 
@@ -126,10 +127,12 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-peach-50 via-cream-50 to-blush-100 px-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500 mx-auto mb-4"></div>
-          <p className="text-rose-600 font-medium">Loading...</p>
+          <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14 border-b-2 border-peach-500 mx-auto mb-3 sm:mb-4"></div>
+          <p className="text-peach-600 font-medium text-sm sm:text-base lg:text-lg">
+            Loading...
+          </p>
         </div>
       </div>
     );
@@ -156,6 +159,9 @@ function App() {
         <Route path="/spin-wheel" element={<SpinWheel />} />
         <Route path="/storage-debug" element={<StorageDebugPage />} />
       </Routes>
+
+      {/* PWA Install Prompt */}
+      <PWAInstallPrompt />
     </div>
   );
 }

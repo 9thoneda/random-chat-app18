@@ -30,6 +30,7 @@ import {
 import { ClipLoader } from "react-spinners";
 import { useTheme } from "../components/theme-provider";
 import { useNavigate, useLocation } from "react-router-dom";
+import MockWebRTC from "../lib/mockWebRTC";
 import "../css/VideoChat.css";
 
 interface Offer {
@@ -48,12 +49,13 @@ interface NegotiationDone {
 }
 
 export default function VideoChat() {
-  const { socket } = useSocket();
+  const { socket, mockMatching, isUsingMockMode } = useSocket();
   const { isPremium, setPremium } = usePremium();
   const { coins, isLoading: coinsLoading } = useCoin();
   const { addFriend, canAddMoreFriends, friends } = useFriends();
   const location = useLocation();
   const [remoteChatToken, setRemoteChatToken] = useState<string | null>(null);
+  const [isSearchingForMatch, setIsSearchingForMatch] = useState(false);
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [screenStream, setScreenStream] = useState<MediaStream | null>(null);
@@ -104,7 +106,7 @@ export default function VideoChat() {
 
   const loaderColor = theme === "dark" ? "#D1D5DB" : "#4B5563";
 
-  // Check if this is a friend call
+  // Check if this is a friend call or searching for random match
   useEffect(() => {
     const state = location.state as {
       genderFilter?: string;
@@ -112,6 +114,7 @@ export default function VideoChat() {
       friendCall?: boolean;
       friendId?: string;
       friendName?: string;
+      isSearching?: boolean;
     };
 
     if (state?.friendCall) {
@@ -121,13 +124,20 @@ export default function VideoChat() {
       setTimeout(() => {
         alert("🎬 Enjoy your call! Another ad will show after the call ends.");
       }, 1000);
+    } else if (state?.isSearching) {
+      // User came from home screen to find random match
+      setIsSearchingForMatch(true);
+      // Start finding match if socket is connected
+      if (socket) {
+        socket.emit("find:match");
+      }
     }
 
     if (state?.voiceOnly && isPremium) {
       setIsVoiceOnly(true);
       setIsCameraOn(false);
     }
-  }, [location.state, isPremium]);
+  }, [location.state, isPremium, socket]);
 
   // Show friend online notifications
   useEffect(() => {
@@ -312,6 +322,50 @@ export default function VideoChat() {
       getUserStream();
     }
   }, [getUserStream, myStream]);
+
+  // Handle match finding when socket connects and we're searching
+  useEffect(() => {
+    if (isSearchingForMatch && !remoteChatToken && !isFriendCall) {
+      if (socket && !isUsingMockMode) {
+        console.log("Socket connected, finding match...");
+        socket.emit("find:match");
+      } else {
+        console.log("Using mock matching service...");
+        const userId = "user_" + Math.random().toString(36).substr(2, 9);
+        mockMatching.findMatch(userId, (partnerId) => {
+          console.log("Mock match found:", partnerId);
+          setRemoteChatToken(partnerId);
+          setPartnerPremium(false);
+          setIsSearchingForMatch(false);
+          playSound("match");
+          setShowReport(true);
+          setPartnerName("Demo Partner");
+          MockWebRTC.simulateConnection((mockStream) => {
+            setRemoteStream(mockStream);
+          });
+        });
+      }
+
+      // Set a timeout for match finding (30 seconds)
+      const matchTimeout = setTimeout(() => {
+        if (isSearchingForMatch && !remoteChatToken) {
+          setIsSearchingForMatch(false);
+          alert("No matches found at the moment. Please try again!");
+          navigate("/");
+        }
+      }, 30000);
+
+      return () => clearTimeout(matchTimeout);
+    }
+  }, [
+    socket,
+    isUsingMockMode,
+    mockMatching,
+    isSearchingForMatch,
+    remoteChatToken,
+    isFriendCall,
+    navigate,
+  ]);
 
   // Premium feature: Switch to voice-only mode during call
   const toggleVoiceOnlyMode = useCallback(async () => {
@@ -518,14 +572,27 @@ export default function VideoChat() {
 
   const handleUserJoined = useCallback(
     async (remoteId: string) => {
+      console.log("Match found:", remoteId);
       setRemoteChatToken(remoteId);
       setPartnerPremium(false);
+      setIsSearchingForMatch(false); // Stop searching
       playSound("match");
       setShowReport(true);
-      const offer = await peerservice.getOffer();
-      socket?.emit("offer", { offer, to: remoteId });
+
+      // If using mock mode or partner is a bot, simulate WebRTC connection
+      if (isUsingMockMode || remoteId.startsWith("bot_")) {
+        console.log("🤖 Using mock WebRTC connection");
+        setPartnerName("Demo Partner");
+        MockWebRTC.simulateConnection((mockStream) => {
+          setRemoteStream(mockStream);
+        });
+      } else {
+        // Real WebRTC connection
+        const offer = await peerservice.getOffer();
+        socket?.emit("offer", { offer, to: remoteId });
+      }
     },
-    [socket],
+    [socket, isUsingMockMode],
   );
 
   const handleIncommingOffer = useCallback(
@@ -934,9 +1001,9 @@ export default function VideoChat() {
   }
 
   return (
-    <div className="relative min-h-screen w-full max-w-md mx-auto bg-white flex flex-col items-center justify-between overflow-y-auto">
+    <div className="relative min-h-screen w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto bg-white flex flex-col items-center justify-between overflow-y-auto">
       {/* Enhanced Top Bar */}
-      <div className="w-full bg-white shadow-sm px-4 py-4 z-20 border-b border-pink-100">
+      <div className="w-full bg-white shadow-sm px-3 sm:px-4 lg:px-6 py-3 sm:py-4 z-20 border-b border-pink-100">
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
@@ -985,7 +1052,7 @@ export default function VideoChat() {
 
       {/* Video Streams */}
       <div className="flex-1 flex flex-col items-center justify-start w-full px-2 pb-32 pt-2 relative">
-        <div className="w-full h-[65vh] rounded-3xl shadow-2xl bg-black/80 overflow-hidden relative border border-pink-100 flex items-center justify-center">
+        <div className="w-full h-[65vh] rounded-3xl shadow-2xl bg-gradient-to-br from-peach-100 via-cream-50 to-blush-100 overflow-hidden relative border-2 border-peach-200/50 flex items-center justify-center">
           {remoteStream ? (
             isVoiceOnly ? (
               <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-blue-400 to-teal-400">
@@ -1010,19 +1077,42 @@ export default function VideoChat() {
               />
             )
           ) : (
-            <div className="flex flex-col items-center justify-center w-full h-full bg-gray-300">
+            <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-rose-100 to-pink-100">
               <ClipLoader color={loaderColor} size={40} />
-              <p className="text-gray-500 mt-2 text-xs">
-                {isFriendCall
-                  ? `Calling ${partnerName}...`
-                  : "Waiting for user to connect..."}
+              <p className="text-gray-600 mt-3 text-sm font-medium">
+                {isSearchingForMatch
+                  ? "🔍 Finding your perfect match..."
+                  : isFriendCall
+                    ? `📞 Calling ${partnerName}...`
+                    : "��� Waiting for connection..."}
               </p>
+              {isSearchingForMatch && (
+                <div className="mt-4 flex flex-col items-center">
+                  <div className="flex space-x-1 mb-2">
+                    <div
+                      className="w-2 h-2 bg-rose-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "0ms" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-pink-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "150ms" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "300ms" }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-500 text-center px-4">
+                    Finding someone special just for you...
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
           {/* My stream as PiP */}
           {myStream && !isVoiceOnly && (
-            <div className="absolute bottom-4 right-4 w-20 h-32 bg-black/80 rounded-xl shadow-lg border-2 border-white z-30 flex items-center justify-center">
+            <div className="absolute bottom-4 right-4 w-20 h-32 bg-gradient-to-br from-peach-200/90 via-cream-100/90 to-coral-200/90 backdrop-blur-sm rounded-xl shadow-lg border-2 border-peach-300/50 z-30 flex items-center justify-center">
               <ReactPlayer
                 className="w-full h-full object-cover rounded-xl"
                 url={myStream}

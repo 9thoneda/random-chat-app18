@@ -58,7 +58,7 @@ const stats = [
 ];
 
 export default function Home() {
-  const { socket } = useSocket();
+  const { socket, isUsingMockMode } = useSocket();
   const navigate = useNavigate();
   const { isPremium, setPremium } = usePremium();
   const {
@@ -112,26 +112,31 @@ export default function Home() {
   const handleStartCall = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
+      if (isConnecting) return;
+
       setIsConnecting(true);
       playSound("join");
 
-      // Send user profile to server for premium priority matching
-      socket?.emit("user:profile", {
-        isPremium,
-        genderFilter: "any",
-        voiceOnly: false,
+      // Send user profile to server for premium priority matching (if socket available)
+      if (socket && !isUsingMockMode) {
+        socket.emit("user:profile", {
+          isPremium,
+          genderFilter: "any",
+          voiceOnly: false,
+        });
+        socket.emit("find:match");
+      }
+
+      // Navigate immediately to video chat page (it will handle the waiting state)
+      navigate("/video-chat", {
+        state: {
+          isSearching: true,
+        },
       });
 
-      // Emit find match event
-      socket?.emit("find:match");
-
-      // Simulate connection delay for better UX
-      setTimeout(() => {
-        navigate("/video-chat");
-        setIsConnecting(false);
-      }, 1500);
+      setIsConnecting(false);
     },
-    [navigate, socket, isPremium],
+    [navigate, socket, isPremium, isConnecting],
   );
 
   const handleVoiceChat = useCallback(() => {
@@ -163,40 +168,40 @@ export default function Home() {
           {t("app.name")} - Random Video Chat - Live chat with ajnabis
         </title>
       </Helmet>
-      <main className="flex flex-col min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-sindoor-25 via-jasmine-25 to-henna-25 relative pb-20 overflow-hidden">
+      <main className="flex flex-col min-h-screen w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto bg-gradient-to-br from-peach-25 via-cream-50 to-blush-50 relative pb-16 sm:pb-20 lg:pb-24 overflow-hidden">
         {/* Enhanced Animated Background Elements with Indian flair */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-sindoor-300 to-henna-400 rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute top-32 right-8 w-16 h-16 bg-gradient-to-br from-royal-300 to-gulmohar-400 rounded-full opacity-30 animate-bounce"></div>
+          <div className="absolute top-6 sm:top-10 left-6 sm:left-10 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-sindoor-300 to-henna-400 rounded-full opacity-20 animate-pulse"></div>
+          <div className="absolute top-20 sm:top-32 right-4 sm:right-8 w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-royal-300 to-gulmohar-400 rounded-full opacity-30 animate-bounce"></div>
           <div
-            className="absolute bottom-40 left-6 w-12 h-12 bg-gradient-to-br from-jasmine-300 to-sindoor-400 rounded-full opacity-25 animate-pulse"
+            className="absolute bottom-32 sm:bottom-40 left-4 sm:left-6 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-jasmine-300 to-sindoor-400 rounded-full opacity-25 animate-pulse"
             style={{ animationDelay: "1s" }}
           ></div>
           <div
-            className="absolute bottom-60 right-12 w-8 h-8 bg-gradient-to-br from-passion-400 to-royal-400 rounded-full opacity-20 animate-bounce"
+            className="absolute bottom-48 sm:bottom-60 right-8 sm:right-12 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-passion-400 to-royal-400 rounded-full opacity-20 animate-bounce"
             style={{ animationDelay: "2s" }}
           ></div>
           {/* Add romantic Indian symbols */}
           <div
-            className="absolute top-20 right-20 text-sindoor-400 text-2xl opacity-40 animate-pulse"
+            className="absolute top-16 sm:top-20 right-16 sm:right-20 text-sindoor-400 text-lg sm:text-xl lg:text-2xl opacity-40 animate-pulse"
             style={{ animationDelay: "0.5s" }}
           >
             💕
           </div>
           <div
-            className="absolute bottom-80 left-16 text-henna-400 text-xl opacity-35 animate-bounce"
+            className="absolute bottom-64 sm:bottom-80 left-12 sm:left-16 text-henna-400 text-base sm:text-lg lg:text-xl opacity-35 animate-bounce"
             style={{ animationDelay: "1.5s" }}
           >
             🌸
           </div>
           <div
-            className="absolute top-60 left-8 text-jasmine-400 text-lg opacity-30 animate-pulse"
+            className="absolute top-48 sm:top-60 left-6 sm:left-8 text-jasmine-400 text-sm sm:text-base lg:text-lg opacity-30 animate-pulse"
             style={{ animationDelay: "2.5s" }}
           >
             ✨
           </div>
           <div
-            className="absolute top-80 right-6 text-gulmohar-400 text-base opacity-25 animate-bounce"
+            className="absolute top-64 sm:top-80 right-4 sm:right-6 text-gulmohar-400 text-xs sm:text-sm lg:text-base opacity-25 animate-bounce"
             style={{ animationDelay: "3s" }}
           >
             🪷
@@ -204,20 +209,20 @@ export default function Home() {
         </div>
 
         {/* Enhanced Header with Indian romantic colors */}
-        <header className="w-full bg-gradient-to-r from-sindoor-500 via-gulmohar-500 to-royal-600 shadow-lg px-6 py-6 border-b border-sindoor-100 relative overflow-hidden">
+        <header className="w-full bg-gradient-to-r from-peach-400 via-coral-400 to-blush-500 shadow-lg px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-peach-200 relative overflow-hidden">
           {/* Header Background Pattern with Indian touch */}
           <div className="absolute inset-0 bg-gradient-to-r from-white/15 via-jasmine-100/25 to-white/15 backdrop-blur-sm"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-henna-200/15 to-transparent"></div>
 
           <div className="relative z-10 flex items-center justify-between">
             {/* App Name & Premium Badge */}
-            <div className="flex flex-col items-start gap-2">
-              <h1 className="text-xl font-bold text-white tracking-tight">
+            <div className="flex flex-col items-start gap-1 sm:gap-2">
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white tracking-tight">
                 {t("app.name")}
               </h1>
               {isPremium && (
-                <div className="flex items-center gap-1 bg-gradient-to-r from-jasmine-400 to-gulmohar-500 px-3 py-1 rounded-full shadow-md">
-                  <Crown className="h-4 w-4 text-white" />
+                <div className="flex items-center gap-1 bg-gradient-to-r from-jasmine-400 to-gulmohar-500 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-md">
+                  <Crown className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                   <span className="text-white text-xs font-bold">PREMIUM</span>
                 </div>
               )}
@@ -227,19 +232,19 @@ export default function Home() {
               {/* Voice Chat Button */}
               <Button
                 onClick={handleVoiceChat}
-                className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold px-3 py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 border border-white/30"
+                className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold px-2 sm:px-3 py-1.5 sm:py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 border border-white/30 text-sm sm:text-base"
               >
-                <Mic className="h-4 w-4 mr-1" />
-                Voice
+                <Mic className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                <span className="hidden sm:inline">Voice</span>
               </Button>
 
               {/* Coins Button */}
               <Button
                 onClick={() => setShowTreasureChest(true)}
                 disabled={coinsLoading}
-                className="bg-gradient-to-r from-jasmine-500 to-gulmohar-600 hover:from-jasmine-600 hover:to-gulmohar-700 text-white font-semibold px-4 py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200"
+                className="bg-gradient-to-r from-jasmine-500 to-gulmohar-600 hover:from-jasmine-600 hover:to-gulmohar-700 text-white font-semibold px-2 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 text-sm sm:text-base"
               >
-                <Coins className="h-4 w-4 mr-2" />
+                <Coins className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                 {coinsLoading ? "..." : coins}
               </Button>
             </div>
@@ -260,10 +265,10 @@ export default function Home() {
                   <img
                     src={image}
                     alt={`Ad Banner ${index + 1}`}
-                    className="w-full h-32 object-cover"
+                    className="w-full h-24 sm:h-32 lg:h-40 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-2 left-4 text-white">
+                  <div className="absolute bottom-1 sm:bottom-2 left-2 sm:left-4 text-white">
                     <p className="text-xs opacity-90">Advertisement</p>
                   </div>
                 </div>
@@ -287,9 +292,9 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col px-6 py-6 relative z-10">
+        <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10">
           {/* Enhanced Gender Filter - Moved to top */}
-          <div className="w-full mb-6">
+          <div className="w-full mb-4 sm:mb-6">
             <GenderFilter
               isPremium={isPremium}
               onGenderSelect={(gender: string) => {
@@ -300,12 +305,12 @@ export default function Home() {
           </div>
 
           {/* Enhanced Main Action Button - Moved to top */}
-          <div className="w-full mb-6">
+          <div className="w-full mb-4 sm:mb-6">
             <Button
-              className={`w-full py-6 text-xl font-bold rounded-3xl text-white shadow-2xl transform transition-all duration-300 relative overflow-hidden ${
+              className={`w-full py-4 sm:py-6 lg:py-8 text-lg sm:text-xl lg:text-2xl font-bold rounded-2xl sm:rounded-3xl text-white shadow-2xl transform transition-all duration-300 relative overflow-hidden ${
                 isConnecting
-                  ? "bg-gradient-to-r from-mehendi-500 to-mehendi-600 scale-95"
-                  : "bg-gradient-to-r from-sindoor-500 via-gulmohar-500 to-royal-600 hover:scale-105 hover:shadow-3xl"
+                  ? "bg-gradient-to-r from-coral-400 to-blush-500 scale-95"
+                  : "bg-gradient-to-r from-peach-500 via-coral-500 to-blush-600 hover:scale-105 hover:shadow-3xl"
               }`}
               onClick={handleStartCall}
               disabled={isConnecting}
@@ -313,17 +318,17 @@ export default function Home() {
               {/* Button Background Animation */}
               <div className="absolute inset-0 bg-gradient-to-r from-jasmine-200/40 via-white/25 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
 
-              <div className="relative z-10 flex items-center justify-center gap-3">
+              <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3">
                 {isConnecting ? (
                   <>
-                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     <span>Finding your match...</span>
                   </>
                 ) : (
                   <>
-                    <Heart className="h-6 w-6" />
+                    <Heart className="h-5 w-5 sm:h-6 sm:w-6" />
                     <span>{t("home.start")}</span>
-                    <Sparkles className="h-5 w-5" />
+                    <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
                   </>
                 )}
               </div>
@@ -331,47 +336,50 @@ export default function Home() {
           </div>
 
           {/* Quick Actions */}
-          <div className="w-full grid grid-cols-2 gap-3 mb-6">
+          <div className="w-full grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
             <Button
               onClick={() => navigate("/friends")}
-              className="bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 hover:bg-white hover:shadow-lg transition-all duration-300 py-4 rounded-2xl"
+              className="bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 hover:bg-white hover:shadow-lg transition-all duration-300 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-sm sm:text-base"
             >
-              <Users className="h-5 w-5 mr-2 text-blue-500" />
+              <Users className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2 text-blue-500" />
               <span className="font-semibold">Friends</span>
             </Button>
 
             <Button
               onClick={() => navigate("/ai-chatbot")}
-              className="bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 hover:bg-white hover:shadow-lg transition-all duration-300 py-4 rounded-2xl"
+              className="bg-white/80 backdrop-blur-sm text-gray-700 border border-gray-200 hover:bg-white hover:shadow-lg transition-all duration-300 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-sm sm:text-base"
             >
-              <Globe className="h-5 w-5 mr-2 text-purple-500" />
+              <Globe className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2 text-purple-500" />
               <span className="font-semibold">AI Chat</span>
             </Button>
           </div>
 
           {/* Footer Text */}
-          <div className="text-xs text-center text-gray-500 px-4 leading-relaxed">
+          <div className="text-xs sm:text-sm text-center text-gray-500 px-2 sm:px-4 leading-relaxed">
             By using AjnabiCam, you agree to our Terms of Service and Privacy
             Policy.
-            <br />
-            <span className="text-rose-600 font-medium">✓ Safe & Secure</span> •
-            <span className="text-pink-600 font-medium"> ✓ 24/7 Support</span> •
-            <span className="text-crimson-600 font-medium">
-              {" "}
-              ✓ Find True Love
-            </span>
+            <br className="hidden sm:block" />
+            <div className="flex flex-wrap justify-center gap-1 sm:gap-2 mt-1 sm:mt-0">
+              <span className="text-rose-600 font-medium">✓ Safe & Secure</span>
+              <span className="text-gray-400">•</span>
+              <span className="text-pink-600 font-medium">24/7 Support</span>
+              <span className="text-gray-400">•</span>
+              <span className="text-crimson-600 font-medium">
+                Find True Love
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Floating Coin Store Button with Indian colors */}
         <button
           onClick={() => setShowTreasureChest(true)}
-          className="fixed bottom-24 right-4 bg-gradient-to-r from-jasmine-500 via-gulmohar-500 to-sindoor-500 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 z-40 animate-pulse"
+          className="fixed bottom-20 sm:bottom-24 lg:bottom-28 right-3 sm:right-4 lg:right-6 bg-gradient-to-r from-peach-500 via-coral-500 to-blush-600 text-white p-3 sm:p-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 z-40 animate-pulse"
         >
           <div className="relative">
-            <Coins className="h-6 w-6" />
+            <Coins className="h-5 w-5 sm:h-6 sm:w-6" />
             {coins > 0 && (
-              <div className="absolute -top-2 -right-2 bg-sindoor-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-md">
+              <div className="absolute -top-1.5 sm:-top-2 -right-1.5 sm:-right-2 bg-sindoor-500 text-white text-xs font-bold rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center shadow-md">
                 {coins > 99 ? "99+" : coins}
               </div>
             )}
