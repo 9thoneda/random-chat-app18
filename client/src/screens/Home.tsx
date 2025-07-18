@@ -112,6 +112,8 @@ export default function Home() {
   const handleStartCall = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
+      if (isConnecting) return;
+
       setIsConnecting(true);
       playSound("join");
 
@@ -125,13 +127,16 @@ export default function Home() {
       // Emit find match event
       socket?.emit("find:match");
 
-      // Simulate connection delay for better UX
-      setTimeout(() => {
-        navigate("/video-chat");
-        setIsConnecting(false);
-      }, 1500);
+      // Navigate immediately to video chat page (it will handle the waiting state)
+      navigate("/video-chat", {
+        state: {
+          isSearching: true,
+        },
+      });
+
+      setIsConnecting(false);
     },
-    [navigate, socket, isPremium],
+    [navigate, socket, isPremium, isConnecting],
   );
 
   const handleVoiceChat = useCallback(() => {
