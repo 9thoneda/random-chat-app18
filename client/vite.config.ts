@@ -4,7 +4,12 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react({
+      // Ensure React plugin works correctly
+      include: "**/*.{jsx,tsx}",
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -14,7 +19,9 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 5173,
     strictPort: true,
+    // Completely disable HMR and WebSocket
     hmr: false,
+    ws: false,
     cors: true,
     watch: {
       usePolling: true,
@@ -23,6 +30,10 @@ export default defineConfig({
     fs: {
       strict: false,
     },
+  },
+  // Disable client script injection
+  define: {
+    __VITE_HMR__: false,
   },
   preview: {
     host: "0.0.0.0",
