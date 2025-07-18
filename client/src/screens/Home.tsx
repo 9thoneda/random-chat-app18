@@ -404,6 +404,8 @@ export default function Home() {
         isOpen={showTreasureChest}
         onClose={() => setShowTreasureChest(false)}
       />
+
+      <NotificationComponent />
     </>
   );
 }
