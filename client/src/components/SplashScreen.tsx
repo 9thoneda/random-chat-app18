@@ -80,7 +80,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-passion-100 via-romance-50 to-bollywood-100 transition-opacity duration-500 px-4 sm:px-6 lg:px-8 ${isVisible ? "opacity-100" : "opacity-0"}`}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-peach-100 via-cream-50 to-blush-100 transition-opacity duration-500 px-4 sm:px-6 lg:px-8 ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
       <div className="flex flex-col items-center justify-center animate-fade-in max-w-lg w-full">
         <div className="relative mb-4 sm:mb-6 lg:mb-8 transform hover:scale-105 transition-transform duration-300">
