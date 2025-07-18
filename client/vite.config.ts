@@ -19,6 +19,7 @@ export default defineConfig(({ command, mode }) => {
       port: 5173,
       strictPort: true,
       hmr: false,
+      ws: false,
       cors: true,
       watch: {
         usePolling: true,
@@ -27,6 +28,9 @@ export default defineConfig(({ command, mode }) => {
       fs: {
         strict: false,
       },
+    },
+    define: {
+      __VITE_IS_MODERN__: false,
     },
     preview: {
       host: "0.0.0.0",
