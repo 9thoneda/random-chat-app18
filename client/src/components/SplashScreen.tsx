@@ -94,13 +94,13 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 
         {/* Loading animation */}
         <div className="flex items-center gap-1.5 sm:gap-2 mt-4 sm:mt-6">
-          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-passion-500 rounded-full animate-bounce shadow-lg"></div>
+          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-peach-500 rounded-full animate-bounce shadow-lg"></div>
           <div
-            className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-romance-500 rounded-full animate-bounce shadow-lg"
+            className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-coral-500 rounded-full animate-bounce shadow-lg"
             style={{ animationDelay: "0.1s" }}
           ></div>
           <div
-            className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-bollywood-500 rounded-full animate-bounce shadow-lg"
+            className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-blush-500 rounded-full animate-bounce shadow-lg"
             style={{ animationDelay: "0.2s" }}
           ></div>
         </div>
