@@ -76,7 +76,7 @@ export default function BottomNavBar() {
                 size={18}
                 className={`sm:w-5 sm:h-5 lg:w-6 lg:h-6 transition-colors duration-300 ${
                   isActive
-                    ? "text-white drop-shadow-sm"
+                    ? "text-cream-50 drop-shadow-sm"
                     : "text-peach-600 hover:text-coral-500"
                 }`}
               />
