@@ -225,15 +225,15 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-white/15 via-jasmine-100/25 to-white/15 backdrop-blur-sm"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-henna-200/15 to-transparent"></div>
 
-          <div className="relative z-10 space-y-3">
+          <div className="relative z-10 space-y-4">
             {/* Top Row: Logo + Settings & Coins */}
             <div className="flex items-center justify-between">
               {/* Left: AjnabiCam Logo */}
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Heart className="h-4 w-4 text-white" />
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg">
+                  <Heart className="h-5 w-5 text-white" />
                 </div>
-                <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight drop-shadow-lg">
                   {t("app.name")}
                 </h1>
               </div>
