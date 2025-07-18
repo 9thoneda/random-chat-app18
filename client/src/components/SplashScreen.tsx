@@ -58,15 +58,15 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         });
     }, 1000);
 
-    // Hide splash after 4 seconds (increased to show connection status)
+    // Hide splash after 2 seconds (faster to see main app)
     const timer = setTimeout(() => {
-      console.log("SplashScreen: 4 seconds elapsed, hiding splash");
+      console.log("SplashScreen: 2 seconds elapsed, hiding splash");
       setIsVisible(false);
       setTimeout(() => {
         console.log("SplashScreen: calling onComplete");
         onComplete();
       }, 500); // Wait for fade out animation
-    }, 4000);
+    }, 2000);
 
     return () => {
       clearTimeout(timer);
