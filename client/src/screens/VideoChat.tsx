@@ -322,6 +322,14 @@ export default function VideoChat() {
     }
   }, [getUserStream, myStream]);
 
+  // Handle match finding when socket connects and we're searching
+  useEffect(() => {
+    if (socket && isSearchingForMatch && !remoteChatToken && !isFriendCall) {
+      console.log("Socket connected, finding match...");
+      socket.emit("find:match");
+    }
+  }, [socket, isSearchingForMatch, remoteChatToken, isFriendCall]);
+
   // Premium feature: Switch to voice-only mode during call
   const toggleVoiceOnlyMode = useCallback(async () => {
     if (!isPremium) {
