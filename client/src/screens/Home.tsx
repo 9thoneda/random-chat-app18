@@ -163,7 +163,12 @@ export default function Home() {
 
     setPremium(true, expiry);
     setShowPaywall(false);
-    alert(`🎉 Welcome to Premium! Your ${plan} subscription is now active!`);
+
+    showBonusNotification(
+      "🎉 Welcome to Premium!",
+      `Your ${plan} subscription is now active! Enjoy unlimited features.`,
+      () => {},
+    );
   };
 
   return (
