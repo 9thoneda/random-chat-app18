@@ -571,10 +571,21 @@ export default function VideoChat() {
       setIsSearchingForMatch(false); // Stop searching
       playSound("match");
       setShowReport(true);
-      const offer = await peerservice.getOffer();
-      socket?.emit("offer", { offer, to: remoteId });
+
+      // If using mock mode or partner is a bot, simulate WebRTC connection
+      if (isUsingMockMode || remoteId.startsWith("bot_")) {
+        console.log("🤖 Using mock WebRTC connection");
+        setPartnerName("Demo Partner");
+        MockWebRTC.simulateConnection((mockStream) => {
+          setRemoteStream(mockStream);
+        });
+      } else {
+        // Real WebRTC connection
+        const offer = await peerservice.getOffer();
+        socket?.emit("offer", { offer, to: remoteId });
+      }
     },
-    [socket],
+    [socket, isUsingMockMode],
   );
 
   const handleIncommingOffer = useCallback(
@@ -1066,7 +1077,7 @@ export default function VideoChat() {
                   ? "🔍 Finding your perfect match..."
                   : isFriendCall
                     ? `📞 Calling ${partnerName}...`
-                    : "⏳ Waiting for connection..."}
+                    : "��� Waiting for connection..."}
               </p>
               {isSearchingForMatch && (
                 <div className="mt-4 flex flex-col items-center">
