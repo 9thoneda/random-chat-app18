@@ -23,6 +23,8 @@ export default function GenderFilter({
       icon: Users,
       description: "Connect with all genders",
       emoji: "👥",
+      color: "from-blue-500 to-purple-600",
+      bgColor: "bg-blue-50 hover:bg-blue-100",
     },
     {
       id: "male",
@@ -30,6 +32,8 @@ export default function GenderFilter({
       icon: User,
       description: "Connect with males only",
       emoji: "👨",
+      color: "from-cyan-500 to-blue-600",
+      bgColor: "bg-cyan-50 hover:bg-cyan-100",
     },
     {
       id: "female",
@@ -37,6 +41,8 @@ export default function GenderFilter({
       icon: User,
       description: "Connect with females only",
       emoji: "👩",
+      color: "from-pink-500 to-rose-600",
+      bgColor: "bg-pink-50 hover:bg-pink-100",
     },
   ];
 
