@@ -1003,7 +1003,7 @@ export default function VideoChat() {
   return (
     <div className="relative min-h-screen w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto bg-white flex flex-col items-center justify-between overflow-y-auto">
       {/* Enhanced Top Bar */}
-      <div className="w-full bg-white shadow-sm px-4 py-4 z-20 border-b border-pink-100">
+      <div className="w-full bg-white shadow-sm px-3 sm:px-4 lg:px-6 py-3 sm:py-4 z-20 border-b border-pink-100">
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
