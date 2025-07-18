@@ -105,7 +105,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           ></div>
         </div>
 
-        <p className="text-romance-800 text-base sm:text-lg lg:text-xl font-medium mt-3 sm:mt-4 animate-pulse text-center px-4">
+        <p className="text-peach-700 text-base sm:text-lg lg:text-xl font-medium mt-3 sm:mt-4 animate-pulse text-center px-4">
           💕 Finding your perfect match...
         </p>
 
