@@ -5,24 +5,24 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
-  workflow_dispatch: # Allows manual triggering
+  workflow_dispatch:
 
 jobs:
   build-apk:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📦 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🪛 Debug folder structure
+      - name: 🔍 Debug folder structure
         run: |
-          echo "Root directory:"
+          echo "Root:"
           ls -la
-          echo "Client directory:"
-          ls -la client || echo "client folder not found"
+          echo "Client:"
+          ls -la client || echo "❌ client folder not found"
 
-      - name: 🔧 Set up Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
@@ -31,52 +31,54 @@ jobs:
             package-lock.json
             client/package-lock.json
 
-      - name: ☕ Set up JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: "17"
           distribution: "temurin"
 
-      - name: 🤖 Setup Android SDK
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
           api-level: 33
           build-tools: 33.0.0
 
-      - name: 📥 Install root dependencies (optional)
-        if: exists('package.json')
-        run: npm install
-
-      - name: 🔍 Check client folder contents
-        run: ls -la client
-
-      - name: 📥 Install client dependencies
-        working-directory: client
-        run: npm install
+      - name: 📦 Install dependencies
+        run: |
+          if [ -f client/package.json ]; then
+            cd client
+            npm install
+          else
+            echo "❌ client/package.json not found"
+            exit 1
+          fi
 
       - name: 🛠️ Build web application
-        working-directory: client
-        run: npm run build
+        run: |
+          cd client
+          npm run build
 
       - name: 🔄 Sync Capacitor
-        working-directory: client
-        run: npx cap sync android
+        run: |
+          cd client
+          npx cap sync android
 
-      - name: ✅ Make gradlew executable
+      - name: Grant execute permission for gradlew
         run: chmod +x client/android/gradlew
 
       - name: 🏗️ Build debug APK
-        working-directory: client/android
-        run: ./gradlew assembleDebug --no-daemon
+        run: |
+          cd client/android
+          ./gradlew assembleDebug --no-daemon
 
-      - name: ⬆️ Upload debug APK
+      - name: 📤 Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: ajnabicam-debug-apk
           path: client/android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
 
-      - name: 📄 Build summary
+      - name: ✅ Build Summary
         run: |
           echo "## 📱 APK Build Summary" >> $GITHUB_STEP_SUMMARY
           echo "✅ **Build Status**: Success" >> $GITHUB_STEP_SUMMARY
