@@ -218,45 +218,75 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Enhanced Header with Indian romantic colors */}
-        <header className="w-full bg-gradient-to-r from-peach-400 via-coral-400 to-blush-500 shadow-lg px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-peach-200 relative overflow-hidden">
+        {/* Enhanced Two-Row Header Design */}
+        <header className="w-full bg-gradient-to-r from-peach-400 via-coral-400 to-blush-500 shadow-lg px-4 sm:px-6 lg:px-8 py-3 sm:py-4 border-b border-peach-200 relative overflow-hidden">
           {/* Header Background Pattern with Indian touch */}
           <div className="absolute inset-0 bg-gradient-to-r from-white/15 via-jasmine-100/25 to-white/15 backdrop-blur-sm"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-henna-200/15 to-transparent"></div>
 
-          <div className="relative z-10 flex items-center justify-between">
-            {/* App Name & Premium Badge */}
-            <div className="flex flex-col items-start gap-1 sm:gap-2">
-              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white tracking-tight">
-                {t("app.name")}
-              </h1>
-              {isPremium && (
-                <div className="flex items-center gap-1 bg-gradient-to-r from-jasmine-400 to-gulmohar-500 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-md">
-                  <Crown className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
-                  <span className="text-white text-xs font-bold">PREMIUM</span>
+          <div className="relative z-10 space-y-3">
+            {/* Top Row: Logo + Settings & Coins */}
+            <div className="flex items-center justify-between">
+              {/* Left: AjnabiCam Logo */}
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                  <Heart className="h-4 w-4 text-white" />
                 </div>
-              )}
+                <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                  {t("app.name")}
+                </h1>
+              </div>
+
+              {/* Right: Settings & Coins */}
+              <div className="flex items-center gap-2">
+                {/* Settings Button */}
+                <Button
+                  onClick={() => navigate("/profile")}
+                  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold p-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 border border-white/30"
+                >
+                  <User className="h-4 w-4" />
+                </Button>
+
+                {/* Coins Button */}
+                <Button
+                  onClick={() => setShowTreasureChest(true)}
+                  disabled={coinsLoading}
+                  className="bg-gradient-to-r from-jasmine-500 to-gulmohar-600 hover:from-jasmine-600 hover:to-gulmohar-700 text-white font-semibold px-3 sm:px-4 py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 text-sm sm:text-base"
+                >
+                  <Coins className="h-4 w-4 mr-2" />
+                  {coinsLoading ? "..." : coins}
+                </Button>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              {/* Voice Chat Button */}
-              <Button
-                onClick={handleVoiceChat}
-                className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold px-2 sm:px-3 py-1.5 sm:py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 border border-white/30 text-sm sm:text-base"
-              >
-                <Mic className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                <span className="hidden sm:inline">Voice</span>
-              </Button>
+            {/* Bottom Row: Premium Badge + Voice Match Toggle */}
+            <div className="flex items-center justify-between">
+              {/* Left: Premium Badge */}
+              <div className="flex items-center gap-3">
+                {isPremium ? (
+                  <div className="flex items-center gap-2 bg-gradient-to-r from-jasmine-400 to-gulmohar-500 px-3 py-1 rounded-full shadow-md">
+                    <Crown className="h-3 w-3 text-white" />
+                    <span className="text-white text-xs font-bold">
+                      PREMIUM
+                    </span>
+                  </div>
+                ) : (
+                  <div className="text-white/80 text-xs font-medium">
+                    ✨ Upgrade for premium features
+                  </div>
+                )}
+              </div>
 
-              {/* Coins Button */}
-              <Button
-                onClick={() => setShowTreasureChest(true)}
-                disabled={coinsLoading}
-                className="bg-gradient-to-r from-jasmine-500 to-gulmohar-600 hover:from-jasmine-600 hover:to-gulmohar-700 text-white font-semibold px-2 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 text-sm sm:text-base"
-              >
-                <Coins className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                {coinsLoading ? "..." : coins}
-              </Button>
+              {/* Right: Voice Match Toggle */}
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={handleVoiceChat}
+                  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold px-3 py-1.5 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 border border-white/30 text-xs"
+                >
+                  <Mic className="h-3 w-3 mr-1" />
+                  Voice Match
+                </Button>
+              </div>
             </div>
           </div>
         </header>
