@@ -61,7 +61,7 @@ export default function BottomNavBar() {
           >
             {/* Active background glow */}
             {isActive && (
-              <div className="absolute inset-0 bg-gradient-to-br from-peach-300/30 via-coral-200/20 to-blush-300/30 rounded-2xl blur-sm" />
+              <div className="absolute inset-0 bg-gradient-to-br from-romance-200/40 via-passion-100/30 to-coral-200/40 rounded-2xl blur-sm" />
             )}
 
             {/* Icon container with beautiful styling */}
