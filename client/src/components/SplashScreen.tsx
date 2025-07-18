@@ -65,8 +65,8 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       setTimeout(() => {
         console.log("SplashScreen: calling onComplete");
         onComplete();
-      }, 100); // Very fast transition
-    }, 500);
+      }, 50); // Very fast transition
+    }, 100);
 
     return () => {
       clearTimeout(timer);
