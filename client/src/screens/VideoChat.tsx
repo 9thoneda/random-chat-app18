@@ -334,7 +334,15 @@ export default function VideoChat() {
         const userId = "user_" + Math.random().toString(36).substr(2, 9);
         mockMatching.findMatch(userId, (partnerId) => {
           console.log("Mock match found:", partnerId);
-          handleUserJoined(partnerId);
+          setRemoteChatToken(partnerId);
+          setPartnerPremium(false);
+          setIsSearchingForMatch(false);
+          playSound("match");
+          setShowReport(true);
+          setPartnerName("Demo Partner");
+          MockWebRTC.simulateConnection((mockStream) => {
+            setRemoteStream(mockStream);
+          });
         });
       }
 
