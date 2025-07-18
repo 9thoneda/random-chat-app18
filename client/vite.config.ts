@@ -20,7 +20,9 @@ export default defineConfig(({ command, mode }) => {
       strictPort: true,
       hmr: {
         port: 5173,
-        host: "localhost",
+        host: "0.0.0.0",
+        protocol: "ws",
+        timeout: 30000,
       },
       cors: true,
       watch: {
