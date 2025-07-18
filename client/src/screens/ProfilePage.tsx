@@ -690,40 +690,40 @@ const ProfilePage: React.FC = () => {
 
               <button
                 onClick={() => handleSettingsClick("notifications")}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-romance-50 transition-all duration-300 border border-romance-200 shadow-sm hover:shadow-md"
               >
-                <Bell className="h-5 w-5 text-passion-600 mb-1" />
-                <span className="text-passion-700 font-semibold text-xs">
+                <Bell className="h-4 w-4 text-romance-600 mb-1" />
+                <span className="text-romance-700 font-semibold text-xs">
                   Notifications
                 </span>
               </button>
 
               <button
                 onClick={() => handleSettingsClick("account")}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-romance-50 transition-all duration-300 border border-romance-200 shadow-sm hover:shadow-md"
               >
-                <User className="h-5 w-5 text-passion-600 mb-1" />
-                <span className="text-passion-700 font-semibold text-xs">
+                <User className="h-4 w-4 text-romance-600 mb-1" />
+                <span className="text-romance-700 font-semibold text-xs">
                   Account
                 </span>
               </button>
 
               <button
                 onClick={() => setShowLanguageSelector(true)}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-romance-50 transition-all duration-300 border border-romance-200 shadow-sm hover:shadow-md"
               >
-                <Globe className="h-5 w-5 text-passion-600 mb-1" />
-                <span className="text-passion-700 font-semibold text-xs">
+                <Globe className="h-4 w-4 text-romance-600 mb-1" />
+                <span className="text-romance-700 font-semibold text-xs">
                   Language
                 </span>
               </button>
 
               <button
                 onClick={() => setShowHelpModal(true)}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-romance-50 transition-all duration-300 border border-romance-200 shadow-sm hover:shadow-md"
               >
-                <HelpCircle className="h-5 w-5 text-passion-600 mb-1" />
-                <span className="text-passion-700 font-semibold text-xs">
+                <HelpCircle className="h-4 w-4 text-romance-600 mb-1" />
+                <span className="text-romance-700 font-semibold text-xs">
                   Help
                 </span>
               </button>
