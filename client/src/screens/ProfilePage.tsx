@@ -526,7 +526,7 @@ const ProfilePage: React.FC = () => {
       {achievements.map((achievement) => (
         <Card
           key={achievement.id}
-          className={`${achievement.unlocked ? "bg-gradient-to-r from-bollywood-50 to-marigold-50 border-bollywood-200" : "bg-gray-50 border-gray-200"} transition-all duration-300 hover:shadow-lg`}
+          className={`${achievement.unlocked ? "bg-gradient-to-r from-romance-50 to-passion-50 border-romance-200" : "bg-gray-50 border-gray-200"} transition-all duration-300 hover:shadow-md`}
         >
           <CardContent className="p-4">
             <div className="flex items-center gap-4">
@@ -537,18 +537,18 @@ const ProfilePage: React.FC = () => {
               </div>
               <div className="flex-1">
                 <h3
-                  className={`font-bold ${achievement.unlocked ? "text-bollywood-800" : "text-gray-600"}`}
+                  className={`font-bold ${achievement.unlocked ? "text-romance-800" : "text-gray-600"}`}
                 >
                   {achievement.title}
                 </h3>
                 <p
-                  className={`text-sm ${achievement.unlocked ? "text-bollywood-600" : "text-gray-500"}`}
+                  className={`text-sm ${achievement.unlocked ? "text-romance-600" : "text-gray-500"}`}
                 >
                   {achievement.description}
                 </p>
               </div>
               {achievement.unlocked && (
-                <div className="bg-bollywood-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                <div className="bg-romance-500 text-white px-3 py-1 rounded-full text-xs font-bold">
                   Unlocked
                 </div>
               )}
@@ -659,10 +659,10 @@ const ProfilePage: React.FC = () => {
           </div>
 
           {/* Settings Section */}
-          <div className="p-4 bg-gray-50 border-t border-gray-200">
-            <h3 className="font-bold text-passion-800 text-base flex items-center gap-2 mb-3">
-              <div className="bg-passion-100 p-1.5 rounded-full">
-                <Settings className="h-4 w-4 text-passion-600" />
+          <div className="p-4 bg-romance-25 border-t border-romance-100">
+            <h3 className="font-bold text-romance-800 text-base flex items-center gap-2 mb-3">
+              <div className="bg-romance-100 p-1.5 rounded-full">
+                <Settings className="h-4 w-4 text-romance-600" />
               </div>
               {t("profile.settings")}
             </h3>
@@ -673,17 +673,17 @@ const ProfilePage: React.FC = () => {
                 onClick={() => navigate("/storage-debug")}
                 className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-blue-50 transition-all duration-300 border border-blue-200 shadow-sm hover:shadow-md"
               >
-                <Database className="h-5 w-5 text-blue-600 mb-1" />
+                <Database className="h-4 w-4 text-blue-600 mb-1" />
                 <span className="text-blue-700 font-semibold text-xs">
                   Storage Debug
                 </span>
               </button>
               <button
                 onClick={() => handleSettingsClick("privacy")}
-                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-passion-50 transition-all duration-300 border border-passion-200 shadow-sm hover:shadow-md"
+                className="flex flex-col items-center p-3 rounded-lg bg-white hover:bg-romance-50 transition-all duration-300 border border-romance-200 shadow-sm hover:shadow-md"
               >
-                <Shield className="h-5 w-5 text-passion-600 mb-1" />
-                <span className="text-passion-700 font-semibold text-xs">
+                <Shield className="h-4 w-4 text-romance-600 mb-1" />
+                <span className="text-romance-700 font-semibold text-xs">
                   Privacy
                 </span>
               </button>
