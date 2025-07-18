@@ -220,20 +220,31 @@ export default function GenderFilter({
                   </div>
                 </div>
 
-                <h3 className="text-2xl font-bold mb-3 drop-shadow-lg">
+                <h3 className="text-2xl font-bold mb-3 drop-shadow-lg animate-pulse">
                   🎯 Unlock Gender Filtering!
                 </h3>
-                <p className="text-white/90 text-sm mb-4">
+                <p className="text-white/95 text-base mb-6 leading-relaxed">
                   Choose exactly who you want to meet with premium gender
                   preferences
                 </p>
 
+                {/* Enhanced Benefits List */}
+                <div className="flex justify-center gap-4 mb-6 text-sm font-medium">
+                  <div className="flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full">
+                    <span>👨</span> Male Filter
+                  </div>
+                  <div className="flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full">
+                    <span>👩</span> Female Filter
+                  </div>
+                </div>
+
                 <Button
                   onClick={onUpgrade}
-                  className="bg-white text-purple-600 hover:bg-white/90 font-bold px-6 py-2 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-white/20"
+                  className="bg-white text-purple-700 hover:bg-yellow-100 font-bold px-8 py-4 rounded-2xl shadow-2xl transform hover:scale-110 transition-all duration-300 border-3 border-yellow-300 hover:border-yellow-400 text-lg group"
                 >
-                  <Crown className="h-4 w-4 mr-2" />
+                  <Crown className="h-5 w-5 mr-2 text-yellow-600 group-hover:animate-bounce" />
                   Upgrade Now ✨
+                  <div className="ml-2 text-sm opacity-75">Premium</div>
                 </Button>
               </div>
             </div>
