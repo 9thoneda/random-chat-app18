@@ -69,12 +69,11 @@ export default function GenderFilter({
             return (
               <div
                 key={option.id}
-                className={`relative transform transition-all duration-300 hover:scale-102 ${
+                className={`relative transform transition-all duration-300 hover:scale-105 ${
                   isSelected ? "scale-105" : ""
-                }`}
+                } animate-slide-in`}
                 style={{
                   animationDelay: `${index * 100}ms`,
-                  animation: "slideInUp 0.5s ease-out forwards",
                 }}
               >
                 <Button
