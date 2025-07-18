@@ -68,15 +68,15 @@ export default function BottomNavBar() {
             <div
               className={`relative p-2 sm:p-2.5 rounded-xl transition-all duration-300 ${
                 isActive
-                  ? "bg-gradient-to-br from-peach-400 via-coral-300 to-blush-400 shadow-lg shadow-peach-300/50"
-                  : "bg-gradient-to-br from-cream-100/80 to-peach-100/60 hover:from-peach-200/80 hover:to-coral-200/60"
+                  ? "bg-gradient-to-br from-romance-200 via-passion-200 to-coral-200 shadow-lg shadow-romance-200/40"
+                  : "bg-gradient-to-br from-white/90 to-romance-50/80 hover:from-romance-100/90 hover:to-passion-100/80"
               }`}
             >
               <IconComponent
                 size={18}
                 style={{
-                  color: isActive ? "#fffcf0" : "#ff7a2b",
-                  filter: "drop-shadow(0 1px 2px rgba(255, 122, 43, 0.3))",
+                  color: isActive ? "#ffffff" : "#e25d5d",
+                  filter: "drop-shadow(0 1px 2px rgba(226, 93, 93, 0.2))",
                 }}
                 className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 transition-colors duration-300"
               />
