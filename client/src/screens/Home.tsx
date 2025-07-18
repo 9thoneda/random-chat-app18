@@ -4,6 +4,7 @@ import { playSound } from "../lib/audio";
 import { useSocket } from "../context/SocketProvider";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useInAppNotification } from "../components/InAppNotification";
 import {
   Crown,
   Coins,
@@ -74,6 +75,8 @@ export default function Home() {
   const [showTreasureChest, setShowTreasureChest] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState(12847);
+  const { showBonusNotification, NotificationComponent } =
+    useInAppNotification();
 
   // Simulate online users count
   useEffect(() => {
@@ -88,12 +91,14 @@ export default function Home() {
     if (canClaimDailyBonus) {
       // Show daily bonus notification
       setTimeout(() => {
-        if (confirm("🎁 Daily bonus available! Claim 5 coins now?")) {
-          claimDailyBonus();
-        }
+        showBonusNotification(
+          "🎁 Daily Bonus Available!",
+          "Claim your 5 coins now and keep your streak going!",
+          claimDailyBonus,
+        );
       }, 2000);
     }
-  }, [canClaimDailyBonus, claimDailyBonus]);
+  }, [canClaimDailyBonus, claimDailyBonus, showBonusNotification]);
 
   useEffect(() => {
     const interval = setInterval(() => {
