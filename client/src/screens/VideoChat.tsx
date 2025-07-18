@@ -1052,7 +1052,7 @@ export default function VideoChat() {
 
       {/* Video Streams */}
       <div className="flex-1 flex flex-col items-center justify-start w-full px-2 pb-32 pt-2 relative">
-        <div className="w-full h-[65vh] rounded-3xl shadow-2xl bg-black/80 overflow-hidden relative border border-pink-100 flex items-center justify-center">
+        <div className="w-full h-[65vh] rounded-3xl shadow-2xl bg-gradient-to-br from-peach-100 via-cream-50 to-blush-100 overflow-hidden relative border-2 border-peach-200/50 flex items-center justify-center">
           {remoteStream ? (
             isVoiceOnly ? (
               <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-blue-400 to-teal-400">
@@ -1112,7 +1112,7 @@ export default function VideoChat() {
 
           {/* My stream as PiP */}
           {myStream && !isVoiceOnly && (
-            <div className="absolute bottom-4 right-4 w-20 h-32 bg-black/80 rounded-xl shadow-lg border-2 border-white z-30 flex items-center justify-center">
+            <div className="absolute bottom-4 right-4 w-20 h-32 bg-gradient-to-br from-peach-200/90 via-cream-100/90 to-coral-200/90 backdrop-blur-sm rounded-xl shadow-lg border-2 border-peach-300/50 z-30 flex items-center justify-center">
               <ReactPlayer
                 className="w-full h-full object-cover rounded-xl"
                 url={myStream}
