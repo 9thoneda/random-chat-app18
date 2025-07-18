@@ -190,43 +190,6 @@ export default function GenderFilter({
           </div>
         )}
       </CardContent>
-
-      {/* Add CSS for animations */}
-      <style jsx>{`
-        @keyframes slideInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-
-        .glow-effect {
-          box-shadow:
-            0 0 20px rgba(244, 63, 94, 0.5),
-            0 0 40px rgba(244, 63, 94, 0.3);
-        }
-
-        .animation-delay-500 {
-          animation-delay: 0.5s;
-        }
-      `}</style>
     </Card>
   );
 }
