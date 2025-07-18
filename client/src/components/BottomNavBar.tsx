@@ -41,10 +41,10 @@ export default function BottomNavBar() {
   return (
     <nav
       style={{
-        background: "linear-gradient(to right, #ffe4c7, #fff0c4, #ffd1d1)",
-        borderTop: "4px solid #ffb574",
+        background: "linear-gradient(to right, #fef9f0, #fffbf0, #fef7f7)",
+        borderTop: "3px solid #f5b1b1",
         borderRadius: "24px 24px 0 0",
-        boxShadow: "0 25px 50px -12px rgba(255, 180, 116, 0.5)",
+        boxShadow: "0 15px 35px -12px rgba(245, 177, 177, 0.3)",
       }}
       className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-md flex justify-around items-center h-16 sm:h-18 lg:h-20 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl mx-auto"
     >
