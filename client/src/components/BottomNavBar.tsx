@@ -74,11 +74,11 @@ export default function BottomNavBar() {
             >
               <IconComponent
                 size={18}
-                className={`sm:w-5 sm:h-5 lg:w-6 lg:h-6 transition-colors duration-300 ${
-                  isActive
-                    ? "text-cream-50 drop-shadow-sm"
-                    : "text-peach-600 hover:text-coral-500"
-                }`}
+                style={{
+                  color: isActive ? "#fffcf0" : "#ff7a2b",
+                  filter: "drop-shadow(0 1px 2px rgba(255, 122, 43, 0.3))",
+                }}
+                className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 transition-colors duration-300"
               />
             </div>
 
