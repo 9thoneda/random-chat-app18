@@ -3,14 +3,18 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command, mode }) => {
+  const isProduction = mode === 'production';
+  const isDevelopment = command === 'serve';
+
+  return {
   plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server: {
+    server: {
     host: "0.0.0.0",
     port: 5173,
     strictPort: true,
