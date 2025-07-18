@@ -50,63 +50,184 @@ export default function GenderFilter({
   };
 
   return (
-    <Card className="w-full bg-white/90 backdrop-blur-sm shadow-lg border-rose-200">
-      <CardHeader className="pb-2 sm:pb-3 bg-gradient-to-r from-rose-50 to-pink-50 rounded-t-lg px-3 sm:px-6 py-3 sm:py-4">
-        <CardTitle className="text-base sm:text-lg flex items-center gap-2 text-rose-700">
-          <Users className="h-4 w-4 sm:h-5 sm:w-5" />
-          Gender Preference
-          {!isPremium && (
-            <Crown className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500" />
-          )}
+    <Card className="w-full bg-white/95 backdrop-blur-sm shadow-xl border-rose-200 overflow-hidden">
+      <CardHeader className="pb-3 bg-gradient-to-r from-rose-50 to-pink-50 rounded-t-lg px-4 py-4">
+        <CardTitle className="text-lg flex items-center gap-2 text-rose-700">
+          <div className="p-2 bg-rose-100 rounded-full">
+            <Users className="h-5 w-5 text-rose-600" />
+          </div>
+          Gender Preference 💗
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-3 sm:p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
-          {genderOptions.map((option) => {
+      <CardContent className="p-4">
+        {/* Gender Options - Vertical Stack */}
+        <div className="space-y-3">
+          {genderOptions.map((option, index) => {
             const isLocked = !isPremium && option.id !== "any";
+            const isSelected = selectedGender === option.id;
 
             return (
-              <Button
+              <div
                 key={option.id}
-                variant={selectedGender === option.id ? "default" : "outline"}
-                className={`justify-start h-auto p-4 rounded-xl transition-all duration-200 ${
-                  selectedGender === option.id
-                    ? "bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-lg transform scale-105 border-rose-500"
-                    : "hover:bg-rose-50 border-rose-200"
-                } ${isLocked ? "opacity-60" : ""}`}
-                onClick={() => handleGenderChange(option.id)}
+                className={`relative transform transition-all duration-300 hover:scale-102 ${
+                  isSelected ? "scale-105" : ""
+                }`}
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                  animation: "slideInUp 0.5s ease-out forwards",
+                }}
               >
-                <div className="flex items-center gap-3 w-full">
-                  <span className="text-2xl">{option.emoji}</span>
-                  <div className="text-left flex-1">
-                    <div className="font-semibold">{option.label}</div>
-                    <div className="text-xs opacity-75">
-                      {option.description}
+                <Button
+                  variant="ghost"
+                  className={`w-full h-auto p-4 rounded-2xl transition-all duration-300 border-2 relative overflow-hidden ${
+                    isSelected
+                      ? "bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 text-white shadow-2xl border-rose-400 glow-effect"
+                      : "hover:bg-rose-50 border-rose-200 hover:border-rose-300 hover:shadow-lg"
+                  } ${isLocked ? "opacity-70" : ""}`}
+                  onClick={() => handleGenderChange(option.id)}
+                >
+                  {/* Animated Background for Selected */}
+                  {isSelected && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                  )}
+
+                  <div className="flex items-center gap-4 w-full relative z-10">
+                    {/* Large Avatar/Emoji */}
+                    <div
+                      className={`relative transition-all duration-300 ${isSelected ? "animate-bounce" : ""}`}
+                    >
+                      <div
+                        className={`w-16 h-16 rounded-full flex items-center justify-center text-3xl ${
+                          isSelected
+                            ? "bg-white/20 backdrop-blur-sm shadow-lg"
+                            : "bg-rose-100 hover:bg-rose-200"
+                        } transition-all duration-300`}
+                      >
+                        {option.emoji}
+                      </div>
+                      {isSelected && (
+                        <div className="absolute -inset-2 bg-white/30 rounded-full animate-ping"></div>
+                      )}
                     </div>
+
+                    {/* Content */}
+                    <div className="text-left flex-1">
+                      <div
+                        className={`text-lg font-bold mb-1 ${
+                          isSelected ? "text-white" : "text-rose-800"
+                        }`}
+                      >
+                        {option.label}
+                      </div>
+                      <div
+                        className={`text-sm ${
+                          isSelected ? "text-white/90" : "text-rose-600"
+                        }`}
+                      >
+                        {option.description}
+                      </div>
+                    </div>
+
+                    {/* Lock Icon */}
+                    {isLocked && (
+                      <div className="p-2 bg-yellow-100 rounded-full">
+                        <Crown className="h-5 w-5 text-yellow-600" />
+                      </div>
+                    )}
+
+                    {/* Selection Indicator */}
+                    {isSelected && (
+                      <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                        <div className="w-3 h-3 bg-rose-500 rounded-full animate-pulse"></div>
+                      </div>
+                    )}
                   </div>
-                  {isLocked && <Crown className="h-4 w-4 text-yellow-500" />}
-                </div>
-              </Button>
+                </Button>
+              </div>
             );
           })}
         </div>
 
+        {/* Premium Upsell Card - Standout Design */}
         {!isPremium && (
-          <div className="mt-4 p-4 bg-gradient-to-r from-purple-200 to-pink-200 rounded-xl text-center border border-purple-300">
-            <p className="text-sm text-purple-700 mb-3 font-medium">
-              🎯 Unlock gender filtering with Premium!
-            </p>
-            <Button
-              size="sm"
-              onClick={onUpgrade}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full px-6 shadow-md transform hover:scale-105 transition-all duration-200"
-            >
-              <Crown className="h-4 w-4 mr-2" />
-              Upgrade Now
-            </Button>
+          <div className="mt-6 relative">
+            {/* Background Blur Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-300/30 via-pink-300/30 to-rose-300/30 backdrop-blur-sm rounded-2xl"></div>
+
+            {/* Main Card */}
+            <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 p-5 rounded-2xl shadow-2xl border-2 border-white/50 overflow-hidden">
+              {/* Animated Background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
+
+              {/* Glow Effects */}
+              <div className="absolute -top-2 -left-2 w-4 h-4 bg-yellow-400 rounded-full animate-pulse opacity-70"></div>
+              <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-pink-400 rounded-full animate-pulse opacity-70 animation-delay-500"></div>
+
+              <div className="relative z-10 text-center text-white">
+                <div className="mb-3">
+                  <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
+                    <Crown className="h-4 w-4 text-yellow-300" />
+                    Premium Feature
+                  </div>
+                </div>
+
+                <h3 className="text-lg font-bold mb-2">
+                  🎯 Unlock Gender Filtering!
+                </h3>
+                <p className="text-white/90 text-sm mb-4">
+                  Choose exactly who you want to meet with premium gender
+                  preferences
+                </p>
+
+                <Button
+                  onClick={onUpgrade}
+                  className="bg-white text-purple-600 hover:bg-white/90 font-bold px-6 py-2 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 border-2 border-white/20"
+                >
+                  <Crown className="h-4 w-4 mr-2" />
+                  Upgrade Now ✨
+                </Button>
+              </div>
+            </div>
           </div>
         )}
       </CardContent>
+
+      {/* Add CSS for animations */}
+      <style jsx>{`
+        @keyframes slideInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+
+        .glow-effect {
+          box-shadow:
+            0 0 20px rgba(244, 63, 94, 0.5),
+            0 0 40px rgba(244, 63, 94, 0.3);
+        }
+
+        .animation-delay-500 {
+          animation-delay: 0.5s;
+        }
+      `}</style>
     </Card>
   );
 }
