@@ -327,8 +327,19 @@ export default function VideoChat() {
     if (socket && isSearchingForMatch && !remoteChatToken && !isFriendCall) {
       console.log("Socket connected, finding match...");
       socket.emit("find:match");
+
+      // Set a timeout for match finding (30 seconds)
+      const matchTimeout = setTimeout(() => {
+        if (isSearchingForMatch && !remoteChatToken) {
+          setIsSearchingForMatch(false);
+          alert("No matches found at the moment. Please try again!");
+          navigate("/");
+        }
+      }, 30000);
+
+      return () => clearTimeout(matchTimeout);
     }
-  }, [socket, isSearchingForMatch, remoteChatToken, isFriendCall]);
+  }, [socket, isSearchingForMatch, remoteChatToken, isFriendCall, navigate]);
 
   // Premium feature: Switch to voice-only mode during call
   const toggleVoiceOnlyMode = useCallback(async () => {
