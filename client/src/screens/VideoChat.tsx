@@ -357,7 +357,6 @@ export default function VideoChat() {
     remoteChatToken,
     isFriendCall,
     navigate,
-    handleUserJoined,
   ]);
 
   // Premium feature: Switch to voice-only mode during call
