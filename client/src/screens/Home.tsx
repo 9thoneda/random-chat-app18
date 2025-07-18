@@ -220,7 +220,7 @@ export default function Home() {
         </div>
 
         {/* Enhanced Two-Row Header Design */}
-        <header className="w-full bg-gradient-to-r from-peach-400 via-coral-400 to-blush-500 shadow-lg px-4 sm:px-6 lg:px-8 py-3 sm:py-4 border-b border-peach-200 relative overflow-hidden">
+        <header className="w-full bg-gradient-to-r from-peach-400 via-coral-400 to-blush-500 shadow-lg px-4 sm:px-6 lg:px-8 py-4 sm:py-5 border-b border-peach-200 relative overflow-hidden">
           {/* Header Background Pattern with Indian touch */}
           <div className="absolute inset-0 bg-gradient-to-r from-white/15 via-jasmine-100/25 to-white/15 backdrop-blur-sm"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-henna-200/15 to-transparent"></div>
