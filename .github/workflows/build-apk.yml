@@ -47,6 +47,9 @@ jobs:
         if: exists('package.json')
         run: npm install
 
+      - name: 🔍 Check client folder contents
+        run: ls -la client
+
       - name: 📥 Install client dependencies
         working-directory: client
         run: npm install
