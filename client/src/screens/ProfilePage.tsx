@@ -447,23 +447,25 @@ const ProfilePage: React.FC = () => {
         </div>
 
         {/* User Level Badge */}
-        <div className="mt-4 flex items-center gap-2 bg-gradient-to-r from-royal-100 to-passion-100 px-4 py-2 rounded-full border border-royal-200">
-          <Medal className="h-5 w-5 text-royal-600" />
-          <span className="text-royal-700 font-semibold">Level 5 Chatter</span>
+        <div className="mt-4 flex items-center gap-2 bg-gradient-to-r from-romance-100 to-passion-100 px-4 py-2 rounded-full border border-romance-200 shadow-sm">
+          <Medal className="h-4 w-4 text-romance-600" />
+          <span className="text-romance-700 font-semibold text-sm">
+            Level 5 Chatter
+          </span>
         </div>
       </div>
 
       {/* Quick Stats Cards */}
       <div className="grid grid-cols-2 gap-3">
-        <Card className="bg-gradient-to-br from-marigold-50 to-marigold-100 border-marigold-200">
+        <Card className="bg-gradient-to-br from-romance-50 to-passion-50 border-romance-200 shadow-sm hover:shadow-md transition-all duration-200">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-marigold-700">
+            <div className="text-2xl font-bold text-romance-700">
               {coinsLoading ? "..." : coins}
             </div>
-            <div className="text-xs text-marigold-600 font-medium">Coins</div>
+            <div className="text-xs text-romance-600 font-medium">Coins</div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-coral-50 to-coral-100 border-coral-200">
+        <Card className="bg-gradient-to-br from-coral-50 to-blush-50 border-coral-200 shadow-sm hover:shadow-md transition-all duration-200">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-coral-700">
               {userStats.friendsMade}
@@ -476,41 +478,41 @@ const ProfilePage: React.FC = () => {
       </div>
 
       {/* Referral Section */}
-      <Card className="bg-gradient-to-r from-bollywood-50 to-marigold-50 border-2 border-bollywood-200 shadow-xl relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 animate-pulse"></div>
+      <Card className="bg-gradient-to-r from-romance-50 to-passion-50 border-2 border-romance-200 shadow-lg relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-white/15 via-transparent to-white/15 animate-pulse"></div>
         <CardHeader className="relative z-10">
-          <CardTitle className="flex items-center gap-3 text-bollywood-800">
-            <div className="bg-bollywood-100 p-2 rounded-full">
-              <Gift className="h-6 w-6 text-bollywood-600" />
+          <CardTitle className="flex items-center gap-3 text-romance-800">
+            <div className="bg-romance-100 p-2 rounded-full">
+              <Gift className="h-5 w-5 text-romance-600" />
             </div>
-            {t("profile.referral.title")}
+            <span className="text-base">{t("profile.referral.title")}</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="relative z-10 space-y-4">
-          <div className="bg-white rounded-xl p-4 border border-bollywood-200 shadow-lg">
+          <div className="bg-white rounded-xl p-4 border border-romance-200 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-sm text-bollywood-600 font-bold">
+                <span className="text-sm text-romance-600 font-bold">
                   {t("profile.referral.id")}
                 </span>
-                <div className="font-mono text-bollywood-800 text-lg font-extrabold tracking-wider">
+                <div className="font-mono text-romance-800 text-lg font-extrabold tracking-wider">
                   {referralId}
                 </div>
               </div>
               <Button
                 onClick={handleCopyReferral}
-                className="bg-gradient-to-r from-bollywood-500 to-marigold-600 text-white px-4 py-2 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-romance-400 to-passion-500 text-white px-3 py-2 rounded-xl font-bold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-sm"
               >
-                <Copy className="h-4 w-4 mr-2" />
+                <Copy className="h-4 w-4 mr-1" />
                 {t("profile.referral.copy")}
               </Button>
             </div>
           </div>
           <div className="text-center">
-            <p className="text-sm text-bollywood-700 font-bold mb-2">
+            <p className="text-sm text-romance-700 font-bold mb-2">
               {t("profile.referral.reward")}
             </p>
-            <p className="text-xs text-bollywood-600 font-medium">
+            <p className="text-xs text-romance-600 font-medium">
               {t("profile.referral.share")}
             </p>
           </div>
