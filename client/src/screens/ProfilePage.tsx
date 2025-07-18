@@ -314,13 +314,13 @@ const ProfilePage: React.FC = () => {
       <div className="flex flex-col items-center">
         <div className="relative group">
           {/* Larger circular profile image */}
-          <div className="w-40 h-40 rounded-full bg-gradient-to-br from-passion-200 via-romance-300 to-royal-300 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 relative">
+          <div className="w-36 h-36 rounded-full bg-gradient-to-br from-romance-100 via-passion-200 to-coral-200 flex justify-center items-center overflow-hidden cursor-pointer border-4 border-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 relative">
             {/* Animated border ring */}
-            <div className="absolute inset-0 rounded-full border-4 border-passion-400 animate-pulse opacity-30"></div>
+            <div className="absolute inset-0 rounded-full border-3 border-romance-300 animate-pulse opacity-20"></div>
 
             {/* Premium glow effect for premium users */}
             {isPremium && (
-              <div className="absolute inset-0 rounded-full border-4 border-yellow-400 animate-pulse shadow-[0_0_20px_rgba(251,191,36,0.6)]"></div>
+              <div className="absolute inset-0 rounded-full border-3 border-yellow-300 animate-pulse shadow-[0_0_15px_rgba(251,191,36,0.4)]"></div>
             )}
 
             {profileImage ? (
@@ -349,10 +349,10 @@ const ProfilePage: React.FC = () => {
           {/* Camera button with premium styling */}
           <button
             onClick={handleImageUploadClick}
-            className={`absolute -bottom-2 -right-2 text-white p-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 romantic-button ${
+            className={`absolute -bottom-2 -right-2 text-white p-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 hover:rotate-12 romantic-button ${
               isPremium
-                ? "bg-gradient-to-r from-marigold-500 via-bollywood-500 to-coral-500"
-                : "bg-gradient-to-r from-passion-500 to-romance-600"
+                ? "bg-gradient-to-r from-marigold-400 via-bollywood-500 to-coral-400"
+                : "bg-gradient-to-r from-romance-400 to-passion-500"
             }`}
           >
             <Camera className="h-5 w-5" />
@@ -360,8 +360,8 @@ const ProfilePage: React.FC = () => {
 
           {/* Premium crown indicator */}
           {isPremium && (
-            <div className="absolute -top-3 -right-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full p-2 shadow-lg animate-bounce">
-              <Crown className="h-5 w-5 text-white" />
+            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-300 to-orange-400 rounded-full p-1.5 shadow-md animate-bounce">
+              <Crown className="h-4 w-4 text-white" />
             </div>
           )}
 
@@ -564,11 +564,11 @@ const ProfilePage: React.FC = () => {
           {t("app.name")} - {t("profile.title")}
         </title>
       </Helmet>
-      <main className="flex flex-col items-center min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-passion-50 via-romance-25 to-bollywood-50 px-2 py-4 relative pb-20">
+      <main className="flex flex-col items-center min-h-screen w-full max-w-md mx-auto bg-gradient-to-br from-white via-romance-25 to-passion-25 px-3 py-4 relative pb-20">
         {/* Enhanced Header */}
-        <div className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-passion-500 via-romance-500 to-royal-600 text-white font-bold text-xl rounded-t-2xl shadow-xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+        <div className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-romance-400 via-passion-400 to-coral-500 text-white font-bold text-xl rounded-t-2xl shadow-lg relative overflow-hidden">
+          <div className="absolute inset-0 bg-white/15 backdrop-blur-sm"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-white/10 via-white/5 to-white/10"></div>
 
           <div className="relative z-10 flex items-center justify-between w-full">
             <button
@@ -587,7 +587,7 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-full flex flex-col bg-white/90 backdrop-blur-sm rounded-b-2xl border border-rose-100 shadow-2xl mb-6 overflow-hidden">
+        <div className="w-full flex flex-col bg-white/95 backdrop-blur-sm rounded-b-2xl border border-romance-100 shadow-xl mb-6 overflow-hidden">
           {/* Premium Status Banner */}
           {isPremium ? (
             <div className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-3 text-white text-center relative overflow-hidden">
