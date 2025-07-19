@@ -102,28 +102,66 @@ export default function GenderFilter({
                   )}
 
                   <div className="flex items-center gap-6 w-full relative z-10">
-                    {/* Extra Large Avatar/Emoji */}
-                    <div className="relative">
+                    {/* Ultra Large Avatar/Emoji with Advanced Animations */}
+                    <div className="relative flex-shrink-0">
+                      {/* Outer Glow Ring */}
+                      {isSelected && (
+                        <div className="absolute -inset-4 bg-gradient-to-r from-rose-400/20 via-pink-400/20 to-purple-400/20 rounded-full blur-xl animate-pulse"></div>
+                      )}
+
+                      {/* Main Avatar */}
                       <div
-                        className={`w-20 h-20 rounded-full flex items-center justify-center text-4xl transition-all duration-500 ${
+                        className={`w-24 h-24 rounded-full flex items-center justify-center text-5xl transition-all duration-700 relative ${
                           isSelected
-                            ? "bg-white/20 backdrop-blur-md shadow-2xl animate-bounce"
-                            : "bg-white/80 group-hover:bg-white shadow-lg group-hover:shadow-xl"
+                            ? "bg-white/25 backdrop-blur-md shadow-2xl animate-bounce scale-110"
+                            : "bg-white/90 group-hover:bg-white shadow-xl group-hover:shadow-2xl group-hover:scale-105"
                         }`}
                       >
-                        {option.emoji}
+                        <span
+                          className={`transition-all duration-500 ${isSelected ? "animate-pulse" : ""}`}
+                        >
+                          {option.emoji}
+                        </span>
                       </div>
 
-                      {/* Animated Ring for Selected */}
+                      {/* Multiple Animated Rings for Selected */}
                       {isSelected && (
                         <>
-                          <div className="absolute -inset-3 border-3 border-white/50 rounded-full animate-ping"></div>
-                          <div className="absolute -inset-1 border-2 border-white/80 rounded-full animate-pulse"></div>
+                          <div className="absolute -inset-4 border-2 border-white/30 rounded-full animate-ping"></div>
+                          <div
+                            className="absolute -inset-3 border-2 border-white/50 rounded-full animate-pulse"
+                            style={{ animationDelay: "0.5s" }}
+                          ></div>
+                          <div
+                            className="absolute -inset-2 border-3 border-white/70 rounded-full animate-pulse"
+                            style={{ animationDelay: "1s" }}
+                          ></div>
                         </>
                       )}
 
-                      {/* Hover Ring */}
-                      <div className="absolute -inset-2 border-2 border-transparent group-hover:border-gray-300 rounded-full transition-all duration-300"></div>
+                      {/* Hover Ring with Gradient */}
+                      <div
+                        className={`absolute -inset-3 border-2 rounded-full transition-all duration-500 ${
+                          isSelected
+                            ? "border-transparent"
+                            : "border-transparent group-hover:border-gradient-to-r group-hover:from-gray-300 group-hover:to-gray-400"
+                        }`}
+                      ></div>
+
+                      {/* Sparkle Effects for Selected */}
+                      {isSelected && (
+                        <>
+                          <div className="absolute -top-2 -right-2 text-yellow-300 text-lg animate-bounce">
+                            ✨
+                          </div>
+                          <div
+                            className="absolute -bottom-2 -left-2 text-pink-300 text-sm animate-pulse"
+                            style={{ animationDelay: "0.3s" }}
+                          >
+                            ⭐
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     {/* Enhanced Content */}
