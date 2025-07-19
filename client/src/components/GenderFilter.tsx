@@ -213,7 +213,7 @@ export default function GenderFilter({
 
         {/* Ultimate Premium Upsell Card - Maximum Standout */}
         {!isPremium && (
-          <div className="mt-8 relative group">
+          <div className="mt-10 relative group animate-fade-in-up">
             {/* Multiple Layer Background Blur Effect */}
             <div className="absolute -inset-6 bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-orange-400/20 backdrop-blur-xl rounded-3xl animate-pulse"></div>
             <div className="absolute -inset-4 bg-gradient-to-r from-purple-300/30 via-pink-300/30 to-orange-300/30 backdrop-blur-lg rounded-3xl"></div>
