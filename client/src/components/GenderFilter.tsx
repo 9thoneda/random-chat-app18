@@ -66,8 +66,8 @@ export default function GenderFilter({
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4">
-        {/* Gender Options - Enhanced Design */}
-        <div className="space-y-4">
+        {/* Gender Options - Enhanced 2-Row Design */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           {genderOptions.map((option, index) => {
             const isLocked = !isPremium && option.id !== "any";
             const isSelected = selectedGender === option.id;
