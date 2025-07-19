@@ -214,10 +214,15 @@ export default function GenderFilter({
         {/* Ultimate Premium Upsell Card - Maximum Standout */}
         {!isPremium && (
           <div className="mt-10 relative group animate-fade-in-up">
-            {/* Multiple Layer Background Blur Effect */}
-            <div className="absolute -inset-6 bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-orange-400/20 backdrop-blur-xl rounded-3xl animate-pulse"></div>
-            <div className="absolute -inset-4 bg-gradient-to-r from-purple-300/30 via-pink-300/30 to-orange-300/30 backdrop-blur-lg rounded-3xl"></div>
-            <div className="absolute -inset-2 bg-gradient-to-r from-purple-200/40 via-pink-200/40 to-orange-200/40 backdrop-blur-md rounded-3xl"></div>
+            {/* Extreme Multiple Layer Background Blur Effect */}
+            <div className="absolute -inset-8 bg-gradient-to-r from-purple-500/15 via-pink-500/15 to-orange-500/15 backdrop-blur-2xl rounded-3xl animate-pulse opacity-80"></div>
+            <div
+              className="absolute -inset-6 bg-gradient-to-r from-purple-400/25 via-pink-400/25 to-orange-400/25 backdrop-blur-xl rounded-3xl animate-pulse"
+              style={{ animationDelay: "0.5s" }}
+            ></div>
+            <div className="absolute -inset-4 bg-gradient-to-r from-purple-300/35 via-pink-300/35 to-orange-300/35 backdrop-blur-lg rounded-3xl"></div>
+            <div className="absolute -inset-2 bg-gradient-to-r from-purple-200/45 via-pink-200/45 to-orange-200/45 backdrop-blur-md rounded-3xl"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-white/20 via-white/10 to-white/20 backdrop-blur-sm rounded-3xl"></div>
 
             {/* Outer Glow Ring */}
             <div className="absolute -inset-3 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-3xl opacity-20 blur-xl animate-pulse"></div>
