@@ -387,7 +387,7 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* Quick Actions */}
+                    {/* Quick Actions */}
           <div className="w-full grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
             <Button
               onClick={() => navigate("/friends")}
@@ -405,6 +405,30 @@ export default function Home() {
               <span className="font-semibold">AI Chat</span>
             </Button>
           </div>
+
+          {/* Rewarded Ad Section - Only for non-premium users */}
+          {!isPremium && (
+            <div className="w-full mb-4 sm:mb-6">
+              <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-4 border border-purple-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-sm font-semibold text-purple-800 mb-1">
+                      💰 Earn Free Coins!
+                    </h3>
+                    <p className="text-xs text-purple-600">
+                      Watch a short ad to earn 10 coins
+                    </p>
+                  </div>
+                  <RewardedAdButton
+                    variant="compact"
+                    onRewardEarned={(amount) => {
+                      console.log(`User earned ${amount} coins from ad`);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Footer Text */}
           <div className="text-xs sm:text-sm text-center text-gray-500 px-2 sm:px-4 leading-relaxed">
