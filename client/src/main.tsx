@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import DebugApp from "./DebugApp";
 import MinimalApp from "./MinimalApp";
+import TestApp from "./TestApp";
 import { BrowserRouter } from "react-router-dom";
 import { SocketProvider } from "./context/SocketProvider.tsx";
 
