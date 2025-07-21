@@ -213,6 +213,12 @@ function App() {
 
       {/* PWA Install Prompt */}
       <PWAInstallPrompt />
+
+      {/* Ad Consent Modal */}
+      <AdConsentModal
+        isOpen={showAdConsent}
+        onConsent={handleAdConsent}
+      />
     </div>
   );
 }
