@@ -292,7 +292,16 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </header>
+                </header>
+
+        {/* Top Banner Ad - Only for non-premium users */}
+        {!isPremium && (
+          <BannerAd
+            size="responsive"
+            position="top"
+            className="shadow-sm"
+          />
+        )}
 
         {/* Enhanced Banner Carousel - Moved to top as Ad */}
         <div className="w-full relative">
