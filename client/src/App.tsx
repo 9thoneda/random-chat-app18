@@ -68,22 +68,23 @@ function App() {
             console.warn("⚠️ Firebase has issues but continuing with initialization...");
           }
 
-          // Initialize Ad Service
+          // Initialize Ad Service (non-blocking)
           console.log("🎯 Initializing Ad Service...");
-          const adInitialized = await adService.initialize();
+          adService.initialize().then((adInitialized) => {
+            if (adInitialized) {
+              console.log("✅ Ad Service initialized successfully");
 
-          if (adInitialized) {
-            console.log("✅ Ad Service initialized successfully");
-
-            // Check if user needs to give consent
-            if (!adService.hasConsent()) {
-              console.log("📋 Requesting user consent for ads...");
-              setShowAdConsent(true);
-              return; // Wait for consent before continuing
+              // Check if user needs to give consent (non-blocking)
+              if (!adService.hasConsent()) {
+                console.log("📋 User consent needed for ads");
+                setTimeout(() => setShowAdConsent(true), 2000); // Show after app loads
+              }
+            } else {
+              console.warn("⚠️ Ad Service failed to initialize - continuing without ads");
             }
-          } else {
-            console.warn("⚠️ Ad Service failed to initialize - continuing without ads");
-          }
+          }).catch((error) => {
+            console.error("🚨 Ad Service error (non-critical):", error);
+          });
 
           // Sign in anonymously with Firebase
           const userCredential = await signInAnonymously(auth);
