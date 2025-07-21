@@ -44,7 +44,7 @@ class AdService {
     adUnitIds: {
             banner: process.env.VITE_ADMOB_BANNER_ID || 'ca-app-pub-3940256099942544/6300978111',
             interstitial: process.env.VITE_ADMOB_INTERSTITIAL_ID || 'ca-app-pub-3940256099942544/1033173712', 
-      rewarded: process.env.VITE_ADSENSE_REWARDED_ID || '1234567892',
+            rewarded: process.env.VITE_ADMOB_REWARDED_ID || 'ca-app-pub-3940256099942544/5224354917',
       native: process.env.VITE_ADSENSE_NATIVE_ID || '1234567893'
     },
     testMode: process.env.NODE_ENV === 'development'
