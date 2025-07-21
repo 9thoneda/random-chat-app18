@@ -51,10 +51,19 @@ function App() {
     isLoading,
   );
 
-  useEffect(() => {
+    useEffect(() => {
     if (!showSplash) {
       const initializeUser = async () => {
         try {
+          // Check Firebase status first
+          console.log("🔥 Running Firebase status check...");
+          const firebaseStatus = await checkFirebaseStatus();
+          logFirebaseStatus(firebaseStatus);
+
+          if (!firebaseStatus.overall.working) {
+            console.warn("⚠️ Firebase has issues but continuing with initialization...");
+          }
+
           // Sign in anonymously with Firebase
           const userCredential = await signInAnonymously(auth);
           const user = userCredential.user;
