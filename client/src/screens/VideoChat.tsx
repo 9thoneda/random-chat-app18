@@ -31,6 +31,7 @@ import { ClipLoader } from "react-spinners";
 import { useTheme } from "../components/theme-provider";
 import { useNavigate, useLocation } from "react-router-dom";
 import MockWebRTC from "../lib/mockWebRTC";
+import { useInterstitialAd } from "../hooks/useInterstitialAd";
 import "../css/VideoChat.css";
 
 interface Offer {
@@ -103,6 +104,13 @@ export default function VideoChat() {
 
   const { theme } = useTheme();
   const navigate = useNavigate();
+
+  // Interstitial ads hook
+  const { showOnVideoCallEnd, showOnNavigation } = useInterstitialAd({
+    minTimeBetweenAds: 120, // 2 minutes between ads
+    maxAdsPerSession: 6,    // Max 6 ads per session
+    showOnCallEnd: true
+  });
 
   const loaderColor = theme === "dark" ? "#D1D5DB" : "#4B5563";
 
@@ -199,6 +207,11 @@ export default function VideoChat() {
 
     if (remoteChatToken) {
       handleChatComplete(); // Award coins for completing chat
+
+      // Show interstitial ad after call ends (for non-premium users)
+      setTimeout(() => {
+        showOnVideoCallEnd();
+      }, 1000); // Small delay to ensure smooth UX
     }
 
     peerservice.peer.getTransceivers().forEach((transceiver) => {
@@ -916,12 +929,19 @@ export default function VideoChat() {
         peerservice.peer.close();
         peerservice.initPeer();
       }
+
+      // Show interstitial ad when leaving video chat (if there was an active call)
+      if (remoteChatToken) {
+        setTimeout(() => {
+          showOnNavigation('home');
+        }, 500);
+      }
     } catch (error) {
       console.error("Error during cleanup:", error);
     } finally {
       navigate("/");
     }
-  }, [myStream, navigate, screenStream, remoteStream]);
+  }, [myStream, navigate, screenStream, remoteStream, remoteChatToken, showOnNavigation]);
 
   const handleReport = (reason: string) => {
     const count =

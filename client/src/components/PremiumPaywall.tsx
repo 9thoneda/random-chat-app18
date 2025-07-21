@@ -86,6 +86,7 @@ export default function PremiumPaywall({ isOpen, onClose, onPurchase }: PremiumP
   ];
 
   const features = [
+    "🚫 Ad-Free Experience - No interruptions, pure chatting",
     "🎙️ Voice-Only Mode - Audio calls without video",
     "🚻 Gender Filter - Choose who you want to chat with",
     "⏰ Unlimited Chat Time - No more time limits!",

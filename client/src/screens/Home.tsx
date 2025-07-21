@@ -4,6 +4,7 @@ import { playSound } from "../lib/audio";
 import { useSocket } from "../context/SocketProvider";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useInAppNotification } from "../components/InAppNotification";
 import {
   Crown,
   Coins,
@@ -17,6 +18,7 @@ import {
   Star,
   Play,
   Globe,
+  User,
 } from "lucide-react";
 import GenderFilter from "../components/GenderFilter";
 import PremiumPaywall from "../components/PremiumPaywall";
@@ -25,6 +27,8 @@ import BottomNavBar from "../components/BottomNavBar";
 import { usePremium } from "../context/PremiumProvider";
 import { useCoin } from "../context/CoinProvider";
 import { useLanguage } from "../context/LanguageProvider";
+import BannerAd from "../components/BannerAd";
+import RewardedAdButton from "../components/RewardedAdButton";
 
 const bannerImages = [
   "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop",
@@ -74,6 +78,8 @@ export default function Home() {
   const [showTreasureChest, setShowTreasureChest] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState(12847);
+  const { showBonusNotification, NotificationComponent } =
+    useInAppNotification();
 
   // Simulate online users count
   useEffect(() => {
@@ -88,12 +94,14 @@ export default function Home() {
     if (canClaimDailyBonus) {
       // Show daily bonus notification
       setTimeout(() => {
-        if (confirm("🎁 Daily bonus available! Claim 5 coins now?")) {
-          claimDailyBonus();
-        }
+        showBonusNotification(
+          "🎁 Daily Bonus Available!",
+          "Claim your 5 coins now and keep your streak going!",
+          claimDailyBonus,
+        );
       }, 2000);
     }
-  }, [canClaimDailyBonus, claimDailyBonus]);
+  }, [canClaimDailyBonus, claimDailyBonus, showBonusNotification]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -158,7 +166,12 @@ export default function Home() {
 
     setPremium(true, expiry);
     setShowPaywall(false);
-    alert(`🎉 Welcome to Premium! Your ${plan} subscription is now active!`);
+
+    showBonusNotification(
+      "🎉 Welcome to Premium!",
+      `Your ${plan} subscription is now active! Enjoy unlimited features.`,
+      () => {},
+    );
   };
 
   return (
@@ -208,48 +221,87 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Enhanced Header with Indian romantic colors */}
-        <header className="w-full bg-gradient-to-r from-peach-400 via-coral-400 to-blush-500 shadow-lg px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-peach-200 relative overflow-hidden">
+        {/* Enhanced Two-Row Header Design */}
+        <header className="w-full bg-gradient-to-r from-peach-400 via-coral-400 to-blush-500 shadow-lg px-4 sm:px-6 lg:px-8 py-4 sm:py-5 border-b border-peach-200 relative overflow-hidden">
           {/* Header Background Pattern with Indian touch */}
           <div className="absolute inset-0 bg-gradient-to-r from-white/15 via-jasmine-100/25 to-white/15 backdrop-blur-sm"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-henna-200/15 to-transparent"></div>
 
-          <div className="relative z-10 flex items-center justify-between">
-            {/* App Name & Premium Badge */}
-            <div className="flex flex-col items-start gap-1 sm:gap-2">
-              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white tracking-tight">
-                {t("app.name")}
-              </h1>
-              {isPremium && (
-                <div className="flex items-center gap-1 bg-gradient-to-r from-jasmine-400 to-gulmohar-500 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-md">
-                  <Crown className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
-                  <span className="text-white text-xs font-bold">PREMIUM</span>
+          <div className="relative z-10 space-y-4">
+            {/* Top Row: Logo + Settings & Coins */}
+            <div className="flex items-center justify-between">
+              {/* Left: AjnabiCam Logo */}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg">
+                  <Heart className="h-5 w-5 text-white" />
                 </div>
-              )}
+                <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight drop-shadow-lg">
+                  {t("app.name")}
+                </h1>
+              </div>
+
+              {/* Right: Settings & Coins */}
+              <div className="flex items-center gap-3">
+                {/* Settings Button */}
+                <Button
+                  onClick={() => navigate("/profile")}
+                  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold p-2.5 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 border border-white/30"
+                >
+                  <User className="h-5 w-5" />
+                </Button>
+
+                {/* Coins Button */}
+                <Button
+                  onClick={() => setShowTreasureChest(true)}
+                  disabled={coinsLoading}
+                  className="bg-gradient-to-r from-jasmine-500 to-gulmohar-600 hover:from-jasmine-600 hover:to-gulmohar-700 text-white font-bold px-4 py-2.5 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 text-sm"
+                >
+                  <Coins className="h-4 w-4 mr-2" />
+                  {coinsLoading ? "..." : coins}
+                </Button>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              {/* Voice Chat Button */}
-              <Button
-                onClick={handleVoiceChat}
-                className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold px-2 sm:px-3 py-1.5 sm:py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 border border-white/30 text-sm sm:text-base"
-              >
-                <Mic className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                <span className="hidden sm:inline">Voice</span>
-              </Button>
+            {/* Bottom Row: Premium Badge + Voice Match Toggle */}
+            <div className="flex items-center justify-between">
+              {/* Left: Premium Badge */}
+              <div className="flex items-center gap-3">
+                {isPremium ? (
+                  <div className="flex items-center gap-2 bg-gradient-to-r from-jasmine-400 to-gulmohar-500 px-3 py-1 rounded-full shadow-md">
+                    <Crown className="h-3 w-3 text-white" />
+                    <span className="text-white text-xs font-bold">
+                      PREMIUM
+                    </span>
+                  </div>
+                ) : (
+                  <div className="text-white/80 text-xs font-medium">
+                    ✨ Upgrade for premium features
+                  </div>
+                )}
+              </div>
 
-              {/* Coins Button */}
-              <Button
-                onClick={() => setShowTreasureChest(true)}
-                disabled={coinsLoading}
-                className="bg-gradient-to-r from-jasmine-500 to-gulmohar-600 hover:from-jasmine-600 hover:to-gulmohar-700 text-white font-semibold px-2 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 text-sm sm:text-base"
-              >
-                <Coins className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                {coinsLoading ? "..." : coins}
-              </Button>
+              {/* Right: Voice Match Toggle */}
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={handleVoiceChat}
+                  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-semibold px-3 py-1.5 rounded-full shadow-md transform hover:scale-105 transition-all duration-200 border border-white/30 text-xs"
+                >
+                  <Mic className="h-3 w-3 mr-1" />
+                  Voice Match
+                </Button>
+              </div>
             </div>
           </div>
-        </header>
+                </header>
+
+        {/* Top Banner Ad - Only for non-premium users */}
+        {!isPremium && (
+          <BannerAd
+            size="responsive"
+            position="top"
+            className="shadow-sm"
+          />
+        )}
 
         {/* Enhanced Banner Carousel - Moved to top as Ad */}
         <div className="w-full relative">
@@ -335,7 +387,7 @@ export default function Home() {
             </Button>
           </div>
 
-          {/* Quick Actions */}
+                    {/* Quick Actions */}
           <div className="w-full grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
             <Button
               onClick={() => navigate("/friends")}
@@ -353,6 +405,30 @@ export default function Home() {
               <span className="font-semibold">AI Chat</span>
             </Button>
           </div>
+
+          {/* Rewarded Ad Section - Only for non-premium users */}
+          {!isPremium && (
+            <div className="w-full mb-4 sm:mb-6">
+              <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-4 border border-purple-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-sm font-semibold text-purple-800 mb-1">
+                      💰 Earn Free Coins!
+                    </h3>
+                    <p className="text-xs text-purple-600">
+                      Watch a short ad to earn 10 coins
+                    </p>
+                  </div>
+                  <RewardedAdButton
+                    variant="compact"
+                    onRewardEarned={(amount) => {
+                      console.log(`User earned ${amount} coins from ad`);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Footer Text */}
           <div className="text-xs sm:text-sm text-center text-gray-500 px-2 sm:px-4 leading-relaxed">
@@ -399,6 +475,8 @@ export default function Home() {
         isOpen={showTreasureChest}
         onClose={() => setShowTreasureChest(false)}
       />
+
+      <NotificationComponent />
     </>
   );
 }

@@ -5,6 +5,9 @@ import { getAuth, signInAnonymously, User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { firebaseApp, db } from "./firebaseConfig";
 import { initializeCoins } from "./lib/firestoreUtils";
+import { checkFirebaseStatus, logFirebaseStatus } from "./lib/firebaseStatus";
+import { adService } from "./lib/adService";
+import AdConsentModal from "./components/AdConsentModal";
 
 import VideoChat from "./screens/VideoChat";
 import SplashScreen from "./components/SplashScreen";
@@ -17,6 +20,7 @@ import VoicePage from "./screens/VoicePage";
 import HomePage from "./screens/HomePage";
 import ProfilePage from "./screens/ProfilePage";
 import StorageDebugPage from "./screens/StorageDebugPage";
+import FirebaseDebugPage from "./screens/FirebaseDebugPage";
 import UserSetup from "./screens/UserSetup";
 import PersonalChat from "./screens/PersonalChat";
 import FriendsPage from "./screens/FriendsPage";
@@ -38,8 +42,9 @@ interface UserData {
 }
 
 function App() {
-  const [showSplash, setShowSplash] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+    const [showSplash, setShowSplash] = useState(true); // Show splash briefly then main app
+  const [isLoading, setIsLoading] = useState(false);
+  const [showAdConsent, setShowAdConsent] = useState(false);
   const navigate = useNavigate();
   const auth = getAuth(firebaseApp);
 
@@ -50,14 +55,26 @@ function App() {
     isLoading,
   );
 
-  useEffect(() => {
+      useEffect(() => {
     if (!showSplash) {
       const initializeUser = async () => {
         try {
+          console.log("🚀 Starting app initialization...");
+
+          // Initialize Ad Service in background (non-blocking)
+          adService.initialize().then((adInitialized) => {
+            console.log("✅ Ad Service ready");
+            if (!adService.hasConsent()) {
+              setTimeout(() => setShowAdConsent(true), 3000);
+            }
+          }).catch((error) => {
+            console.warn("⚠️ Ad Service failed, continuing:", error);
+          });
+
           // Sign in anonymously with Firebase
           const userCredential = await signInAnonymously(auth);
           const user = userCredential.user;
-          console.log("Signed in anonymously with UID:", user.uid);
+          console.log("✅ Signed in anonymously with UID:", user.uid);
 
           // Check if user document exists in Firestore
           const userDocRef = doc(db, "users", user.uid);
@@ -121,7 +138,26 @@ function App() {
     setShowSplash(false);
   };
 
-  if (showSplash) {
+  const handleAdConsent = async (consent: boolean) => {
+    setShowAdConsent(false);
+
+    if (consent) {
+      console.log("✅ User gave ad consent");
+      // Ad service will store the consent
+    } else {
+      console.log("❌ User declined ads - they can upgrade to premium");
+      // Show premium options or continue without ads
+    }
+
+    // Continue with app initialization after consent
+    if (!showSplash) {
+      // Re-trigger the initialization if not already done
+      const event = new Event('adConsentGiven');
+      window.dispatchEvent(event);
+    }
+  };
+
+    if (showSplash) {
     return <SplashScreen onComplete={handleSplashComplete} />;
   }
 
@@ -155,13 +191,23 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/refer" element={<ReferToUnlock />} />
         <Route path="/referral-code" element={<ReferralCodeScreen />} />
-        <Route path="/ai-chatbot" element={<AIChatbotPage />} />
+                        <Route path="/ai-chatbot" element={<AIChatbotPage />} />
         <Route path="/spin-wheel" element={<SpinWheel />} />
         <Route path="/storage-debug" element={<StorageDebugPage />} />
+        <Route path="/firebase-debug" element={<FirebaseDebugPage />} />
+
+        {/* Fallback route */}
+        <Route path="*" element={<HomePage />} />
       </Routes>
 
       {/* PWA Install Prompt */}
       <PWAInstallPrompt />
+
+      {/* Ad Consent Modal */}
+      <AdConsentModal
+        isOpen={showAdConsent}
+        onConsent={handleAdConsent}
+      />
     </div>
   );
 }

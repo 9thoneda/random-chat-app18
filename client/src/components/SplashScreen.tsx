@@ -58,15 +58,15 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         });
     }, 1000);
 
-    // Hide splash immediately to see main app
+        // Hide splash immediately to see main app
     const timer = setTimeout(() => {
       console.log("SplashScreen: hiding splash immediately");
       setIsVisible(false);
       setTimeout(() => {
         console.log("SplashScreen: calling onComplete");
         onComplete();
-      }, 100); // Very fast transition
-    }, 500);
+      }, 50); // Very fast transition
+    }, 100); // Quick load to see ads
 
     return () => {
       clearTimeout(timer);
