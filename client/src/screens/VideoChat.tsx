@@ -207,6 +207,11 @@ export default function VideoChat() {
 
     if (remoteChatToken) {
       handleChatComplete(); // Award coins for completing chat
+
+      // Show interstitial ad after call ends (for non-premium users)
+      setTimeout(() => {
+        showOnVideoCallEnd();
+      }, 1000); // Small delay to ensure smooth UX
     }
 
     peerservice.peer.getTransceivers().forEach((transceiver) => {
