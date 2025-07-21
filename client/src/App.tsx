@@ -166,9 +166,10 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/refer" element={<ReferToUnlock />} />
         <Route path="/referral-code" element={<ReferralCodeScreen />} />
-        <Route path="/ai-chatbot" element={<AIChatbotPage />} />
+                <Route path="/ai-chatbot" element={<AIChatbotPage />} />
         <Route path="/spin-wheel" element={<SpinWheel />} />
         <Route path="/storage-debug" element={<StorageDebugPage />} />
+        <Route path="/firebase-debug" element={<FirebaseDebugPage />} />
       </Routes>
 
       {/* PWA Install Prompt */}
