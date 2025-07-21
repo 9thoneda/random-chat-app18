@@ -27,7 +27,7 @@ createRoot(document.getElementById("root")!).render(
               <FriendsProvider>
                 <BrowserRouter>
                   <SocketProvider>
-                    <DebugApp />
+                    <App />
                   </SocketProvider>
                 </BrowserRouter>
               </FriendsProvider>
