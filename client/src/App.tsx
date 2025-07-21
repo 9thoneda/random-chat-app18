@@ -42,7 +42,7 @@ interface UserData {
 }
 
 function App() {
-  const [showSplash, setShowSplash] = useState(false);
+    const [showSplash, setShowSplash] = useState(false); // Keep splash disabled
   const [isLoading, setIsLoading] = useState(false);
   const [showAdConsent, setShowAdConsent] = useState(false);
   const navigate = useNavigate();
