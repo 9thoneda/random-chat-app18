@@ -55,41 +55,26 @@ function App() {
     isLoading,
   );
 
-    useEffect(() => {
+      useEffect(() => {
     if (!showSplash) {
       const initializeUser = async () => {
         try {
-          // Check Firebase status first
-          console.log("🔥 Running Firebase status check...");
-          const firebaseStatus = await checkFirebaseStatus();
-          logFirebaseStatus(firebaseStatus);
+          console.log("🚀 Starting app initialization...");
 
-          if (!firebaseStatus.overall.working) {
-            console.warn("⚠️ Firebase has issues but continuing with initialization...");
-          }
-
-          // Initialize Ad Service (non-blocking)
-          console.log("🎯 Initializing Ad Service...");
+          // Initialize Ad Service in background (non-blocking)
           adService.initialize().then((adInitialized) => {
-            if (adInitialized) {
-              console.log("✅ Ad Service initialized successfully");
-
-              // Check if user needs to give consent (non-blocking)
-              if (!adService.hasConsent()) {
-                console.log("📋 User consent needed for ads");
-                setTimeout(() => setShowAdConsent(true), 2000); // Show after app loads
-              }
-            } else {
-              console.warn("⚠️ Ad Service failed to initialize - continuing without ads");
+            console.log("✅ Ad Service ready");
+            if (!adService.hasConsent()) {
+              setTimeout(() => setShowAdConsent(true), 3000);
             }
           }).catch((error) => {
-            console.error("🚨 Ad Service error (non-critical):", error);
+            console.warn("⚠️ Ad Service failed, continuing:", error);
           });
 
           // Sign in anonymously with Firebase
           const userCredential = await signInAnonymously(auth);
           const user = userCredential.user;
-          console.log("Signed in anonymously with UID:", user.uid);
+          console.log("✅ Signed in anonymously with UID:", user.uid);
 
           // Check if user document exists in Firestore
           const userDocRef = doc(db, "users", user.uid);
