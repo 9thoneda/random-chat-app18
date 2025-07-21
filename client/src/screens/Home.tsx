@@ -27,6 +27,8 @@ import BottomNavBar from "../components/BottomNavBar";
 import { usePremium } from "../context/PremiumProvider";
 import { useCoin } from "../context/CoinProvider";
 import { useLanguage } from "../context/LanguageProvider";
+import BannerAd from "../components/BannerAd";
+import RewardedAdButton from "../components/RewardedAdButton";
 
 const bannerImages = [
   "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=800&h=200&fit=crop",
