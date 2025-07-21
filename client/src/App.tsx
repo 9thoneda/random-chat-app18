@@ -42,7 +42,7 @@ interface UserData {
 }
 
 function App() {
-    const [showSplash, setShowSplash] = useState(false); // Keep splash disabled
+    const [showSplash, setShowSplash] = useState(true); // Show splash briefly then main app
   const [isLoading, setIsLoading] = useState(false);
   const [showAdConsent, setShowAdConsent] = useState(false);
   const navigate = useNavigate();
@@ -145,7 +145,7 @@ function App() {
       console.log("✅ User gave ad consent");
       // Ad service will store the consent
     } else {
-      console.log("��� User declined ads - they can upgrade to premium");
+      console.log("❌ User declined ads - they can upgrade to premium");
       // Show premium options or continue without ads
     }
 
