@@ -18,6 +18,7 @@ import VoicePage from "./screens/VoicePage";
 import HomePage from "./screens/HomePage";
 import ProfilePage from "./screens/ProfilePage";
 import StorageDebugPage from "./screens/StorageDebugPage";
+import FirebaseDebugPage from "./screens/FirebaseDebugPage";
 import UserSetup from "./screens/UserSetup";
 import PersonalChat from "./screens/PersonalChat";
 import FriendsPage from "./screens/FriendsPage";
