@@ -105,6 +105,13 @@ export default function VideoChat() {
   const { theme } = useTheme();
   const navigate = useNavigate();
 
+  // Interstitial ads hook
+  const { showOnVideoCallEnd, showOnNavigation } = useInterstitialAd({
+    minTimeBetweenAds: 120, // 2 minutes between ads
+    maxAdsPerSession: 6,    // Max 6 ads per session
+    showOnCallEnd: true
+  });
+
   const loaderColor = theme === "dark" ? "#D1D5DB" : "#4B5563";
 
   // Check if this is a friend call or searching for random match
