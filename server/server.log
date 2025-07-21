@@ -1,0 +1,13 @@
+[INFO] 07:19:03 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.8.3)
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1939:16)
+    at listenInCluster (node:net:1996:12)
+    at Server.listen (node:net:2101:7)
+    at Object.<anonymous> (/app/code/server/src/index.ts:194:8)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1730:14)
+    at Module._compile (/app/code/node_modules/source-map-support/source-map-support.js:568:25)
+    at Module.m._compile (/tmp/ts-node-dev-hook-9537602354920762.js:69:33)
+    at node:internal/modules/cjs/loader:1895:10
+    at require.extensions..jsx.require.extensions..js (/tmp/ts-node-dev-hook-9537602354920762.js:114:20)
+    at require.extensions.<computed> (/tmp/ts-node-dev-hook-9537602354920762.js:71:20)
+[ERROR] 07:19:03 Error: listen EADDRINUSE: address already in use :::8000
