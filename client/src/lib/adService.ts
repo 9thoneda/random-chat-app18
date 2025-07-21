@@ -230,7 +230,7 @@ class AdService {
       });
     } catch (error) {
       console.error('❌ Failed to show rewarded ad:', error);
-      return { success: false, rewardAmount: 0, rewardType: 'coins', error: error.message };
+      return { success: false, rewardAmount: 0, rewardType: 'coins', error: error instanceof Error ? error.message : 'Unknown error' };
     }
   }
 
