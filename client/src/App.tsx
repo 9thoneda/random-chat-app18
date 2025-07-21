@@ -157,9 +157,10 @@ function App() {
     }
   };
 
-  if (showSplash) {
-    return <SplashScreen onComplete={handleSplashComplete} />;
-  }
+    // Temporarily disable splash screen to get app working
+  // if (showSplash) {
+  //   return <SplashScreen onComplete={handleSplashComplete} />;
+  // }
 
   if (isLoading) {
     return (
