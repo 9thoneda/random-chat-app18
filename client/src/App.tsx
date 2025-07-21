@@ -5,6 +5,7 @@ import { getAuth, signInAnonymously, User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { firebaseApp, db } from "./firebaseConfig";
 import { initializeCoins } from "./lib/firestoreUtils";
+import { checkFirebaseStatus, logFirebaseStatus } from "./lib/firebaseStatus";
 
 import VideoChat from "./screens/VideoChat";
 import SplashScreen from "./components/SplashScreen";
