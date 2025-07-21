@@ -26,9 +26,9 @@ createRoot(document.getElementById("root")!).render(
           <PremiumProvider>
             <CoinProvider>
               <FriendsProvider>
-                <BrowserRouter>
+                                <BrowserRouter>
                   <SocketProvider>
-                    <App />
+                    <MinimalApp />
                   </SocketProvider>
                 </BrowserRouter>
               </FriendsProvider>
