@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import DebugApp from "./DebugApp";
+import MinimalApp from "./MinimalApp";
 import { BrowserRouter } from "react-router-dom";
 import { SocketProvider } from "./context/SocketProvider.tsx";
 
