@@ -27,11 +27,7 @@ createRoot(document.getElementById("root")!).render(
           <PremiumProvider>
             <CoinProvider>
               <FriendsProvider>
-                                <BrowserRouter>
-                  <SocketProvider>
-                    <MinimalApp />
-                  </SocketProvider>
-                </BrowserRouter>
+                                                <TestApp />
               </FriendsProvider>
             </CoinProvider>
           </PremiumProvider>
