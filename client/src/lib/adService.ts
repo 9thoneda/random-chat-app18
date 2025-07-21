@@ -40,7 +40,7 @@ class AdService {
 
   // Default configuration for AjnabiCam
   private defaultConfig: AdConfig = {
-    publisherId: process.env.VITE_ADSENSE_PUBLISHER_ID || 'ca-pub-XXXXXXXXXX', // Replace with your publisher ID
+        publisherId: process.env.VITE_ADMOB_APP_ID || 'ca-app-pub-3940256099942544~3347511713', // Your real AdMob App ID
     adUnitIds: {
       banner: process.env.VITE_ADSENSE_BANNER_ID || '1234567890',
       interstitial: process.env.VITE_ADSENSE_INTERSTITIAL_ID || '1234567891', 
