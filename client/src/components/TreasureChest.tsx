@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { useCoin } from "../context/CoinProvider";
 import { usePremium } from "../context/PremiumProvider";
+import RewardedAdButton from "./RewardedAdButton";
 
 interface TreasureChestProps {
   isOpen: boolean;
