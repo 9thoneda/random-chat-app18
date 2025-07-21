@@ -31,6 +31,7 @@ import { ClipLoader } from "react-spinners";
 import { useTheme } from "../components/theme-provider";
 import { useNavigate, useLocation } from "react-router-dom";
 import MockWebRTC from "../lib/mockWebRTC";
+import { useInterstitialAd } from "../hooks/useInterstitialAd";
 import "../css/VideoChat.css";
 
 interface Offer {
