@@ -503,14 +503,14 @@ class AdMobMediationService {
    * Estimate revenue for tracking
    */
   private estimateRevenue(adType: string, network: string): number {
-    const baseCPM = {
+    const baseCPM: Record<string, number> = {
       'banner': 1.0,
       'interstitial': 3.0,
       'rewarded': 8.0,
       'native': 2.0
     };
 
-    const networkMultiplier = {
+    const networkMultiplier: Record<string, number> = {
       'AdSense': 1.0,
       'Facebook Audience Network': 1.3,
       'Unity Ads': 1.1,
