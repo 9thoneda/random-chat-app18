@@ -42,7 +42,7 @@ class AdService {
   private defaultConfig: AdConfig = {
         publisherId: process.env.VITE_ADMOB_APP_ID || 'ca-app-pub-3940256099942544~3347511713', // Your real AdMob App ID
     adUnitIds: {
-      banner: process.env.VITE_ADSENSE_BANNER_ID || '1234567890',
+            banner: process.env.VITE_ADMOB_BANNER_ID || 'ca-app-pub-3940256099942544/6300978111',
       interstitial: process.env.VITE_ADSENSE_INTERSTITIAL_ID || '1234567891', 
       rewarded: process.env.VITE_ADSENSE_REWARDED_ID || '1234567892',
       native: process.env.VITE_ADSENSE_NATIVE_ID || '1234567893'
