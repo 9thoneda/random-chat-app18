@@ -145,7 +145,7 @@ function App() {
       console.log("✅ User gave ad consent");
       // Ad service will store the consent
     } else {
-      console.log("❌ User declined ads - they can upgrade to premium");
+      console.log("��� User declined ads - they can upgrade to premium");
       // Show premium options or continue without ads
     }
 
@@ -157,10 +157,9 @@ function App() {
     }
   };
 
-    // Temporarily disable splash screen to get app working
-  // if (showSplash) {
-  //   return <SplashScreen onComplete={handleSplashComplete} />;
-  // }
+    if (showSplash) {
+    return <SplashScreen onComplete={handleSplashComplete} />;
+  }
 
   if (isLoading) {
     return (
