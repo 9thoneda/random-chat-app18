@@ -929,12 +929,19 @@ export default function VideoChat() {
         peerservice.peer.close();
         peerservice.initPeer();
       }
+
+      // Show interstitial ad when leaving video chat (if there was an active call)
+      if (remoteChatToken) {
+        setTimeout(() => {
+          showOnNavigation('home');
+        }, 500);
+      }
     } catch (error) {
       console.error("Error during cleanup:", error);
     } finally {
       navigate("/");
     }
-  }, [myStream, navigate, screenStream, remoteStream]);
+  }, [myStream, navigate, screenStream, remoteStream, remoteChatToken, showOnNavigation]);
 
   const handleReport = (reason: string) => {
     const count =
