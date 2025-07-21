@@ -5,6 +5,7 @@ import App from "./App";
 import DebugApp from "./DebugApp";
 import MinimalApp from "./MinimalApp";
 import TestApp from "./TestApp";
+import WorkingApp from "./WorkingApp";
 import { BrowserRouter } from "react-router-dom";
 import { SocketProvider } from "./context/SocketProvider.tsx";
 
