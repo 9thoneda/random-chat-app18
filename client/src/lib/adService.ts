@@ -72,29 +72,43 @@ class AdService {
 
       console.log('🎯 Initializing Ad Service...');
 
-      // Check for ad blockers
-      await this.detectAdBlocker();
+      // Check for ad blockers (non-blocking)
+      try {
+        await this.detectAdBlocker();
+      } catch (error) {
+        console.warn('⚠️ Ad blocker detection failed, continuing...', error);
+        this.adBlockDetected = false;
+      }
 
       if (this.adBlockDetected) {
         console.warn('⚠️ Ad blocker detected - ads will not be shown');
-        return false;
-      }
-
-      // Load Google AdSense script
-      await this.loadAdSenseScript();
-
-      // Initialize AdSense
-      if (window.adsbygoogle) {
-        window.adsbygoogle = window.adsbygoogle || [];
-        this.isInitialized = true;
-        console.log('✅ Ad Service initialized successfully');
+        this.isInitialized = true; // Still mark as initialized for graceful fallback
         return true;
       }
 
-      throw new Error('AdSense failed to load');
+      // Load Google AdSense script (non-blocking)
+      try {
+        await this.loadAdSenseScript();
+
+        // Initialize AdSense
+        if (typeof window !== 'undefined') {
+          window.adsbygoogle = window.adsbygoogle || [];
+          this.isInitialized = true;
+          console.log('✅ Ad Service initialized successfully');
+          return true;
+        }
+      } catch (error) {
+        console.warn('⚠️ AdSense failed to load, continuing without ads:', error);
+        this.isInitialized = true; // Mark as initialized for graceful fallback
+        return true;
+      }
+
+      this.isInitialized = true;
+      return true;
     } catch (error) {
-      console.error('❌ Failed to initialize Ad Service:', error);
-      return false;
+      console.error('❌ Ad Service initialization error (non-critical):', error);
+      this.isInitialized = true; // Always mark as initialized to not block app
+      return true; // Return true to prevent blocking app startup
     }
   }
 
