@@ -152,6 +152,25 @@ function App() {
     setShowSplash(false);
   };
 
+  const handleAdConsent = async (consent: boolean) => {
+    setShowAdConsent(false);
+
+    if (consent) {
+      console.log("✅ User gave ad consent");
+      // Ad service will store the consent
+    } else {
+      console.log("❌ User declined ads - they can upgrade to premium");
+      // Show premium options or continue without ads
+    }
+
+    // Continue with app initialization after consent
+    if (!showSplash) {
+      // Re-trigger the initialization if not already done
+      const event = new Event('adConsentGiven');
+      window.dispatchEvent(event);
+    }
+  };
+
   if (showSplash) {
     return <SplashScreen onComplete={handleSplashComplete} />;
   }
