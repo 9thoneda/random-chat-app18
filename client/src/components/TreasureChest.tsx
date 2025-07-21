@@ -489,17 +489,28 @@ export default function TreasureChest({ isOpen, onClose }: TreasureChestProps) {
                   )}
 
                   {/* Enhanced Action Button */}
-                  <Button
-                    onClick={method.action}
-                    disabled={!method.available}
-                    className={`w-full font-bold py-3 rounded-xl shadow-lg transition-all duration-300 text-base transform hover:scale-105 ${
-                      method.available
-                        ? `bg-gradient-to-r ${method.color} hover:shadow-xl text-white animate-pulse`
-                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    }`}
-                  >
-                    {method.buttonText}
-                  </Button>
+                  {method.id === "ads" ? (
+                    <RewardedAdButton
+                      variant="premium"
+                      disabled={!method.available}
+                      className="w-full"
+                      onRewardEarned={(amount) => {
+                        console.log(`User earned ${amount} coins from TreasureChest ad`);
+                      }}
+                    />
+                  ) : (
+                    <Button
+                      onClick={method.action}
+                      disabled={!method.available}
+                      className={`w-full font-bold py-3 rounded-xl shadow-lg transition-all duration-300 text-base transform hover:scale-105 ${
+                        method.available
+                          ? `bg-gradient-to-r ${method.color} hover:shadow-xl text-white animate-pulse`
+                          : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      }`}
+                    >
+                      {method.buttonText}
+                    </Button>
+                  )}
                 </div>
               ))}
             </div>
